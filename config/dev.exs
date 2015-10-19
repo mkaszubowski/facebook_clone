@@ -32,11 +32,4 @@ config :logger, :console, format: "[$level] $message\n"
 # and calculating stacktraces is usually expensive.
 config :phoenix, :stacktrace_depth, 20
 
-# Configure your database
-config :facebook_clone, FacebookClone.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "test",
-  password: "test",
-  database: "facebook_clone_dev",
-  hostname: "localhost",
-  pool_size: 10
+import_config "dev.secret.exs"

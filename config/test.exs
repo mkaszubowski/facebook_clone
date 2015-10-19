@@ -9,11 +9,4 @@ config :facebook_clone, FacebookClone.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :warn
 
-# Configure your database
-config :facebook_clone, FacebookClone.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "test",
-  password: "test",
-  database: "facebook_clone_test",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+import_config "test.secret.exs"
