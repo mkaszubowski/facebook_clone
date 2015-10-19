@@ -4,12 +4,14 @@ defmodule FacebookClone.User do
   schema "users" do
     field :email, :string
     field :crypted_password, :string
+    field :first_name, :string
+    field :last_name, :string
 
     timestamps
   end
 
   @required_fields ~w(email crypted_password)
-  @optional_fields ~w()
+  @optional_fields ~w(first_name last_name)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
