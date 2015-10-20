@@ -29,4 +29,22 @@ defmodule FacebookClone.UserTest do
     error_msg = elem(error, 1)
     assert error_msg =~ "taken"
   end
+
+  test "password has to be at least 6 characters long" do
+    changeset = User.changeset(%User{}, %{@valid_attrs | password: "12345"})
+
+    refute changeset.valid?
+  end
+
+  test "first name is not required" do
+    changeset = User.changeset(%User{}, Map.delete(@valid_attrs, :first_name))
+
+    assert changeset.valid?
+  end
+
+  test "last name is not required" do
+    changeset = User.changeset(%User{}, Map.delete(@valid_attrs, :last_name))
+
+    assert changeset.valid?
+  end
 end

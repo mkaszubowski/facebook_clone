@@ -25,7 +25,7 @@ defmodule FacebookClone.User do
     |> cast(params, @required_fields, @optional_fields)
     |> update_change(:email, &String.downcase/1)
     |> validate_format(:email, ~r/.*@.*\..*/)
-    |> validate_length(:password, min: 5)
+    |> validate_length(:password, min: 6)
     |> unique_constraint(:email)
   end
 end
