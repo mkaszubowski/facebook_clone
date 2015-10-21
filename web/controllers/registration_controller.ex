@@ -16,8 +16,8 @@ defmodule FacebookClone.RegistrationController do
 
     if status == :ok do
       conn
-        |> put_flash(:info, "Save")
-        |> render("new.html", changeset: {})
+        |> put_flash(:info, "User created")
+        |> redirect to: "/"
     else
       conn
         |> put_flash(:info, "Could not create an account")
