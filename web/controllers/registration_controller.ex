@@ -10,8 +10,6 @@ defmodule FacebookClone.RegistrationController do
 
   def create(conn, %{"user" => user_params}) do
     changeset = User.changeset(%User{}, user_params)
-
-
     {status, changeset} = Registration.create(changeset, FacebookClone.Repo)
 
     if status == :ok do
