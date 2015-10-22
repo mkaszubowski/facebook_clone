@@ -14,12 +14,12 @@ defmodule FacebookClone.RegistrationController do
     case Registration.create(changeset, FacebookClone.Repo) do
       {:ok, changeset} ->
         conn
-          |> put_flash(:info, "User created")
-          |> redirect to: "/"
+        |> put_flash(:info, "User created")
+        |> redirect to: "/"
       {:error, changeset} ->
         conn
-          |> put_flash(:info, "Could not create an account")
-          |> render("new.html", changeset: changeset)
+        |> put_flash(:info, "Could not create an account")
+        |> render("new.html", changeset: changeset)
     end
   end
 end
