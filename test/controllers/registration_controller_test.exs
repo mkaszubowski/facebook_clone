@@ -14,9 +14,7 @@ defmodule FacebookClone.RegistrationControllerTest do
 
   test "POST /register with correct params creates an user" do
     assert FacebookClone.Repo.all(FacebookClone.User) |> Enum.count == 0
-
-    conn = send_create_request
-
+    send_create_request
     assert FacebookClone.Repo.all(FacebookClone.User) |> Enum.count == 1
   end
 
