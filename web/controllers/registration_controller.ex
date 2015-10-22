@@ -10,16 +10,16 @@ defmodule FacebookClone.RegistrationController do
 
   def create(conn, %{"user" => user_params}) do
     changeset = User.changeset(%User{}, user_params)
-    {status, changeset} = Registration.create(changeset, FacebookClone.Repo)
 
-    if status == :ok do
-      conn
-        |> put_flash(:info, "User created")
-        |> redirect to: "/"
-    else
-      conn
-        |> put_flash(:info, "Could not create an account")
-        |> render("new.html", changeset: changeset)
+    case Registration.create(changeset, FacebookClone.Repo) do
+      {:ok, changeset} ->
+        conn
+          |> put_flash(:info, "User created")
+          |> redirect to: "/"
+      {:error, changeset} ->
+        conn
+          |> put_flash(:info, "Could not create an account")
+          |> render("new.html", changeset: changeset)
     end
   end
 end
