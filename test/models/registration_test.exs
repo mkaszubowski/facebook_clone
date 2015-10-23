@@ -26,4 +26,13 @@ defmodule FacebookClone.RegistrationTest do
 
     refute user.crypted_password == "foobar"
   end
+
+  test "returns error when email is already taken" do
+    changeset = User.changeset(%User{}, @valid_attrs)
+    Registration.create(changeset, Repo)
+
+    {status, changeset} = Registration.create(changeset, Repo)
+
+    assert status == :error
+  end
 end
