@@ -9,7 +9,7 @@ defmodule FacebookClone.RedirectAuthenticated do
     %Conn{method: method} = conn,
     [skip_method: method]
   ), do: conn
-  def redirect_authenticated(conn, args) do
+  def redirect_authenticated(conn, _args) do
     case logged_in?(conn) do
       true ->
         conn
