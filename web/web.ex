@@ -48,6 +48,8 @@ defmodule FacebookClone.Web do
       use Phoenix.HTML
 
       import FacebookClone.Router.Helpers
+
+      import FacebookClone.Session, only: [current_user: 1, logged_in?: 1]
     end
   end
 

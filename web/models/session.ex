@@ -1,5 +1,8 @@
 defmodule FacebookClone.Session do
+  use FacebookClone.Web, :controller
+
   alias FacebookClone.User
+  alias FacebookClone.Repo
 
   def login(params, repo) do
     downcased_email = String.downcase(params["email"])
@@ -8,6 +11,24 @@ defmodule FacebookClone.Session do
     case authenticate(user, params["password"]) do
       true -> {:ok, user}
       _    -> :error
+    end
+  end
+
+  def current_user(conn) do
+    id = Plug.Conn.get_session(conn, :current_user)
+    if id, do: Repo.get(User, id)
+  end
+
+  def logged_in?(conn), do: !!current_user(conn)
+
+  def redirect_logged_user(conn, _) do
+    case logged_in?(conn) do
+      true ->
+        conn
+        |> put_flash(:info, "You are already logged in")
+        |> redirect to: "/"
+      false ->
+        conn
     end
   end
 
