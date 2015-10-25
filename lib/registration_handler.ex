@@ -6,8 +6,8 @@ defmodule FacebookClone.RegistrationHandler do
 
     {status, changeset} =
       changeset
-        |> put_change(:crypted_password, password)
-        |> repo.insert
+      |> put_change(:crypted_password, password)
+      |> repo.insert
 
     {status, changeset}
   end
