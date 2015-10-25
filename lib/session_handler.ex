@@ -3,6 +3,7 @@ defmodule FacebookClone.SessionHandler do
 
   alias FacebookClone.User
   alias FacebookClone.Repo
+  alias Plug.Conn
 
   def login(params, repo) do
     downcased_email = String.downcase(params["email"])
@@ -21,7 +22,11 @@ defmodule FacebookClone.SessionHandler do
 
   def logged_in?(conn), do: !!current_user(conn)
 
-  def redirect_logged_user(conn, _) do
+  def redirect_authenticated(
+    %Conn{method: method} = conn,
+    [skip_method: method]
+  ), do: conn
+  def redirect_authenticated(conn, args) do
     case logged_in?(conn) do
       true ->
         conn

@@ -3,9 +3,9 @@ defmodule FacebookClone.RegistrationController do
   alias FacebookClone.User
   alias FacebookClone.RegistrationHandler
 
-  import FacebookClone.SessionHandler, only: [redirect_logged_user: 2]
+  import FacebookClone.SessionHandler, only: [redirect_authenticated: 2]
 
-  plug :redirect_logged_user
+  plug :redirect_authenticated
 
   def new(conn, _params) do
     changeset = User.changeset(%User{})
