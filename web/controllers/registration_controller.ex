@@ -2,8 +2,9 @@ defmodule FacebookClone.RegistrationController do
   use FacebookClone.Web, :controller
   alias FacebookClone.User
   alias FacebookClone.RegistrationHandler
+  alias FacebookClone.RedirectAuthenticated
 
-  import FacebookClone.SessionHandler, only: [redirect_authenticated: 2]
+  import RedirectAuthenticated, only: [redirect_authenticated: 2]
 
   plug :redirect_authenticated
 

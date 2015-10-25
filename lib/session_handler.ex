@@ -22,21 +22,6 @@ defmodule FacebookClone.SessionHandler do
 
   def logged_in?(conn), do: !!current_user(conn)
 
-  def redirect_authenticated(
-    %Conn{method: method} = conn,
-    [skip_method: method]
-  ), do: conn
-  def redirect_authenticated(conn, args) do
-    case logged_in?(conn) do
-      true ->
-        conn
-        |> put_flash(:info, "You are already logged in")
-        |> redirect to: "/"
-      false ->
-        conn
-    end
-  end
-
   defp authenticate(user, password) do
     case user do
       nil -> false
