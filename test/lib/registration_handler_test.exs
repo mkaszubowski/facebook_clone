@@ -1,7 +1,7 @@
-defmodule FacebookClone.RegistrationTest do
+defmodule FacebookClone.RegistrationHandlerTest do
   use FacebookClone.ModelCase
 
-  alias FacebookClone.Registration
+  alias FacebookClone.RegistrationHandler
   alias FacebookClone.User
   alias FacebookClone.Repo
 
@@ -11,7 +11,7 @@ defmodule FacebookClone.RegistrationTest do
     count = Repo.all(User) |> Enum.count
 
     changeset = User.changeset(%User{}, @valid_attrs)
-    Registration.create(changeset, Repo)
+    RegistrationHandler.create(changeset, Repo)
 
     new_count = Repo.all(User) |> Enum.count
 
@@ -20,7 +20,7 @@ defmodule FacebookClone.RegistrationTest do
 
   test "user's password is encrypted before saving" do
     changeset = User.changeset(%User{}, @valid_attrs)
-    Registration.create(changeset, Repo)
+    RegistrationHandler.create(changeset, Repo)
 
     user = Repo.all(User) |> Enum.at(0)
 
@@ -29,9 +29,9 @@ defmodule FacebookClone.RegistrationTest do
 
   test "returns error when email is already taken" do
     changeset = User.changeset(%User{}, @valid_attrs)
-    Registration.create(changeset, Repo)
+    RegistrationHandler.create(changeset, Repo)
 
-    {status, changeset} = Registration.create(changeset, Repo)
+    {status, _changeset} = RegistrationHandler.create(changeset, Repo)
 
     assert status == :error
   end

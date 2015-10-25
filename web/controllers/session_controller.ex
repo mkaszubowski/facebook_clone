@@ -2,9 +2,9 @@ defmodule FacebookClone.SessionController do
   use FacebookClone.Web, :controller
 
   alias FacebookClone.Repo
-  alias FacebookClone.Session
+  alias FacebookClone.SessionHandler
 
-  import Session, only: [redirect_logged_user: 2]
+  import SessionHandler, only: [redirect_logged_user: 2]
 
   plug :redirect_logged_user
 
@@ -13,7 +13,7 @@ defmodule FacebookClone.SessionController do
   end
 
   def create(conn, %{"session" => session_params}) do
-    case Session.login(session_params, Repo) do
+    case SessionHandler.login(session_params, Repo) do
       {:ok, user} ->
         conn
         |> put_session(:current_user, user.id)

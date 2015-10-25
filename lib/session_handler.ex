@@ -1,4 +1,4 @@
-defmodule FacebookClone.Session do
+defmodule FacebookClone.SessionHandler do
   use FacebookClone.Web, :controller
 
   alias FacebookClone.User

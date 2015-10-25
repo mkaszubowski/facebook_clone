@@ -2,12 +2,12 @@ defmodule FacebookClone.SessionControllerTest do
   use FacebookClone.ConnCase
 
   alias FacebookClone.User
-  alias FacebookClone.Registration
+  alias FacebookClone.RegistrationHandler
 
   defp create_user(email, password) do
     user_params = %{email: email, password: password}
     changeset = User.changeset(%User{}, user_params)
-    Registration.create(changeset, FacebookClone.Repo)
+    RegistrationHandler.create(changeset, FacebookClone.Repo)
   end
 
   defp log_in_user do

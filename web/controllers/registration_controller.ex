@@ -1,9 +1,9 @@
 defmodule FacebookClone.RegistrationController do
   use FacebookClone.Web, :controller
   alias FacebookClone.User
-  alias FacebookClone.Registration
+  alias FacebookClone.RegistrationHandler
 
-  import FacebookClone.Session, only: [redirect_logged_user: 2]
+  import FacebookClone.SessionHandler, only: [redirect_logged_user: 2]
 
   plug :redirect_logged_user
 
@@ -15,7 +15,7 @@ defmodule FacebookClone.RegistrationController do
   def create(conn, %{"user" => user_params}) do
     changeset = User.changeset(%User{}, user_params)
 
-    case Registration.create(changeset, FacebookClone.Repo) do
+    case RegistrationHandler.create(changeset, FacebookClone.Repo) do
       {:ok, changeset} ->
         conn
         |> put_flash(:info, "User created")

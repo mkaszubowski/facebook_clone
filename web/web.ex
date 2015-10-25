@@ -49,7 +49,7 @@ defmodule FacebookClone.Web do
 
       import FacebookClone.Router.Helpers
 
-      import FacebookClone.Session, only: [current_user: 1, logged_in?: 1]
+      import FacebookClone.SessionHandler, only: [current_user: 1, logged_in?: 1]
     end
   end
 

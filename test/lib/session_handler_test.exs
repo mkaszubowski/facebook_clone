@@ -1,8 +1,8 @@
-defmodule FacebookClone.SessionTest do
+defmodule FacebookClone.SessionHandlerHandlerTest do
   use FacebookClone.ModelCase
 
-  alias FacebookClone.Session
-  alias FacebookClone.Registration
+  alias FacebookClone.SessionHandler
+  alias FacebookClone.RegistrationHandler
   alias FacebookClone.User
   alias FacebookClone.Repo
 
@@ -11,13 +11,13 @@ defmodule FacebookClone.SessionTest do
 
   defp create_user do
     changeset = User.changeset(%User{}, @valid_attrs)
-    Registration.create(changeset, Repo)
+    RegistrationHandler.create(changeset, Repo)
   end
 
   test "returns {:ok, user} when given valid email and password" do
     create_user
 
-    {status, user} = FacebookClone.Session.login(@valid_attrs, Repo)
+    {status, user} = SessionHandler.login(@valid_attrs, Repo)
 
     assert status == :ok
     assert user == Repo.all(User) |> Enum.at(0)
@@ -26,8 +26,15 @@ defmodule FacebookClone.SessionTest do
   test "returns :error when given invalid email or password" do
     create_user
 
-    status = FacebookClone.Session.login(@invalid_attrs, Repo)
+    status = SessionHandler.login(@invalid_attrs, Repo)
 
     assert status == :error
+  end
+
+  test "current_user returns signed in user" do
+    create_user
+    user = Repo.all(User) |> Enum.at(0)
+
+
   end
 end
