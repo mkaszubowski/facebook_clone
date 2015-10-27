@@ -17,8 +17,9 @@ defmodule FacebookClone.RegistrationController do
     changeset = User.changeset(%User{}, user_params)
 
     case RegistrationHandler.create(changeset, FacebookClone.Repo) do
-      {:ok, _changeset} ->
+      {:ok, user} ->
         conn
+        |> put_session(:current_user, user.id)
         |> put_flash(:info, "User created")
         |> redirect to: "/"
       {:error, changeset} ->
