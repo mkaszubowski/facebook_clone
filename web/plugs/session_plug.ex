@@ -29,20 +29,12 @@ defmodule FacebookClone.SessionPlug do
         |> redirect to: "/"
       false ->
         conn
-        |> put_flash(:info, message)
+        |> put_flash(:info, "You have to sign in first")
         |> redirect to: session_path(conn, :new)
     end
   end
 
-  def authenticate_user(conn, [user: user]) do
-    case SessionHandler.current_user(conn) == user do
-      true -> conn
-      false ->
-        access_denied(conn)
-    end
-  end
-
-  def authenticate_user(conn, _params) do
+  def authenticate_logged_in(conn, _params) do
     case SessionHandler.logged_in?(conn) do
       true -> conn
       false ->
@@ -52,4 +44,14 @@ defmodule FacebookClone.SessionPlug do
     end
   end
 
+  def authenticate_current_user(conn, _params) do
+    user_id = conn.params["id"] |> String.to_integer
+
+    authenticate_logged_in(conn, [])
+
+    case SessionHandler.current_user(conn).id == user_id do
+      true -> conn
+      false -> access_denied(conn)
+    end
+  end
 end
