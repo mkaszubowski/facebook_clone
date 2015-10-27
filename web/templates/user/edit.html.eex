@@ -1,0 +1,17 @@
+<h1>Edit your profile</h1>
+
+<%= form_for @changeset, user_path(@conn, :update, @user), [method: :put], fn f -> %>
+  <div class="form-group">
+    <label>First name</label>
+    <%= text_input f, :first_name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label>Last name</label>
+    <%= text_input f, :last_name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Save changes", class: "btn btn-primary" %>
+  </div>
+<% end %>

@@ -20,6 +20,11 @@ defmodule FacebookClone.User do
   If no params are provided, an invalid changeset is returned
   with no validation performed.
   """
+  def changeset(model, params, :update) do
+    model
+    |> cast(params, [], @optional_fields)
+  end
+
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
