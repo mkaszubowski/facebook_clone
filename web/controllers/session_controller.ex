@@ -7,7 +7,7 @@ defmodule FacebookClone.SessionController do
 
   import SessionPlug, only: [redirect_authenticated: 2]
 
-  plug :redirect_authenticated, skip_method: "DELETE"
+  plug :redirect_authenticated when action in [:new, :create]
 
   def new(conn, _params) do
     render conn, "new.html"

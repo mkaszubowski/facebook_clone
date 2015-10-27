@@ -6,10 +6,6 @@ defmodule FacebookClone.SessionPlug do
 
   import FacebookClone.Router.Helpers
 
-  def redirect_authenticated(
-    %Conn{method: method} = conn,
-    [skip_method: method]
-  ), do: conn
   def redirect_authenticated(conn, _args) do
     case SessionHandler.logged_in?(conn) do
       true ->
