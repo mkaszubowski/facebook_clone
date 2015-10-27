@@ -1,8 +1,9 @@
-defmodule FacebookClone.RedirectAuthenticated do
+defmodule FacebookClone.SessionPlug do
   use FacebookClone.Web, :controller
 
   alias Plug.Conn
 
+  import FacebookClone.Router.Helpers
   import FacebookClone.SessionHandler, only: [logged_in?: 1]
 
   def redirect_authenticated(
@@ -17,6 +18,16 @@ defmodule FacebookClone.RedirectAuthenticated do
         |> redirect to: "/"
       false ->
         conn
+    end
+  end
+
+  def authenticate_user(conn) do
+    case logged_in?(conn) do
+      true -> conn
+      false ->
+        conn
+        |> put_flash(:info, "You have to sign in first")
+        |> redirect to: session_path(conn, :new)
     end
   end
 

@@ -3,9 +3,9 @@ defmodule FacebookClone.SessionController do
 
   alias FacebookClone.Repo
   alias FacebookClone.SessionHandler
-  alias FacebookClone.RedirectAuthenticated
+  alias FacebookClone.SessionPlug
 
-  import RedirectAuthenticated, only: [redirect_authenticated: 2]
+  import SessionPlug, only: [redirect_authenticated: 2]
 
   plug :redirect_authenticated, skip_method: "DELETE"
 
