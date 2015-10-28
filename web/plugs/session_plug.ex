@@ -26,11 +26,13 @@ defmodule FacebookClone.SessionPlug do
       true ->
         conn
         |> put_flash(:info, message)
-        |> redirect to: "/"
+        |> redirect(to: "/")
+        |> halt
       false ->
         conn
         |> put_flash(:info, "You have to sign in first")
-        |> redirect to: session_path(conn, :new)
+        |> redirect(to: session_path(conn, :new))
+        |> halt
     end
   end
 
@@ -40,7 +42,8 @@ defmodule FacebookClone.SessionPlug do
       false ->
         conn
         |> put_flash(:info, "You have to sign in first")
-        |> redirect to: session_path(conn, :new)
+        |> redirect(to: session_path(conn, :new))
+        |> halt
     end
   end
 
