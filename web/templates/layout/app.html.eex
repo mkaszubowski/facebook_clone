@@ -19,6 +19,9 @@
             <li>
               <%= link "Logout", to: session_path(@conn, :delete), method: :delete %>
             </li>
+            <li>
+              <%= link "Edit profile", to: user_path(@conn, :edit, current_user(@conn)) %>
+            </li>
           <% else %>
             <li>
               <%= link "Register", to: registration_path(@conn, :new) %>
