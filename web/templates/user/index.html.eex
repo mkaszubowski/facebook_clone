@@ -1,0 +1,7 @@
+<h1>All users</h1>
+
+<ul>
+  <%= for user <- @users do %>
+    <li><%= "#{user.first_name} #{user.last_name}" %></li>
+  <% end %>
+</ul>

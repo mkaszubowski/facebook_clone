@@ -25,6 +25,8 @@ defmodule FacebookClone.Router do
     post "/login", SessionController, :create
     delete "/logout", SessionController, :delete
 
+    get "/users", UserController, :index
+    get "/users/:id", UserController, :show
     get "/users/:id/edit", UserController, :edit
     put "/users/:id", UserController, :update
   end

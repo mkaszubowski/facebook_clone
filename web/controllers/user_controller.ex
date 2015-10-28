@@ -4,11 +4,32 @@ defmodule FacebookClone.UserController do
   alias FacebookClone.User
   alias FacebookClone.Repo
 
-  import FacebookClone.SessionPlug,
-    only: [access_denied: 1, authenticate_current_user: 2]
+  import FacebookClone.SessionPlug, only: [
+      access_denied: 1,
+      authenticate_current_user: 2,
+      authenticate_logged_in: 2]
   import FacebookClone.SessionHandler, only: [current_user: 1]
 
-  plug :authenticate_current_user
+  plug :authenticate_logged_in
+  plug :authenticate_current_user when action in [:edit, :update]
+
+  def index(conn, _params) do
+    users = Repo.all(User)
+
+    render(conn, "index.html", users: users)
+  end
+
+  def show(conn, %{"id" => id}) do
+    case Repo.get(User, id) do
+      nil ->
+        conn
+        |> put_flash(:info, "User not found")
+        |> redirect to: user_path(conn, :index)
+      user ->
+        conn
+        |> render "show.html", user: user
+    end
+  end
 
   def edit(conn, %{"id" => id}) do
     user = Repo.get(User, String.to_integer(id))
