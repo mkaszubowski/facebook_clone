@@ -5,7 +5,7 @@ defmodule FacebookClone.UserViewTest do
   alias FacebookClone.Repo
 
   import FacebookClone.UserView, only: [full_name: 1]
-  import FacebookClone.CreateUser, only: [create_user: 2]
+  import FacebookClone.TestHelper, only: [create_user: 2]
 
   setup do
     {:ok, user} = create_user("foo@bar.com", "password")
