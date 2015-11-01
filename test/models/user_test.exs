@@ -47,4 +47,10 @@ defmodule FacebookClone.UserTest do
 
     assert changeset.valid?
   end
+
+  test "is invalid when gender is not in (0, 1)" do
+    changeset = User.changeset(%User{}, %{email: "foo@bar.com", password: "foobar123", gender: 2})
+
+    refute changeset.valid?
+  end
 end

@@ -7,12 +7,15 @@ defmodule FacebookClone.User do
     field :password, :string, virtual: true
     field :first_name, :string
     field :last_name, :string
+    field :city, :string
+    field :birthday, Ecto.Date
+    field :gender, :integer
 
     timestamps
   end
 
   @required_fields ~w(email password)
-  @optional_fields ~w(first_name last_name)
+  @optional_fields ~w(first_name last_name city birthday gender)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -31,6 +34,7 @@ defmodule FacebookClone.User do
     |> update_change(:email, &String.downcase/1)
     |> validate_format(:email, ~r/.*@.*\..*/)
     |> validate_length(:password, min: 6)
+    |> validate_inclusion(:gender, 0..1)
     |> unique_constraint(:email)
   end
 end
