@@ -12,6 +12,27 @@
   </div>
 
   <div class="form-group">
+    <label>City</label>
+    <%= text_input f, :city, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label>Birthday</label>
+    <%= date_select f, :birthday, year: [options: 1950..2010], class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label>Gender</label>
+    <fieldset>
+      <%= radio_button f, :gender, 0, label: "Male" %>
+      <label>Male</label>
+      <br />
+      <%= radio_button f, :gender, 1, label: "Female" %>
+      <label>Female</label>
+    </fieldset>
+  </div>
+
+  <div class="form-group">
     <%= submit "Save changes", class: "btn btn-primary" %>
   </div>
 <% end %>
