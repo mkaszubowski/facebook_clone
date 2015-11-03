@@ -29,9 +29,9 @@ defmodule FacebookClone.FriendshipControllerTest do
 
     conn = post conn, "/friendships", params
 
-    friendship_count = Repo.all(Friendship) |> Enum.count
+    friendship = Repo.all(Friendship) |> Enum.at(0)
 
     assert get_flash(conn)["info"] == "User has been invited to your friends"
-    assert friendship_count == 1
+    assert friendship.user_one_id == user.id
   end
 end

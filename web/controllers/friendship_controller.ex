@@ -4,14 +4,16 @@ defmodule FacebookClone.FriendshipController do
   alias FacebookClone.Friendship
   alias FacebookClone.SessionPlug
 
-  import SessionPlug, only: [
-    authenticate_current_user: 2,
-    authenticate_logged_in: 2
-  ]
+  import FacebookClone.SessionHandler, only: [current_user: 1]
+  import SessionPlug, only: [authenticate_logged_in: 2]
 
   plug :authenticate_logged_in
 
   def create(conn, %{"friendship" => friendship}) do
+    params = %{
+      "user_one_id": current_user(conn).id,
+      "user_two_id": friendship["user_two_id"],
+    }
     changeset = Friendship.changeset(%Friendship{}, friendship)
 
     case Repo.insert(changeset) do
