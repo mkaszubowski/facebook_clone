@@ -4,7 +4,7 @@ defmodule FacebookClone.UserTest do
   alias FacebookClone.User
   alias FacebookClone.Repo
 
-  @valid_attrs %{email: "foo@bar.com", password: "foobar123"}
+  @valid_attrs %{ email: "foo@bar.com", password: "foobar123", first_name: "Foo", last_name: "Bar"}
   @invalid_attrs %{email: "foo"}
 
   test "changeset with valid attributes" do
@@ -22,7 +22,8 @@ defmodule FacebookClone.UserTest do
     Repo.insert!(changeset)
     assert Repo.all(User) |> Enum.count == 1
 
-    new_changeset = User.changeset(%User{}, %{email: "foo@bar.com", password: "foobar123"})
+    new_changeset = User.changeset(%User{}, @valid_attrs)
+
     {:error, new_changeset} = Repo.insert(new_changeset)
 
     error = new_changeset.errors |> List.first
@@ -36,16 +37,16 @@ defmodule FacebookClone.UserTest do
     refute changeset.valid?
   end
 
-  test "first name is not required" do
+  test "first name is required" do
     changeset = User.changeset(%User{}, Map.delete(@valid_attrs, :first_name))
 
-    assert changeset.valid?
+    refute changeset.valid?
   end
 
-  test "last name is not required" do
+  test "last name is required" do
     changeset = User.changeset(%User{}, Map.delete(@valid_attrs, :last_name))
 
-    assert changeset.valid?
+    refute changeset.valid?
   end
 
   test "is invalid when gender is not in (0, 1)" do

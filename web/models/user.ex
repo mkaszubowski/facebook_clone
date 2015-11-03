@@ -14,8 +14,8 @@ defmodule FacebookClone.User do
     timestamps
   end
 
-  @required_fields ~w(email password)
-  @optional_fields ~w(first_name last_name city birthday gender)
+  @required_fields ~w(email password first_name last_name)
+  @optional_fields ~w(city birthday gender)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -25,7 +25,7 @@ defmodule FacebookClone.User do
   """
   def changeset(model, params, :update) do
     model
-    |> cast(params, [], @optional_fields)
+    |> cast(params, ~w(first_name last_name), @optional_fields)
   end
 
   def changeset(model, params \\ :empty) do
