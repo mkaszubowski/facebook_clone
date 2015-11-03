@@ -29,6 +29,8 @@ defmodule FacebookClone.Router do
     get "/users/:id", UserController, :show
     get "/users/:id/edit", UserController, :edit
     put "/users/:id", UserController, :update
+
+    post "/friendships", FriendshipController, :create
   end
 
   # Other scopes may use custom stacks.
