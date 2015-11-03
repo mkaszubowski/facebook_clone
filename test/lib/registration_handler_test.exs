@@ -5,7 +5,7 @@ defmodule FacebookClone.RegistrationHandlerTest do
   alias FacebookClone.User
   alias FacebookClone.Repo
 
-  @valid_attrs %{email: "foo@bar.com", password: "foobar"}
+  @valid_attrs %{email: "foo@bar.com", password: "foobar", first_name: "Foo", last_name: "Bar"}
 
   test "saves the user when attributes are valid" do
     count = Repo.all(User) |> Enum.count

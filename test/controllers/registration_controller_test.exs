@@ -2,7 +2,11 @@ defmodule FacebookClone.RegistrationControllerTest do
   use FacebookClone.ConnCase
 
   defp send_create_request do
-    params = ["user": %{email: "foo@bar.com", password: "password"}]
+    params = ["user": %{
+      email: "foo@bar.com",
+      password: "password",
+      first_name: "Foo",
+      last_name: "Bar"}]
     post conn(), "/register", params
   end
 
