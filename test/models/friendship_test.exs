@@ -69,4 +69,13 @@ defmodule FacebookClone.FriendshipTest do
 
     assert status == :error
   end
+
+  test "accepted attribute defaults to false", context do
+    changeset = Friendship.changeset(%Friendship{}, %{
+      user_one_id: context[:user1].id,
+      user_two_id: context[:user2].id})
+    {:ok, friendship} = Repo.insert(changeset)
+
+    refute friendship.accepted
+  end
 end
