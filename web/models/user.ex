@@ -15,6 +15,7 @@ defmodule FacebookClone.User do
   end
 
   @required_fields ~w(email password first_name last_name)
+  @update_required_fields ~w(first_name last_name)
   @optional_fields ~w(city birthday gender)
 
   @doc """
@@ -25,13 +26,20 @@ defmodule FacebookClone.User do
   """
   def changeset(model, params, :update) do
     model
-    |> cast(params, ~w(first_name last_name), @optional_fields)
+    |> cast(params, @update_required_fields, @optional_fields)
+    |> update_change(:email, &String.downcase/1)
+    |> check_validations
   end
 
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> update_change(:email, &String.downcase/1)
+    |> check_validations
+  end
+
+  defp check_validations(changeset) do
+    changeset
     |> validate_format(:email, ~r/.*@.*\..*/)
     |> validate_length(:password, min: 6)
     |> validate_inclusion(:gender, 0..1)

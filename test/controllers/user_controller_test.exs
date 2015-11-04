@@ -3,6 +3,9 @@ defmodule FacebookClone.UserControllerTest do
 
   alias FacebookClone.TestHelper
 
+  alias FacebookClone.Repo
+  alias FacebookClone.User
+
   setup do
     users =
       1..5
@@ -32,5 +35,22 @@ defmodule FacebookClone.UserControllerTest do
 
     assert html_response(conn, 200) =~ "Edit your profile"
     assert html_response(conn, 200) =~ ~r/<form.*users.*>/
+  end
+
+  test "PUT /users/:id", %{conn: conn, current_user: current_user} do
+    params = %{
+      "user": %{
+        "email": "new@email.com",
+        "first_name": "new_name"
+      }
+    }
+    old_email = current_user.email
+
+    put conn, "/users/#{current_user.id}", params
+
+    user = Repo.get(User, current_user.id)
+
+    assert user.first_name == "new_name"
+    assert user.email == old_email
   end
 end

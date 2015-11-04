@@ -12,6 +12,7 @@ defmodule FacebookClone.UserController do
 
   plug :authenticate_logged_in
   plug :authenticate_current_user when action in [:edit, :update]
+  plug :scrub_params, "user" when action in [:update]
 
   def index(conn, _params) do
     users = Repo.all(User)
@@ -41,6 +42,7 @@ defmodule FacebookClone.UserController do
 
   def update(conn, %{"id" => id, "user" => params}) do
     user = Repo.get(User, id)
+
     case user do
       %User{} -> update_user(conn, user, params)
       _       -> access_denied(conn)
