@@ -21,9 +21,9 @@ defmodule FacebookClone.FriendshipController do
         conn
         |> put_flash(:info, "User has been invited to your friends")
         |> redirect to: user_path(conn, :index)
-      {:error, reason} ->
+      {:error, _reason} ->
         conn
-        |> put_flash(:info, "Cannot invite user")
+        |> put_flash(:info, "Cannot invite that user")
         |> redirect to: user_path(conn, :index)
     end
   end

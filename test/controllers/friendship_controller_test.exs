@@ -33,5 +33,9 @@ defmodule FacebookClone.FriendshipControllerTest do
 
     assert get_flash(conn)["info"] == "User has been invited to your friends"
     assert friendship.user_one_id == user.id
+
+    conn = post conn, "/friendships", params
+
+    assert get_flash(conn)["info"] == "Cannot invite that user"
   end
 end
