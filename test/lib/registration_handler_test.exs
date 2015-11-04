@@ -44,10 +44,9 @@ defmodule FacebookClone.RegistrationHandlerTest do
 
     assert status == :error
 
-    ~w(email password first_name last_name)
+    [:email, :password, :first_name, :last_name]
     |> Enum.each(fn (field) ->
-        error = changeset.errors[String.to_atom(field)]
-        assert error == "can't be blank"
+        assert {field, "can't be blank"} in changeset.errors
       end)
   end
 end
