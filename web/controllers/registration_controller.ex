@@ -7,6 +7,7 @@ defmodule FacebookClone.RegistrationController do
   import SessionPlug, only: [redirect_authenticated: 2]
 
   plug :redirect_authenticated
+  plug :scrub_params, "user" when action in [:create]
 
   def new(conn, _params) do
     changeset = User.changeset(%User{})

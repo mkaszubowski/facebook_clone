@@ -6,6 +6,7 @@ defmodule FacebookClone.RegistrationHandlerTest do
   alias FacebookClone.Repo
 
   @valid_attrs %{email: "foo@bar.com", password: "foobar", first_name: "Foo", last_name: "Bar"}
+  @blank_attrs %{}
 
   test "saves the user when attributes are valid" do
     count = Repo.all(User) |> Enum.count
@@ -34,5 +35,19 @@ defmodule FacebookClone.RegistrationHandlerTest do
     {status, _changeset} = RegistrationHandler.create(changeset, Repo)
 
     assert status == :error
+  end
+
+  test "return errors when required attributes are blank" do
+    changeset = User.changeset(%User{}, @blank_attrs)
+    {status, changeset} = RegistrationHandler.create(changeset, Repo)
+
+
+    assert status == :error
+
+    ~w(email password first_name last_name)
+    |> Enum.each(fn (field) ->
+        error = changeset.errors[String.to_atom(field)]
+        assert error == "can't be blank"
+      end)
   end
 end
