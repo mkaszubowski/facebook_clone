@@ -14,8 +14,9 @@ defmodule FacebookClone.Friendship do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, [])
-    |> unique_constraint(:user_one_id_user_two_id)
+    |> unique_constraint(:user_one_id_user_two_id,
+                         message: "User already invited")
     |> foreign_key_constraint(:user_one_id)
-    |> foreign_key_constraint(:user_two_id)
+    |> foreign_key_constraint(:user_two_id, message: "User does not exist")
   end
 end
