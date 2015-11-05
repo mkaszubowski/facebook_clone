@@ -42,6 +42,15 @@ defmodule FacebookClone.FriendshipControllerTest do
 
     assert get_flash(conn)["info"] == "User does not exist"
 
-    assert redirected_to(conn) = user_path(conn, :index)
+    assert redirected_to(conn) == user_path(conn, :index)
+  end
+
+  test "POST /friendships when not logged in" do
+    {:ok, user2} = TestHelper.create_user("foo-2@bar.com", "password")
+    params = %{friendship: %{user_two_id: user2.id}}
+    conn = post conn(), "/friendships", params
+
+    assert get_flash(conn)["info"] =~ "You have to sign in"
+    assert redirected_to(conn) == session_path(conn, :new)
   end
 end
