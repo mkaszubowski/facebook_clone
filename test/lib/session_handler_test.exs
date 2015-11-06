@@ -1,5 +1,6 @@
 defmodule FacebookClone.SessionHandlerHandlerTest do
   use FacebookClone.ModelCase
+  use FacebookClone.ConnCase
 
   alias FacebookClone.SessionHandler
   alias FacebookClone.User
@@ -28,9 +29,12 @@ defmodule FacebookClone.SessionHandlerHandlerTest do
   end
 
   test "current_user returns signed in user" do
-    TestHelper.create_user("foo@bar.com", "foobar")
-    user = Repo.all(User) |> Enum.at(0)
+    {:ok, user} = TestHelper.create_user("foo@bar.com", "password")
+    session_params =
+      %{session: %{email: user.email, password: "password"}}
 
+    conn = post conn(), "/login", session_params
 
+    assert SessionHandler.current_user(conn).id == user.id
   end
 end
