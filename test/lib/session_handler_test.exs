@@ -37,4 +37,17 @@ defmodule FacebookClone.SessionHandlerHandlerTest do
 
     assert SessionHandler.current_user(conn).id == user.id
   end
+
+  test "logged_in?" do
+    conn = get conn(), "/"
+    refute SessionHandler.logged_in?(conn)
+
+    {:ok, user} = TestHelper.create_user("foo@bar.com", "password")
+    session_params =
+      %{session: %{email: user.email, password: "password"}}
+
+    conn = post conn(), "/login", session_params
+
+    assert SessionHandler.logged_in?(conn) == true
+  end
 end
