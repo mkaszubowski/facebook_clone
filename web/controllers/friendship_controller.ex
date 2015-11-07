@@ -26,10 +26,10 @@ defmodule FacebookClone.FriendshipController do
     end
   end
 
-  defp current_user_friendship_params(conn, params) do
+  defp current_user_friendship_params(conn, friendship) do
     %{
       user_one_id: current_user(conn).id,
-      user_two_id: params["user_two_id"]
+      user_two_id: String.to_integer(friendship["user_two_id"])
     }
   end
 

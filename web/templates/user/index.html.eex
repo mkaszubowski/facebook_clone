@@ -3,5 +3,6 @@
 <ul>
   <%= for user <- @users do %>
     <li><%= full_name(user) %></li>
+    <%= invite_button(@conn, user) %>
   <% end %>
 </ul>
