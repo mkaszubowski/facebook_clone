@@ -1,6 +1,9 @@
 defmodule FacebookClone.User do
   use FacebookClone.Web, :model
 
+  alias FacebookClone.Repo
+  alias FacebookClone.Friendship
+
   schema "users" do
     field :email, :string
     field :crypted_password, :string
@@ -12,6 +15,9 @@ defmodule FacebookClone.User do
     field :gender, :integer
 
     timestamps
+
+    has_many :friendships, Friendship, foreign_key: :user_one_id
+    has_many :friends, through: [:friendships, :user_two]
   end
 
   @required_fields ~w(email password first_name last_name)
@@ -45,4 +51,5 @@ defmodule FacebookClone.User do
     |> validate_inclusion(:gender, 0..1)
     |> unique_constraint(:email)
   end
+
 end

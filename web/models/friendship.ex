@@ -1,12 +1,15 @@
 defmodule FacebookClone.Friendship do
   use FacebookClone.Web, :model
 
+  alias FacebookClone.User
+
   schema "friendships" do
-    field :user_one_id, :integer
-    field :user_two_id, :integer
     field :accepted, :boolean
 
     timestamps
+
+    belongs_to :user_one, User
+    belongs_to :user_two, User
   end
 
   @required_fields ~w(user_one_id user_two_id)
