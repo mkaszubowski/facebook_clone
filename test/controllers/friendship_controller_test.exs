@@ -20,7 +20,7 @@ defmodule FacebookClone.FriendshipControllerTest do
   test "POST /friendships", %{conn: conn, user: user} do
     {:ok, user2} = TestHelper.create_user("foo-2@bar.com", "password")
 
-    params = %{friendship: %{user_two_id: user2.id}}
+    params = %{friendship: %{user_two_id: "#{user2.id}"}}
 
     conn = post conn, "/friendships", params
 
@@ -36,7 +36,7 @@ defmodule FacebookClone.FriendshipControllerTest do
   end
 
   test "POST /friendships with invalid user id", %{conn: conn, user: user} do
-    params = %{friendship: %{user_two_id: user.id + 1}}
+    params = %{friendship: %{user_two_id: "#{user.id + 1}"}}
 
     conn = post conn, "/friendships", params
 
@@ -47,10 +47,22 @@ defmodule FacebookClone.FriendshipControllerTest do
 
   test "POST /friendships when not logged in" do
     {:ok, user2} = TestHelper.create_user("foo-2@bar.com", "password")
-    params = %{friendship: %{user_two_id: user2.id}}
+    params = %{friendship: %{user_two_id: "#{user2.id}"}}
     conn = post conn(), "/friendships", params
 
     assert get_flash(conn)["info"] =~ "You have to sign in"
     assert redirected_to(conn) == session_path(conn, :new)
+  end
+
+  test "GET /friends", %{conn: conn, user: user} do
+    {:ok, user2} = TestHelper.create_user(
+      "foo-2@bar.com", "password", "Foo2", "Bar2")
+    params = %{friendship: %{user_two_id: "#{user2.id}"}}
+    conn = post conn, "/friendships", params
+
+    conn = get conn, "/friends"
+
+    assert html_response(conn, 200) =~ "Your friends"
+    assert html_response(conn, 200) =~ "Foo2 Bar2"
   end
 end

@@ -1,0 +1,5 @@
+<h1>Your friends</h1>
+
+<%= for friend <- @friends do %>
+  <li><%= full_name(friend) %></li>
+<% end %>
