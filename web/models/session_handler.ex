@@ -20,6 +20,11 @@ defmodule FacebookClone.SessionHandler do
     if id, do: Repo.get(User, id)
   end
 
+  def current_user(conn, :with_friends) do
+    id = Plug.Conn.get_session(conn, :current_user)
+    if id, do: (from u in User, preload: [:friends]) |> Repo.get(id)
+  end
+
   def logged_in?(conn), do: !!current_user(conn)
 
   defp authenticate(user, password) do

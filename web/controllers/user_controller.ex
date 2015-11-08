@@ -8,7 +8,7 @@ defmodule FacebookClone.UserController do
     access_denied: 1,
     authenticate_current_user: 2,
     authenticate_logged_in: 2]
-  import FacebookClone.SessionHandler, only: [current_user: 1]
+  import FacebookClone.SessionHandler, only: [current_user: 1, current_user: 2]
 
   plug :authenticate_logged_in
   plug :authenticate_current_user when action in [:edit, :update]
@@ -16,8 +16,9 @@ defmodule FacebookClone.UserController do
 
   def index(conn, _params) do
     users = Repo.all(User)
+    current_user = current_user(conn, :with_friends)
 
-    render(conn, "index.html", users: users)
+    render(conn, "index.html", users: users, current_user: current_user)
   end
 
   def show(conn, %{"id" => id}) do
