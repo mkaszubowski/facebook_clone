@@ -26,8 +26,6 @@ defmodule FacebookClone.User do
              on_delete: :fetch_and_delete
     has_many :pending_friends,
              through: [:pending_friendships, :user_two]
-
-    # has_many :friendships, from(f in Friendship, where: f.accepted == true), foreign_key: :user_one_id
   end
 
   @required_fields ~w(email password first_name last_name)
