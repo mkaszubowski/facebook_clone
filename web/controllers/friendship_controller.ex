@@ -3,6 +3,7 @@ defmodule FacebookClone.FriendshipController do
 
   alias FacebookClone.Friendship
   alias FacebookClone.SessionPlug
+  alias FacebookClone.User
 
   import FacebookClone.SessionHandler, only: [current_user: 1, current_user: 2]
   import SessionPlug, only: [authenticate_logged_in: 2]
@@ -11,7 +12,10 @@ defmodule FacebookClone.FriendshipController do
   plug :scrub_params, "friendship" when action in [:create]
 
   def index(conn, _params) do
-    friends = current_user(conn, :with_friends).friends
+    friends =
+      conn
+      |> current_user
+      |> User.friends
 
     render(conn, "index.html", friends: friends)
   end
