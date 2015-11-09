@@ -16,8 +16,16 @@ defmodule FacebookClone.User do
 
     timestamps
 
-    has_many :pending_friendships, Friendship, foreign_key: :user_one_id
-    has_many :pending_friends, through: [:pending_friendships, :user_two]
+    has_many :pending_friendships,
+             Friendship,
+             foreign_key: :user_one_id,
+             on_delete: :fetch_and_delete
+    has_many :received_friendships,
+             Friendship,
+             foreign_key: :user_two_id,
+             on_delete: :fetch_and_delete
+    has_many :pending_friends,
+             through: [:pending_friendships, :user_two]
 
     # has_many :friendships, from(f in Friendship, where: f.accepted == true), foreign_key: :user_one_id
   end
