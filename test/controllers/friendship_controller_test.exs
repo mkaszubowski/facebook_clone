@@ -57,12 +57,16 @@ defmodule FacebookClone.FriendshipControllerTest do
   test "GET /friends", %{conn: conn, user: user} do
     {:ok, user2} = TestHelper.create_user(
       "foo-2@bar.com", "password", "Foo2", "Bar2")
-    params = %{friendship: %{user_two_id: "#{user2.id}"}}
-    conn = post conn, "/friendships", params
+    {:ok, user3} = TestHelper.create_user(
+      "foo-3@bar.com", "password", "Foo3", "Bar3")
+
+    TestHelper.create_friendship(user, user2, true)
+    TestHelper.create_friendship(user, user3, false)
 
     conn = get conn, "/friends"
 
     assert html_response(conn, 200) =~ "Your friends"
     assert html_response(conn, 200) =~ "Foo2 Bar2"
+    refute html_response(conn, 200) =~ "Foo3"
   end
 end
