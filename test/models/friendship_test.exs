@@ -76,7 +76,7 @@ defmodule FacebookClone.FriendshipTest do
       user_two_id: context[:user2].id})
     {:ok, friendship} = Repo.insert(changeset)
 
-    refute friendship.accepted
+    assert friendship.accepted == false
   end
 
   test "belongs_to users association", %{user1: user1, user2: user2} do
@@ -89,8 +89,31 @@ defmodule FacebookClone.FriendshipTest do
       Repo.all(from f in Friendship, preload: [:user_one, :user_two])
       |> Enum.at(0)
 
-
     assert friendship.user_one.id == user1.id
     assert friendship.user_two.id == user2.id
+  end
+
+  test "accepted query" do
+    {:ok, user1} = TestHelper.create_user("foo1@bar.com", "password")
+    {:ok, user2} = TestHelper.create_user("foo2@bar.com", "password")
+
+    changeset = Friendship.changeset(%Friendship{}, %{
+      user_one_id: user1.id,
+      user_two_id: user2.id})
+    {:ok, friendship} = Repo.insert(changeset)
+
+    friendships = Friendship |> Friendship.accepted |> Repo.all
+    assert Enum.member?(friendships, friendship) == false
+
+    Repo.delete(friendship)
+
+    changeset = Friendship.changeset(%Friendship{}, %{
+      user_one_id: user1.id,
+      user_two_id: user2.id,
+      accepted: true})
+    {:ok, friendship} = Repo.insert(changeset)
+
+    friendships = Friendship |> Friendship.accepted |> Repo.all
+    assert Enum.member?(friendships, friendship) == true
   end
 end
