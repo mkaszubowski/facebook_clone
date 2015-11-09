@@ -4,6 +4,7 @@ defmodule FacebookClone.UserTest do
   alias FacebookClone.User
   alias FacebookClone.Repo
   alias FacebookClone.Friendship
+  alias FacebookClone.TestHelper
 
   @valid_attrs %{ email: "foo@bar.com", password: "foobar123", first_name: "Foo", last_name: "Bar"}
   @invalid_attrs %{email: "foo"}
@@ -56,30 +57,38 @@ defmodule FacebookClone.UserTest do
     refute changeset.valid?
   end
 
-  test "friendships association" do
-    {_user, _user2, friendship} = create_friendship
+  test "pending_friendships association" do
+    {_user, _user2, friendship} = TestHelper.create_friendship
 
-    user = Repo.all(from u in User, preload: [:friendships]) |> Enum.at(0)
-    assert user.friendships |> Enum.at(0) == friendship
+    user = Repo.all(from u in User, preload: [:pending_friendships]) |> Enum.at(0)
+    assert user.pending_friendships |> Enum.at(0) == friendship
   end
 
-  test "friends association" do
-    {_user, user2, _friendship} = create_friendship
+  test "pending_friends association" do
+    {user, user2, _friendship} = TestHelper.create_friendship
 
-    user = Repo.all(from u in User, preload: [:friends]) |> Enum.at(0)
-    assert (user.friends |> Enum.at(0)).id == user2.id
+    user = Repo.all(from u in User, preload: [:pending_friends]) |> Enum.at(0)
+    [friend] = user.pending_friends
+
+    assert friend.id == user2.id
   end
 
-  defp create_friendship do
-    changeset = User.changeset(%User{}, @valid_attrs)
-    user = Repo.insert!(changeset)
-    changeset2 = User.changeset(%User{}, %{@valid_attrs | email: "foo2@bar.com"})
-    user2 = Repo.insert!(changeset2)
+  test "friends query" do
+    {:ok, user1} = TestHelper.create_user("foo1@bar.com", "password")
+    {:ok, user2} = TestHelper.create_user("foo2@bar.com", "password")
+    {:ok, user3} = TestHelper.create_user("foo3@bar.com", "password")
 
-    friendship_changeset = Friendship.changeset(
-      %Friendship{}, %{user_one_id: user.id, user_two_id: user2.id})
-    friendship = Repo.insert!(friendship_changeset)
+    user = Repo.all(User) |> Enum.at(0)
 
-    {user, user2, friendship}
+    TestHelper.create_friendship(user1, user2, true)
+    TestHelper.create_friendship(user1, user3, false)
+
+    friend_ids =
+      user
+      |> User.friends
+      |> Enum.map(&(&1.id))
+
+    assert Enum.member?(friend_ids, user2.id) == true
+    refute Enum.member?(friend_ids, user3.id)
   end
 end

@@ -16,8 +16,10 @@ defmodule FacebookClone.User do
 
     timestamps
 
-    has_many :friendships, Friendship, foreign_key: :user_one_id
-    has_many :friends, through: [:friendships, :user_two]
+    has_many :pending_friendships, Friendship, foreign_key: :user_one_id
+    has_many :pending_friends, through: [:pending_friendships, :user_two]
+
+    # has_many :friendships, from(f in Friendship, where: f.accepted == true), foreign_key: :user_one_id
   end
 
   @required_fields ~w(email password first_name last_name)
@@ -52,4 +54,18 @@ defmodule FacebookClone.User do
     |> unique_constraint(:email)
   end
 
+  def friendships(user) do
+    user
+    |> assoc(:pending_friendships)
+    |> Friendship.accepted
+  end
+
+  def friends(user) do
+    from(
+      f in friendships(user),
+      preload: :user_two
+    )
+    |> Repo.all
+    |> Enum.map(&(&1.user_two))
+  end
 end
