@@ -14,6 +14,8 @@ defmodule FacebookClone.Post do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, [])
+    |> update_change(:content, &String.lstrip/1)
+    |> validate_length(:content, min: 1, message: "Can't be blank")
     |> foreign_key_constraint(:user_id, message: "User does not exist")
   end
 end
