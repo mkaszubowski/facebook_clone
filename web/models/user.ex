@@ -67,10 +67,19 @@ defmodule FacebookClone.User do
   end
 
   def friends(user) do
-    from(
-      f in friendships(user),
-      preload: :user_two
-    )
+    from(f in friendships(user), preload: :user_two)
+    |> Repo.all
+    |> Enum.map(&(&1.user_two))
+  end
+
+  def not_accepted_friendships(user) do
+    user
+    |> assoc(:pending_friendships)
+    |> Friendship.not_accepted
+  end
+
+  def invited_by(user) do
+    from(f in not_accepted_friendships(user), preload: :user_two)
     |> Repo.all
     |> Enum.map(&(&1.user_two))
   end

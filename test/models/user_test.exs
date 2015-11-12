@@ -83,13 +83,26 @@ defmodule FacebookClone.UserTest do
     TestHelper.create_friendship(user1, user2, true)
     TestHelper.create_friendship(user1, user3, false)
 
-    friend_ids =
-      user
-      |> User.friends
-      |> Enum.map(&(&1.id))
+    friend_ids = user |> User.friends |> Enum.map(&(&1.id))
 
     assert Enum.member?(friend_ids, user2.id) == true
     refute Enum.member?(friend_ids, user3.id)
+  end
+
+  test "invited_by query" do
+    {:ok, user1} = TestHelper.create_user("foo1@bar.com", "password")
+    {:ok, user2} = TestHelper.create_user("foo2@bar.com", "password")
+    {:ok, user3} = TestHelper.create_user("foo3@bar.com", "password")
+
+    {_u1, _u2, _f} = TestHelper.create_friendship(user1, user2, true)
+    {_u1, _u2, _f} = TestHelper.create_friendship(user1, user3, false)
+
+    user = Repo.all(User) |> Enum.at(0)
+
+    invited_by_ids = user |> User.invited_by |> Enum.map(&(&1.id))
+
+    refute Enum.member?(invited_by_ids, user2.id)
+    assert Enum.member?(invited_by_ids, user3.id) == true
   end
 
   test "deleting user should delete the friendship" do
