@@ -30,11 +30,17 @@ defmodule FacebookClone.UserControllerTest do
   end
 
 
-  test "GET /users", %{users: users, conn: conn} do
+  test "GET /users should display all users expect the current_user",
+    %{users: users, conn: conn, current_user: current_user} do
+
     conn = get conn, "/users"
 
+    refute conn.resp_body =~ current_user.first_name
+
     users
+    |> List.delete(current_user)
     |> Enum.each(fn(user) -> assert conn.resp_body =~ user.first_name end)
+
   end
 
   test "GET /users/:id/edit", %{conn: conn, current_user: current_user} do
