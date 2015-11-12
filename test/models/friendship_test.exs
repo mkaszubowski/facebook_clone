@@ -96,24 +96,30 @@ defmodule FacebookClone.FriendshipTest do
   test "accepted query" do
     {:ok, user1} = TestHelper.create_user("foo1@bar.com", "password")
     {:ok, user2} = TestHelper.create_user("foo2@bar.com", "password")
-
-    changeset = Friendship.changeset(%Friendship{}, %{
-      user_one_id: user1.id,
-      user_two_id: user2.id})
-    {:ok, friendship} = Repo.insert(changeset)
+    {_u1, _u2, friendship} = TestHelper.create_friendship(user1, user2, false)
 
     friendships = Friendship |> Friendship.accepted |> Repo.all
     assert Enum.member?(friendships, friendship) == false
 
     Repo.delete(friendship)
-
-    changeset = Friendship.changeset(%Friendship{}, %{
-      user_one_id: user1.id,
-      user_two_id: user2.id,
-      accepted: true})
-    {:ok, friendship} = Repo.insert(changeset)
+    {_u1, _u2, friendship} = TestHelper.create_friendship(user1, user2, true)
 
     friendships = Friendship |> Friendship.accepted |> Repo.all
     assert Enum.member?(friendships, friendship) == true
+  end
+
+  test "not_accepted query" do
+    {:ok, user1} = TestHelper.create_user("foo1@bar.com", "password")
+    {:ok, user2} = TestHelper.create_user("foo2@bar.com", "password")
+    {_u1, _u2, friendship} = TestHelper.create_friendship(user1, user2, false)
+
+    friendships = Friendship |> Friendship.not_accepted |> Repo.all
+    assert Enum.member?(friendships, friendship) == true
+
+    Repo.delete(friendship)
+    {_u1, _u2, friendship} = TestHelper.create_friendship(user1, user2, true)
+
+    friendships = Friendship |> Friendship.not_accepted |> Repo.all
+    assert Enum.member?(friendships, friendship) == false
   end
 end

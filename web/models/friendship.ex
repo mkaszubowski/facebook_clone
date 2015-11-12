@@ -27,4 +27,8 @@ defmodule FacebookClone.Friendship do
   def accepted(friendships) do
     from(f in friendships, where: f.accepted == true)
   end
+
+  def not_accepted(friendships) do
+    from(f in friendships, where: f.accepted == false)
+  end
 end
