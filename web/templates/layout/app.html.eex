@@ -17,10 +17,16 @@
         <ul class="nav nav-pills pull-right">
           <%= if logged_in?(@conn) do %>
             <li>
-              <%= link "Logout", to: session_path(@conn, :delete), method: :delete %>
+              <%= link "Your friends", to: friendship_path(@conn, :index) %>
+            </li>
+            <li>
+              <%= link "All users", to: user_path(@conn, :index) %>
             </li>
             <li>
               <%= link "Edit profile", to: user_path(@conn, :edit, current_user(@conn)) %>
+            </li>
+            <li>
+              <%= link "Logout", to: session_path(@conn, :delete), method: :delete %>
             </li>
           <% else %>
             <li>
