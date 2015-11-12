@@ -16,7 +16,7 @@ defmodule FacebookClone.User do
 
     timestamps
 
-    has_many :pending_friendships,
+    has_many :sent_friendships,
              Friendship,
              foreign_key: :user_one_id,
              on_delete: :fetch_and_delete
@@ -24,8 +24,6 @@ defmodule FacebookClone.User do
              Friendship,
              foreign_key: :user_two_id,
              on_delete: :fetch_and_delete
-    has_many :pending_friends,
-             through: [:pending_friendships, :user_two]
   end
 
   @required_fields ~w(email password first_name last_name)
@@ -62,7 +60,7 @@ defmodule FacebookClone.User do
 
   def friendships(user) do
     user
-    |> assoc(:pending_friendships)
+    |> assoc(:sent_friendships)
     |> Friendship.accepted
   end
 
@@ -74,7 +72,7 @@ defmodule FacebookClone.User do
 
   def not_accepted_friendships(user) do
     user
-    |> assoc(:pending_friendships)
+    |> assoc(:sent_friendships)
     |> Friendship.not_accepted
   end
 

@@ -57,20 +57,11 @@ defmodule FacebookClone.UserTest do
     refute changeset.valid?
   end
 
-  test "pending_friendships association" do
+  test "sent_friendships association" do
     {_user, _user2, friendship} = TestHelper.create_friendship
 
-    user = Repo.all(from u in User, preload: [:pending_friendships]) |> Enum.at(0)
-    assert user.pending_friendships |> Enum.at(0) == friendship
-  end
-
-  test "pending_friends association" do
-    {user, user2, _friendship} = TestHelper.create_friendship
-
-    user = Repo.all(from u in User, preload: [:pending_friends]) |> Enum.at(0)
-    [friend] = user.pending_friends
-
-    assert friend.id == user2.id
+    user = Repo.all(from u in User, preload: [:sent_friendships]) |> Enum.at(0)
+    assert user.sent_friendships |> Enum.at(0) == friendship
   end
 
   test "friends query" do
