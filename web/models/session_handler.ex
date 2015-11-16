@@ -4,6 +4,7 @@ defmodule FacebookClone.SessionHandler do
   alias FacebookClone.User
   alias FacebookClone.Repo
   alias Plug.Conn
+  alias Comeonin.Bcrypt
 
   def login(params, repo) do
     downcased_email = String.downcase(params["email"])
@@ -16,12 +17,12 @@ defmodule FacebookClone.SessionHandler do
   end
 
   def current_user(conn) do
-    id = Plug.Conn.get_session(conn, :current_user)
+    id = Conn.get_session(conn, :current_user)
     if id, do: Repo.get(User, id)
   end
 
   def current_user(conn, :with_friends) do
-    id = Plug.Conn.get_session(conn, :current_user)
+    id = Conn.get_session(conn, :current_user)
     if id, do: (from u in User, preload: [:sent_friendships]) |> Repo.get(id)
   end
 
@@ -30,7 +31,7 @@ defmodule FacebookClone.SessionHandler do
   defp authenticate(user, password) do
     case user do
       nil -> false
-      _   -> Comeonin.Bcrypt.checkpw(password, user.crypted_password)
+      _   -> Bcrypt.checkpw(password, user.crypted_password)
     end
   end
 end
