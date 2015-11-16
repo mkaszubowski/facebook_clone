@@ -37,7 +37,9 @@ defmodule FacebookClone.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"},
      {:comeonin, "~> 1.0"},
-     {:mock, "~> 0.1.1", only: :test}]
+     {:mock, "~> 0.1.1", only: :test},
+     {:credo, "~>0.1.0"}
+  ]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
