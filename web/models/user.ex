@@ -50,8 +50,8 @@ defmodule FacebookClone.User do
     |> check_validations
   end
 
-  defp check_validations(changeset) do
-    changeset
+  defp check_validations(model) do
+    model
     |> validate_format(:email, ~r/.*@.*\..*/)
     |> validate_length(:password, min: 6)
     |> validate_inclusion(:gender, 0..1)
