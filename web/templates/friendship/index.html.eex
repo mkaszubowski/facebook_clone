@@ -1,3 +1,11 @@
+<section class="invitations">
+  <h1>Pending invitations</h1>
+
+  <%= for invited_by <- @invited_by do %>
+    <li><%= full_name(invited_by) %></li>
+  <% end %>
+</section>
+
 <h1>Your friends</h1>
 
 <%= for friend <- @friends do %>
