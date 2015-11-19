@@ -1,5 +1,7 @@
 <section class="invitations">
-  <h1>Pending invitations</h1>
+  <%= if length(@invited_by) > 0 do %>
+    <h1>Received invitations</h1>
+  <% end %>
 
   <%= for invited_by <- @invited_by do %>
     <li><%= full_name(invited_by) %></li>
