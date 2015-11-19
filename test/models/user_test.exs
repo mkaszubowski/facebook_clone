@@ -78,21 +78,21 @@ defmodule FacebookClone.UserTest do
 
   test "invited_by query returns only not accepted invitations" do
     {:ok, user1} = TestHelper.create_user("foo1@bar.com", "password")
-    {:ok, user2} = TestHelper.create_user("foo2@bar.com", "password")
-    {:ok, user3} = TestHelper.create_user("foo3@bar.com", "password")
-    {:ok, user4} = TestHelper.create_user("foo4@bar.com", "password")
+    {:ok, accepted} = TestHelper.create_user("foo2@bar.com", "password")
+    {:ok, invited_by} = TestHelper.create_user("foo3@bar.com", "password")
+    {:ok, invited} = TestHelper.create_user("foo4@bar.com", "password")
 
-    {_u1, _u2, _f} = TestHelper.create_friendship(user1, user2, true)
-    {_u1, _u2, _f} = TestHelper.create_friendship(user1, user3, false)
-    {_u1, _u2, _f} = TestHelper.create_friendship(user4, user1, false)
+    {_u1, _u2, _f} = TestHelper.create_friendship(user1, accepted, true)
+    {_u1, _u2, _f} = TestHelper.create_friendship(user1, invited_by, false)
+    {_u1, _u2, _f} = TestHelper.create_friendship(invited, user1, false)
 
     user = Repo.all(User) |> Enum.at(0)
 
     invited_by_ids = user |> User.invited_by |> Enum.map(&(&1.id))
 
-    refute Enum.member?(invited_by_ids, user2.id)
-    assert Enum.member?(invited_by_ids, user3.id) == true
-    refute Enum.member?(invited_by_ids, user4.id)
+    refute Enum.member?(invited_by_ids, accepted.id)
+    assert Enum.member?(invited_by_ids, invited_by.id) == true
+    refute Enum.member?(invited_by_ids, invited.id)
   end
 
   test "deleting user should delete the friendship" do
@@ -111,6 +111,5 @@ defmodule FacebookClone.UserTest do
     #delete user_one
     Repo.delete(user1)
     assert Repo.all(Friendship) |> Enum.count == 0
-
   end
 end
