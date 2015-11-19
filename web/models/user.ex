@@ -16,11 +16,11 @@ defmodule FacebookClone.User do
 
     timestamps
 
-    has_many :sent_friendships,
+    has_many :sent_friendship_invitations,
              Friendship,
              foreign_key: :user_one_id,
              on_delete: :fetch_and_delete
-    has_many :received_friendships,
+    has_many :received_friendship_invitations,
              Friendship,
              foreign_key: :user_two_id,
              on_delete: :fetch_and_delete
@@ -58,27 +58,47 @@ defmodule FacebookClone.User do
     |> unique_constraint(:email)
   end
 
-  def friendships(user) do
-    user
-    |> assoc(:sent_friendships)
-    |> Friendship.accepted
-  end
-
   def friends(user) do
-    from(f in friendships(user), preload: :user_two)
-    |> Repo.all
-    |> Enum.map(&(&1.user_two))
-  end
-
-  def not_accepted_friendships(user) do
-    user
-    |> assoc(:sent_friendships)
-    |> Friendship.not_accepted
+    [
+      accepted_invited_friends(user),
+      accepted_invited_by_friends(user)
+    ]
+    |> List.flatten
   end
 
   def invited_by(user) do
     from(f in not_accepted_friendships(user), preload: :user_two)
     |> Repo.all
     |> Enum.map(&(&1.user_two))
+  end
+
+  defp accepted_sent_friendships(user) do
+    user
+    |> assoc(:sent_friendship_invitations)
+    |> Friendship.accepted
+  end
+
+  defp accepted_received_friendships(user) do
+    user
+    |> assoc(:received_friendship_invitations)
+    |> Friendship.accepted
+  end
+
+  defp accepted_invited_friends(user) do
+    from(f in accepted_sent_friendships(user), preload: :user_two)
+    |> Repo.all
+    |> Enum.map(&(&1.user_two))
+  end
+
+  defp accepted_invited_by_friends(user) do
+    from(f in accepted_received_friendships(user), preload: :user_one)
+    |> Repo.all
+    |> Enum.map(&(&1.user_one))
+  end
+
+  defp not_accepted_friendships(user) do
+    user
+    |> assoc(:sent_friendship_invitations)
+    |> Friendship.not_accepted
   end
 end
