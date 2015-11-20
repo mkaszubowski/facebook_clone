@@ -7,7 +7,7 @@ defmodule FacebookClone.UserView do
 
   def invite_button(conn, user, current_user) do
     friends_ids =
-      current_user.sent_friendships
+      current_user.sent_friendship_invitations
       |> Enum.map(fn(friend) -> friend.user_two_id end)
 
     unless Enum.member?(friends_ids, user.id), do: invite_form_tag(conn, user)

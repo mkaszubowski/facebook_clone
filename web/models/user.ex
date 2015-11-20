@@ -67,9 +67,9 @@ defmodule FacebookClone.User do
   end
 
   def invited_by(user) do
-    from(f in not_accepted_friendships(user), preload: :user_two)
+    from(f in not_accepted_friendships(user), preload: :user_one)
     |> Repo.all
-    |> Enum.map(&(&1.user_two))
+    |> Enum.map(&(&1.user_one))
   end
 
   defp accepted_sent_friendships(user) do
@@ -98,7 +98,7 @@ defmodule FacebookClone.User do
 
   defp not_accepted_friendships(user) do
     user
-    |> assoc(:sent_friendship_invitations)
+    |> assoc(:received_friendship_invitations)
     |> Friendship.not_accepted
   end
 end

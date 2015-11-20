@@ -27,7 +27,7 @@ defmodule FacebookClone.Router do
 
     resources "/users", UserController, only: [:index, :show, :edit, :update]
 
-    post "/friendships/", FriendshipController, :create
+    resources "/friendships/", FriendshipController, only: [:create, :update]
     get "/friends", FriendshipController, :index
   end
 

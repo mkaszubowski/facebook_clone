@@ -83,8 +83,8 @@ defmodule FacebookClone.UserTest do
     {:ok, invited} = TestHelper.create_user("foo4@bar.com", "password")
 
     {_u1, _u2, _f} = TestHelper.create_friendship(user1, accepted, true)
-    {_u1, _u2, _f} = TestHelper.create_friendship(user1, invited_by, false)
-    {_u1, _u2, _f} = TestHelper.create_friendship(invited, user1, false)
+    {_u1, _u2, _f} = TestHelper.create_friendship(user1, invited, false)
+    {_u1, _u2, _f} = TestHelper.create_friendship(invited_by, user1, false)
 
     user = Repo.all(User) |> Enum.at(0)
 

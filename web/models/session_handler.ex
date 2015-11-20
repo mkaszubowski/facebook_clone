@@ -23,7 +23,7 @@ defmodule FacebookClone.SessionHandler do
 
   def current_user(conn, :with_friends) do
     id = Conn.get_session(conn, :current_user)
-    if id, do: (from u in User, preload: [:sent_friendships]) |> Repo.get(id)
+    if id, do: (from u in User, preload: [:sent_friendship_invitations]) |> Repo.get(id)
   end
 
   def logged_in?(conn), do: !!current_user(conn)
