@@ -4,31 +4,20 @@ defmodule FacebookClone.Friendship do
   alias FacebookClone.User
 
   schema "friendships" do
-    field :accepted, :boolean, default: false
+    belongs_to :user, User
+    belongs_to :friend, User
 
     timestamps
-
-    belongs_to :user_one, User
-    belongs_to :user_two, User
   end
 
-  @required_fields ~w(user_one_id user_two_id)
-  @optional_fields ~w(accepted)
+  @required_fields ~w(user_id friend_id)
 
   def changeset(model, params \\ :empty) do
     model
-    |> cast(params, @required_fields, @optional_fields)
-    |> unique_constraint(:user_one_id_user_two_id,
+    |> cast(params, @required_fields, [])
+    |> foreign_key_constraint(:user_id)
+    |> foreign_key_constraint(:friend_id, message: "User does not exist")
+    |> unique_constraint(:user_id_friend_id,
                          message: "User already invited")
-    |> foreign_key_constraint(:user_one_id)
-    |> foreign_key_constraint(:user_two_id, message: "User does not exist")
-  end
-
-  def accepted(friendships) do
-    from(f in friendships, where: f.accepted == true)
-  end
-
-  def not_accepted(friendships) do
-    from(f in friendships, where: f.accepted == false)
   end
 end

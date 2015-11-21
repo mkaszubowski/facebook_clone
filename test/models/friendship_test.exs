@@ -15,13 +15,13 @@ defmodule FacebookClone.FriendshipTest do
 
   test "is invalid without both users' ids", context do
     changeset = Friendship.changeset(%Friendship{}, %{
-      user_one_id: nil,
-      user_two_id: context[:user2].id})
+      user_id: nil,
+      friend_id: context[:user2].id})
     refute changeset.valid?
 
     changeset = Friendship.changeset(%Friendship{}, %{
-      user_one_id: context[:user1].id,
-      user_two_id: nil})
+      user_id: context[:user1].id,
+      friend_id: nil})
     refute changeset.valid?
   end
 
@@ -29,15 +29,16 @@ defmodule FacebookClone.FriendshipTest do
     {:ok, user} = TestHelper.create_user("foo@bar.com", "password")
 
     changeset = Friendship.changeset(%Friendship{}, %{
-      user_one_id: user.id,
-      user_two_id: user.id + 1})
+      user_id: user.id,
+      friend_id: user.id + 1})
+
     {status, _changeset} = Repo.insert(changeset)
 
     assert status == :error
 
     changeset = Friendship.changeset(%Friendship{}, %{
-      user_one_id: user.id + 1,
-      user_two_id: user.id})
+      user_id: user.id + 1,
+      friend_id: user.id})
     {status, _changeset} = Repo.insert(changeset)
 
     assert status == :error
@@ -45,14 +46,14 @@ defmodule FacebookClone.FriendshipTest do
 
   test "user can have many friendships", context do
     changeset = Friendship.changeset(%Friendship{}, %{
-      user_one_id: context[:user1].id,
-      user_two_id: context[:user2].id})
+      user_id: context[:user1].id,
+      friend_id: context[:user2].id})
     Repo.insert(changeset)
 
     {:ok, user3} = TestHelper.create_user("foo-3@bar.com", "password")
     changeset = Friendship.changeset(%Friendship{}, %{
-      user_one_id: context[:user1].id,
-      user_two_id: user3.id})
+      user_id: context[:user1].id,
+      friend_id: user3.id})
 
     {status, _changeset} = Repo.insert(changeset)
 
@@ -61,8 +62,8 @@ defmodule FacebookClone.FriendshipTest do
 
   test "is invalid is users' ids combination is not unique", context do
     changeset = Friendship.changeset(%Friendship{}, %{
-      user_one_id: context[:user1].id,
-      user_two_id: context[:user2].id})
+      user_id: context[:user1].id,
+      friend_id: context[:user2].id})
     Repo.insert!(changeset)
 
     {status, _changeset} = Repo.insert(changeset)
@@ -70,56 +71,17 @@ defmodule FacebookClone.FriendshipTest do
     assert status == :error
   end
 
-  test "accepted attribute defaults to false", context do
-    changeset = Friendship.changeset(%Friendship{}, %{
-      user_one_id: context[:user1].id,
-      user_two_id: context[:user2].id})
-    {:ok, friendship} = Repo.insert(changeset)
-
-    assert friendship.accepted == false
-  end
-
   test "belongs_to users association", %{user1: user1, user2: user2} do
     changeset = Friendship.changeset(%Friendship{}, %{
-      user_one_id: user1.id,
-      user_two_id: user2.id})
+      user_id: user1.id,
+      friend_id: user2.id})
     Repo.insert!(changeset)
 
     friendship =
-      Repo.all(from f in Friendship, preload: [:user_one, :user_two])
+      Repo.all(from f in Friendship, preload: [:user, :friend])
       |> Enum.at(0)
 
-    assert friendship.user_one.id == user1.id
-    assert friendship.user_two.id == user2.id
-  end
-
-  test "accepted query" do
-    {:ok, user1} = TestHelper.create_user("foo1@bar.com", "password")
-    {:ok, user2} = TestHelper.create_user("foo2@bar.com", "password")
-    {_u1, _u2, friendship} = TestHelper.create_friendship(user1, user2, false)
-
-    friendships = Friendship |> Friendship.accepted |> Repo.all
-    assert Enum.member?(friendships, friendship) == false
-
-    Repo.delete(friendship)
-    {_u1, _u2, friendship} = TestHelper.create_friendship(user1, user2, true)
-
-    friendships = Friendship |> Friendship.accepted |> Repo.all
-    assert Enum.member?(friendships, friendship) == true
-  end
-
-  test "not_accepted query" do
-    {:ok, user1} = TestHelper.create_user("foo1@bar.com", "password")
-    {:ok, user2} = TestHelper.create_user("foo2@bar.com", "password")
-    {_u1, _u2, friendship} = TestHelper.create_friendship(user1, user2, false)
-
-    friendships = Friendship |> Friendship.not_accepted |> Repo.all
-    assert Enum.member?(friendships, friendship) == true
-
-    Repo.delete(friendship)
-    {_u1, _u2, friendship} = TestHelper.create_friendship(user1, user2, true)
-
-    friendships = Friendship |> Friendship.not_accepted |> Repo.all
-    assert Enum.member?(friendships, friendship) == false
+    assert friendship.user.id == user1.id
+    assert friendship.friend.id == user2.id
   end
 end

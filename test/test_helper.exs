@@ -30,28 +30,16 @@ defmodule FacebookClone.TestHelper do
     post conn(), "/login", session_params
   end
 
-  def create_friendship(accepted \\ false) do
-    {:ok, user1} = create_user("foo-1@bar.com", "password")
-    {:ok, user2} = create_user("foo-2@bar.com", "password")
+  def create_friendship do
+    {:ok, user} = create_user("foo-1@bar.com", "password")
+    {:ok, friend} = create_user("foo-2@bar.com", "password")
 
     changeset = Friendship.changeset(%Friendship{}, %{
-      user_one_id: user1.id,
-      user_two_id: user2.id,
-      accepted: accepted
+      user: user.id,
+      friend: friend.id
     })
     friendship = Repo.insert!(changeset)
 
-    {user1, user2, friendship}
-  end
-
-  def create_friendship(user1, user2, accepted \\ true) do
-    changeset = Friendship.changeset(%Friendship{}, %{
-      user_one_id: user1.id,
-      user_two_id: user2.id,
-      accepted: accepted
-    })
-    friendship = Repo.insert!(changeset)
-
-    {user1, user2, friendship}
+    {user, friend, friendship}
   end
 end
