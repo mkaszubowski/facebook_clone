@@ -61,11 +61,11 @@ defmodule FacebookClone.FriendshipController do
       {:ok, _friendship} ->
         conn
         |> put_flash(:info, "User deleted from friends")
-        |> redirect to: user_path(conn, :index)
+        |> redirect to: friendship_path(conn, :index)
       _       ->
         conn
         |> put_flash(:info, "This user is not your friend")
-        |> redirect to: user_path(conn, :index)
+        |> redirect to: friendship_path(conn, :index)
     end
   end
 

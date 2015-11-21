@@ -82,15 +82,20 @@ defmodule FacebookClone.FriendshipControllerTest do
   test "GET /friends displays other user's invitations",
     %{conn: conn, user: user} do
 
+    {:ok, user2} = TestHelper.create_user("foo-2@bar.com", "password")
+    {:ok, user3} = TestHelper.create_user("foo-3@bar.com", "password")
 
-    {:ok, user2} = TestHelper.create_user(
-      "foo-2@bar.com", "password", "Foo2", "Bar2")
-
+    TestHelper.create_friendship(user, user2, false)
+    TestHelper.create_friendship(user3, user, false)
 
     conn = get conn, "/friends"
 
-    assert conn.assigns == 2
-    # assert html_response(conn, 200) =~ "<section id='invitations'>Invitations"
+    invited_by_ids = conn.assigns[:invited_by] |> Enum.map(&(&1.id))
+
+    assert Enum.member?(invited_by_ids, user3.id) == true
+    refute Enum.member?(invited_by_ids, user2.id)
+
+    assert html_response(conn, 200) =~ "Received invitations"
   end
 
   test "DELETE /friendships", %{conn: conn, user: user} do
@@ -101,5 +106,6 @@ defmodule FacebookClone.FriendshipControllerTest do
     conn = delete conn, "/friendships/#{friendship.id}"
 
     assert Repo.all(Friendship) |> Enum.count == 0
+    assert redirected_to(conn) == friendship_path(conn, :index)
   end
 end
