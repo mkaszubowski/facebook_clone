@@ -18,6 +18,6 @@ defmodule FacebookClone.Friendship do
     |> foreign_key_constraint(:user_id)
     |> foreign_key_constraint(:friend_id, message: "User does not exist")
     |> unique_constraint(:user_id_friend_id,
-                         message: "User already invited")
+                         message: "User is already your friend")
   end
 end
