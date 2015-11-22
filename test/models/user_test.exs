@@ -57,23 +57,18 @@ defmodule FacebookClone.UserTest do
     refute changeset.valid?
   end
 
-  test "friends query" do
+  test "friends association" do
     {:ok, user1} = TestHelper.create_user("foo1@bar.com", "password")
     {:ok, user2} = TestHelper.create_user("foo2@bar.com", "password")
-    {:ok, user3} = TestHelper.create_user("foo3@bar.com", "password")
-    {:ok, user4} = TestHelper.create_user("foo4@bar.com", "password")
 
     user = Repo.all(User) |> Enum.at(0)
 
-    TestHelper.create_friendship(user1, user2, true)
-    TestHelper.create_friendship(user1, user3, false)
-    TestHelper.create_friendship(user4, user1, true)
+    TestHelper.create_friendship(user1, user2)
 
-    friend_ids = user |> User.friends |> Enum.map(&(&1.id))
+    user = Repo.preload(user, :friends)
+    friend_ids = Enum.map(user.friends, &(&1.id))
 
     assert Enum.member?(friend_ids, user2.id) == true
-    assert Enum.member?(friend_ids, user4.id) == true
-    refute Enum.member?(friend_ids, user3.id)
   end
 
   test "invited_by query returns only not accepted invitations" do

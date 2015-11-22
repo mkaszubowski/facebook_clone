@@ -35,8 +35,20 @@ defmodule FacebookClone.TestHelper do
     {:ok, friend} = create_user("foo-2@bar.com", "password")
 
     changeset = Friendship.changeset(%Friendship{}, %{
-      user: user.id,
-      friend: friend.id
+      user_id: user.id,
+      friend_id: friend.id
+    })
+    friendship = Repo.insert!(changeset)
+
+    {user, friend, friendship}
+  end
+
+  def create_friendship(user, friend) do
+    IO.puts(inspect(user))
+    IO.puts(inspect(friend))
+    changeset = Friendship.changeset(%Friendship{}, %{
+      user_id: user.id,
+      friend_id: friend.id
     })
     friendship = Repo.insert!(changeset)
 
