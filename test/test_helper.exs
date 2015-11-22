@@ -44,8 +44,6 @@ defmodule FacebookClone.TestHelper do
   end
 
   def create_friendship(user, friend) do
-    IO.puts(inspect(user))
-    IO.puts(inspect(friend))
     changeset = Friendship.changeset(%Friendship{}, %{
       user_id: user.id,
       friend_id: friend.id

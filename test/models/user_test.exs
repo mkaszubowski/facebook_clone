@@ -90,20 +90,15 @@ defmodule FacebookClone.UserTest do
     refute Enum.member?(invited_by_ids, invited.id)
   end
 
-  test "deleting user should delete the friendship" do
+  test "deleting user should delete the friendship for both users" do
     {:ok, user1} = TestHelper.create_user("foo1@bar.com", "password")
     {:ok, user2} = TestHelper.create_user("foo2@bar.com", "password")
     {:ok, user3} = TestHelper.create_user("foo3@bar.com", "password")
 
     TestHelper.create_friendship(user1, user2)
-    TestHelper.create_friendship(user1, user3)
+    TestHelper.create_friendship(user3, user1)
     assert Repo.all(Friendship) |> Enum.count == 2
 
-    # delete user_two
-    Repo.delete(user2)
-    assert Repo.all(Friendship) |> Enum.count == 1
-
-    #delete user_one
     Repo.delete(user1)
     assert Repo.all(Friendship) |> Enum.count == 0
   end
