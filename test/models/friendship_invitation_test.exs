@@ -2,6 +2,7 @@ defmodule FacebookClone.FriendshipInvitationTest do
   use FacebookClone.ModelCase
 
   alias FacebookClone.FriendshipInvitation
+  alias FacebookClone.Friendship
   alias FacebookClone.Repo
 
   alias FacebookClone.TestHelper
@@ -87,4 +88,17 @@ defmodule FacebookClone.FriendshipInvitationTest do
     assert friendship.invited.id == user2.id
   end
 
+  test "FriendshipInvitation.accept function", context do
+
+    changeset = FriendshipInvitation.changeset(%FriendshipInvitation{}, %{
+      user_id: context[:user1].id,
+      invited_id: context[:user2].id
+    })
+    invitation = Repo.insert!(changeset)
+
+    FriendshipInvitation.accept(invitation)
+
+    assert Repo.all(Friendship) |> Enum.count == 2
+    assert Repo.all(FriendshipInvitation) |> Enum.count == 0
+  end
 end
