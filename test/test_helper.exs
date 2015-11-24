@@ -7,6 +7,7 @@ Ecto.Adapters.SQL.begin_test_transaction(FacebookClone.Repo)
 defmodule FacebookClone.TestHelper do
   alias FacebookClone.User
   alias FacebookClone.Friendship
+  alias FacebookClone.FriendshipInvitation
   alias FacebookClone.RegistrationHandler
 
   use FacebookClone.ConnCase
@@ -51,5 +52,15 @@ defmodule FacebookClone.TestHelper do
     friendship = Repo.insert!(changeset)
 
     {user, friend, friendship}
+  end
+
+  def create_friendship_invitation(user, invited) do
+    changeset = FriendshipInvitation.changeset(%FriendshipInvitation{}, %{
+      user_id: user.id,
+      invited_id: invited.id
+    })
+    friendship_invitation = Repo.insert!(changeset)
+
+    {user, invited, friendship_invitation}
   end
 end

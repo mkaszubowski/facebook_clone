@@ -3,6 +3,7 @@ defmodule FacebookClone.User do
 
   alias FacebookClone.Repo
   alias FacebookClone.Friendship
+  alias FacebookClone.FriendshipInvitation
 
   schema "users" do
     field :email, :string
@@ -25,6 +26,16 @@ defmodule FacebookClone.User do
              foreign_key: :friend_id,
              on_delete: :fetch_and_delete
     has_many :friends, through: [:friendships, :friend]
+
+    has_many :friendship_invitations,
+             FriendshipInvitation,
+             foreign_key: :user_id,
+             on_delete: :fetch_and_delete
+    has_many :received_friendship_invitations,
+             FriendshipInvitation,
+             foreign_key: :invited_id,
+             on_delete: :fetch_and_delete
+
   end
 
   @required_fields ~w(email password first_name last_name)
