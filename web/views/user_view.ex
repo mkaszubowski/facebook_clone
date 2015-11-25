@@ -7,17 +7,24 @@ defmodule FacebookClone.UserView do
 
   def invite_button(conn, user, current_user) do
     friends_ids =
-      current_user.sent_friendship_invitations
-      |> Enum.map(fn(friend) -> friend.user_two_id end)
+      [
+        current_user.friendship_invitations
+        |> Enum.map(fn(invitation) -> invitation.invited_id end),
+        current_user.friends
+        |> Enum.map(fn(friend) -> friend.id end)
+      ]
+      |> List.flatten
 
     unless Enum.member?(friends_ids, user.id), do: invite_form_tag(conn, user)
+    invite_form_tag(conn, user)
   end
 
 
   defp invite_form_tag(conn, user) do
-    form_for conn, friendship_path(conn, :create), [as: :friendship], fn f ->
+    form_for conn, friendship_invitation_path(conn, :create),
+      [as: :friendship_invitation], fn f ->
       [
-        (text_input f, :user_two_id, type: :hidden, value: user.id),
+        (text_input f, :invited_id, type: :hidden, value: user.id),
         (submit "Invite", class: "btn btn-primary")
       ]
     end
