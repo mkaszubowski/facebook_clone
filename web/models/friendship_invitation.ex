@@ -19,7 +19,7 @@ defmodule FacebookClone.FriendshipInvitation do
     |> cast(params, @required_fields, [])
     |> foreign_key_constraint(:user_id)
     |> foreign_key_constraint(:invited_id, message: "User does not exist")
-    |> unique_constraint(:user_id_invited_id, massage: "User already invited")
+    |> unique_constraint(:user_id_invited_id, message: "User already invited")
   end
 
   def accept(invitation) do
