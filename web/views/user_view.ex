@@ -1,11 +1,17 @@
 defmodule FacebookClone.UserView do
   use FacebookClone.Web, :view
 
+  alias FacebookClone.Repo
+
   def full_name(user) do
     "#{user.first_name} #{user.last_name}"
   end
 
   def invite_button(conn, user, current_user) do
+    current_user = Repo.preload(
+      current_user,
+      [:friends, :friendship_invitations])
+
     friends_ids =
       [
         current_user.friendship_invitations
@@ -16,7 +22,6 @@ defmodule FacebookClone.UserView do
       |> List.flatten
 
     unless Enum.member?(friends_ids, user.id), do: invite_form_tag(conn, user)
-    invite_form_tag(conn, user)
   end
 
 
