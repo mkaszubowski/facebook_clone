@@ -13,8 +13,12 @@ defmodule FacebookClone.FriendshipController do
   plug :scrub_params, "friendship" when action in [:create, :update]
 
   def index(conn, _params) do
-    friends =
-      (current_user(conn) |> Repo.preload(:friends)).friends
+    current_user =
+      current_user(conn)
+      |> Repo.preload([:friends, :received_friendship_invitations])
+
+    friends = current_user.friends
+    invited_by = current_user.received_friendship_invitations
 
     render(conn, "index.html", friends: friends, invited_by: [])
   end
