@@ -37,10 +37,4 @@ defmodule FacebookClone.FriendshipController do
         |> redirect to: friendship_path(conn, :index)
     end
   end
-
-#   defp error_messages(changeset) do
-#     changeset.errors
-#     |> Dict.values
-#     |> Enum.join(". ")
-#   end
 end
