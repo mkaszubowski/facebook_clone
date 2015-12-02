@@ -23,8 +23,9 @@ defmodule FacebookClone.FriendshipController do
     render(conn, "index.html", friends: friends, invited_by: [])
   end
 
-  def delete(conn, %{"friendship" => friendship}) do
-    friendship = Repo.get_by(Friendship, friend_id: friendship["friend_id"])
+  def delete(conn, %{"friendship" => params}) do
+    friendship = Repo.get_by(
+      Friendship, current_user_friendship_params(conn, params))
 
     case Repo.delete(friendship) do
       {:ok, _friendship} ->
@@ -36,5 +37,12 @@ defmodule FacebookClone.FriendshipController do
         |> put_flash(:info, "This user is not your friend")
         |> redirect to: friendship_path(conn, :index)
     end
+  end
+
+  defp current_user_friendship_params(conn, params) do
+    %{
+      user_id: current_user(conn).id,
+      friend_id: String.to_integer(params["friend_id"])
+    }
   end
 end
