@@ -18,10 +18,12 @@ defmodule FacebookClone.FriendshipController do
       |> Repo.preload([:friends, :received_friendship_invitations])
 
     friends = current_user.friends
-    invited_by = current_user.received_friendship_invitations |> Repo.preload(:user)
+    invited_by =
+      current_user.received_friendship_invitations
+      |> Repo.preload(:user)
+      |> Enum.map(&(&1.user))
 
-
-    render(conn, "index.html", friends: friends, invited_by: [])
+    render(conn, "index.html", friends: friends, invited_by: invited_by)
   end
 
   def delete(conn, %{"friendship" => params}) do
