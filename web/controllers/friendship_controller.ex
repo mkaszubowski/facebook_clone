@@ -18,7 +18,8 @@ defmodule FacebookClone.FriendshipController do
       |> Repo.preload([:friends, :received_friendship_invitations])
 
     friends = current_user.friends
-    invited_by = current_user.received_friendship_invitations
+    invited_by = current_user.received_friendship_invitations |> Repo.preload(:user)
+
 
     render(conn, "index.html", friends: friends, invited_by: [])
   end
