@@ -28,12 +28,31 @@ defmodule FacebookClone.FriendshipInvitationController do
     end
   end
 
+  def update(conn, %{"friendship_invitation" => invitation}) do
+    invitation = Repo.get_by(FriendshipInvitation, %{
+      user_id: String.to_integer(invitation["user_id"]),
+      invited_id: current_user(conn).id
+    })
+
+    case FriendshipInvitation.accept(invitation) do
+      {:ok, _} ->
+        conn
+        |> put_flash(:info, "Friendship invitation accepted")
+        |> redirect to: friendship_path(conn, :index)
+      {:error, _} ->
+        conn
+        |> put_flash(:info, "Could not accept friendship. Try again later")
+        |> redirect to: friendship_path(conn, :index)
+    end
+  end
+
   defp current_user_invitation_params(conn, invitation) do
     %{
       user_id: current_user(conn).id,
       invited_id: String.to_integer(invitation["invited_id"])
     }
   end
+
 
   defp error_messages(changeset) do
     changeset.errors

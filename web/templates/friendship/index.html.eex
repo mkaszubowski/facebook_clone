@@ -4,7 +4,7 @@
   <% end %>
 
   <%= for invited_by <- @invited_by do %>
-    <li><%= full_name(invited_by) %></li>
+    <li><%= full_name(invited_by.user) %></li>
     <%= accept_button(@conn, invited_by) %>
   <% end %>
 </section>

@@ -21,7 +21,6 @@ defmodule FacebookClone.FriendshipController do
     invited_by =
       current_user.received_friendship_invitations
       |> Repo.preload(:user)
-      |> Enum.map(&(&1.user))
 
     render(conn, "index.html", friends: friends, invited_by: invited_by)
   end
