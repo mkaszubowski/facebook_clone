@@ -15,7 +15,7 @@ defmodule FacebookClone.UserController do
   plug :scrub_params, "user" when action in [:update]
 
   def index(conn, _params) do
-    current_user = current_user(conn, :with_friends)
+    current_user = current_user(conn)
     users =
       from(u in User, where: u.id != ^current_user.id)
       |> Repo.all
