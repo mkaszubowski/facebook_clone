@@ -31,7 +31,6 @@ defmodule FacebookClone.FriendshipInvitation do
         user_id: user_one_id,
         friend_id: user_two_id
       })
-      IO.puts(inspect user_one_changeset)
       user_two_changeset = Friendship.changeset(%Friendship{}, %{
         user_id: user_two_id,
         friend_id: user_one_id
