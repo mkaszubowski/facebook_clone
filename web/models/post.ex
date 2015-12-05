@@ -1,6 +1,8 @@
 defmodule FacebookClone.Post do
   use FacebookClone.Web, :model
 
+  alias FacebookClone.User
+
   schema "posts" do
     field :content, :string
 

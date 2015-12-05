@@ -1,0 +1,11 @@
+<h1>All posts</h1>
+
+<%= for post <- @posts do %>
+  <%= post.user.first_name %>
+  <br />
+  <p>
+    <%= post.content %>
+  </p>
+
+  <hr />
+<% end %>

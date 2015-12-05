@@ -36,6 +36,8 @@ defmodule FacebookClone.User do
              foreign_key: :invited_id,
              on_delete: :fetch_and_delete
 
+    has_many :posts, Post, on_delete: :fetch_and_delete
+
   end
 
   @required_fields ~w(email password first_name last_name)
