@@ -33,7 +33,7 @@ defmodule FacebookClone.Router do
       only: [:create, :update, :delete]
     get "/friends", FriendshipController, :index
 
-    resources "/posts", PostController, only: [:index]
+    resources "/posts", PostController, only: [:new, :create, :index]
   end
 
   # Other scopes may use custom stacks.
