@@ -6,11 +6,8 @@
   <p>
     <%= post.content %>
   </p>
-  <span class="edit-button">
-    <%= edit_button(@conn, post, @current_user) %>
+  <span class="post-links">
+    <%= post_links(@conn, post, @current_user) %>
   </span>
-  <span class="delete-button">
-    <%= delete_button(@conn, post, @current_user) %>
-  </span>
-  <hr />
+<hr />
 <% end %>
