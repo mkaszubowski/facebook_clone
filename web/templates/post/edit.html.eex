@@ -1,0 +1,13 @@
+<h1>Edit post</h1>
+
+<%= form_for @changeset, post_path(@conn, :update, @post), [method: :put], fn f -> %>
+  <div class="form-group">
+    <label>Content</label>
+    <%= text_input f, :content, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Save changes", class: "btn btn-primary" %>
+  </div>
+
+<% end %>

@@ -41,4 +41,21 @@ defmodule FacebookClone.PostController do
 
     end
   end
+
+  def edit(conn, %{"id" => id}) do
+    current_user_id = current_user(conn).id
+    post =
+      from(p in Post, where: p.user_id == ^current_user_id)
+      |> Repo.get(id)
+
+    case post do
+      %Post{} ->
+        changeset = Post.changeset(post)
+
+        conn
+        |> render "edit.html", changeset: changeset, post: post
+      _       ->
+        access_denied(conn)
+    end
+  end
 end
