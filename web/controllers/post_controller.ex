@@ -65,6 +65,15 @@ defmodule FacebookClone.PostController do
     end
   end
 
+  def delete(conn, %{"id" => id}) do
+    post = get_post(conn, id)
+
+    case post do
+      %Post{} -> delete_post(conn, post)
+      _       -> access_denied(conn)
+    end
+  end
+
   defp get_post(conn, id) do
     current_user_id = current_user(conn).id
 
@@ -84,6 +93,19 @@ defmodule FacebookClone.PostController do
         conn
         |> put_flash(:info, "Could not save the post")
         |> render("edit.html", changeset: changeset, post: post)
+    end
+  end
+
+  defp delete_post(conn, post) do
+    case Repo.delete(post) do
+      {:ok, _} ->
+        conn
+        |> put_flash(:info, "Post deleted")
+        |> redirect to: post_path(conn, :index)
+      _        ->
+        conn
+        |> put_flash(:info, "Could not delete post")
+        |> redirect to: post_path(conn, :index)
     end
   end
 end
