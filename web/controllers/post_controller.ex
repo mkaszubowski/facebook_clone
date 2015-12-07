@@ -17,8 +17,9 @@ defmodule FacebookClone.PostController do
 
   def index(conn, _params) do
     posts = from(p in Post, preload: [:user]) |> Repo.all
+    current_user = current_user(conn)
 
-    render(conn, "index.html", posts: posts)
+    render(conn, "index.html", posts: posts, current_user: current_user)
   end
 
   def new(conn, _params) do
