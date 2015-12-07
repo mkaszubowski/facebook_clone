@@ -45,10 +45,7 @@ defmodule FacebookClone.PostController do
   end
 
   def edit(conn, %{"id" => id}) do
-    current_user_id = current_user(conn).id
-    post =
-      from(p in Post, where: p.user_id == ^current_user_id)
-      |> Repo.get(id)
+    post = get_post(conn, id)
 
     case post do
       %Post{} ->
@@ -58,6 +55,35 @@ defmodule FacebookClone.PostController do
         |> render "edit.html", changeset: changeset, post: post
       _       ->
         access_denied(conn)
+    end
+  end
+
+  def update(conn, %{"id" => id, "post" => params}) do
+    case post = get_post(conn, id) do
+      %Post{} -> update_post(conn, post, params)
+      _       -> access_denied(conn)
+    end
+  end
+
+  defp get_post(conn, id) do
+    current_user_id = current_user(conn).id
+
+    from(p in Post, where: p.user_id == ^current_user_id)
+    |> Repo.get(id)
+  end
+
+  defp update_post(conn, post, params) do
+    changeset = Post.changeset(post, params)
+
+    case Repo.update(changeset) do
+      {:ok, _post} ->
+        conn
+        |> put_flash(:info, "Post updated")
+        |> redirect to: post_path(conn, :index)
+      {:error, changeset} ->
+        conn
+        |> put_flash(:info, "Could not save the post")
+        |> render("edit.html", changeset: changeset, post: post)
     end
   end
 end
