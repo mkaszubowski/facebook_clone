@@ -1,21 +1,3 @@
 <h1>New post</h1>
 
-<%= form_for @changeset, post_path(@conn, :create), [as: :post], fn f -> %>
-  <%= if f.errors != [] do %>
-    <div class="alert alert-danger">
-      <%= for {attr, message} <- f.errors do %>
-        <span><%= "#{humanize(attr)} #{message}" %></span>
-      <% end %>
-    </div>
-  <% end %>
-
-  <div class="form-group">
-    <label>Content</label>
-    <%= text_input f, :content, class: "form-controll" %>
-  </div>
-
-  <div class="form-group">
-    <label>Content</label>
-    <%= submit "Add post", class: "btn btn-primary" %>
-  </div>
-<% end %>
+<%= render "_form.html", changeset: @changeset, conn: @conn %>
