@@ -12,7 +12,7 @@
     <%= post.content %>
   </p>
   <span class="post-links">
-    <%= post_links(@conn, post, @current_user) %>
+    <%= post_links(@conn, post, @current_user_id) %>
   </span>
 <hr />
 <% end %>

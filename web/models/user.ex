@@ -4,6 +4,7 @@ defmodule FacebookClone.User do
   alias FacebookClone.Repo
   alias FacebookClone.Friendship
   alias FacebookClone.FriendshipInvitation
+  alias FacebookClone.Post
 
   schema "users" do
     field :email, :string
