@@ -20,4 +20,9 @@ defmodule FacebookClone.Post do
     |> validate_length(:content, min: 1, message: "Can't be blank")
     |> foreign_key_constraint(:user_id, message: "User does not exist")
   end
+
+  def for_user(query, id) do
+    from p in query,
+    where: p.user_id == ^id
+  end
 end

@@ -75,9 +75,8 @@ defmodule FacebookClone.PostController do
   end
 
   defp get_post(conn, id) do
-    current_user_id = current_user(conn).id
-
-    from(p in Post, where: p.user_id == ^current_user_id)
+    Post
+    |> Post.for_user(current_user(conn).id)
     |> Repo.get(id)
   end
 
