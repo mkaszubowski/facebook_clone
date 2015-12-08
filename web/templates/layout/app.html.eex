@@ -12,16 +12,10 @@
   </head>
 
   <body>
-    <div class="container" role="main">
-      <div class="header">
+    <div id="app" role="main">
+      <header class="app-header">
         <ul class="nav nav-pills pull-right">
           <%= if logged_in?(@conn) do %>
-            <li>
-              <%= link "Your friends", to: friendship_path(@conn, :index) %>
-            </li>
-            <li>
-              <%= link "All users", to: user_path(@conn, :index) %>
-            </li>
             <li>
               <%= link "Edit profile", to: user_path(@conn, :edit, current_user(@conn)) %>
             </li>
@@ -40,10 +34,32 @@
         <h1>Facebook Clone</h1>
       </div>
 
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <div id="content-area">
+        <section class="sidebar">
+          <ul>
+            <li>
+              <%= link "Friends", to: friendship_path(@conn, :index) %>
+            </li>
+            <li>
+              <%= link "Users", to: user_path(@conn, :index) %>
+            </li>
+            <li>
+              <%= link "Posts", to: post_path(@conn, :index) %>
+            </li>
+          </ul>
+        </section>
 
-      <%= @inner %>
+        <div class="main">
+          <div class="container">
+            <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+            <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+
+            <%= @inner %>
+          </div>
+
+        </div>
+
+      </div>
 
     </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

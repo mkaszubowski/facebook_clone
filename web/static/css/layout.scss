@@ -1,0 +1,53 @@
+header.app-header {
+  background: #222E39;
+  color: white;
+  height: 60px;
+
+
+  h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 60px;
+    font-weight: 300;
+  }
+}
+
+#content-area {
+  display: flex;
+
+  .sidebar {
+    width: 20%;
+    min-height: 100vh;
+    background: #E8F4FF;
+    padding-top: 2em;
+
+    ul {
+      padding: 0;
+
+      li {
+        display: block;
+        line-height: 2.5em;
+        border-bottom: 1px solid rgba(223, 223, 223, 0.45);
+        padding-left: 1em;
+
+        &:first-child {
+          border-top: 1px solid rgba(223, 223, 223, 0.45);
+        }
+      }
+    }
+  }
+
+  .main {
+    padding-top: 2em;
+    padding-left: 2em;
+    width: 80%;
+
+    >.container {
+      width: 80%;
+      max-width: none;
+      margin: 0
+    }
+  }
+}
+
+
