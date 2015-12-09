@@ -6,13 +6,15 @@
 <hr />
 
 <%= for post <- @posts do %>
-  <%= post.user.first_name %>
-  <br />
-  <p>
-    <%= post.content %>
-  </p>
-  <span class="post-links">
-    <%= post_links(@conn, post, @current_user_id) %>
-  </span>
+  <article class="post">
+    <%= post.user.first_name %>
+    <br />
+    <p>
+      <%= post.content %>
+    </p>
+    <span class="post-links">
+      <%= post_links(@conn, post, @current_user_id) %>
+    </span>
+  </article>
 <hr />
 <% end %>

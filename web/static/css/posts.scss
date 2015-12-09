@@ -8,3 +8,16 @@
     height: 10em;
   }
 }
+.post {
+  position: relative;
+
+  .post-links {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    a {
+      margin-left: 0.5em;
+    }
+  }
+}
