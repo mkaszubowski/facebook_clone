@@ -16,7 +16,6 @@
     <div class="friend">
       <li><%= full_name(friend) %></li>
       <%= remove_friend_button(@conn, friend) %>
-
     </div>
   <% end %>
 </div>
