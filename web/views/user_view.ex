@@ -30,7 +30,7 @@ defmodule FacebookClone.UserView do
       [as: :friendship_invitation], fn f ->
       [
         (text_input f, :invited_id, type: :hidden, value: user.id),
-        (submit "Invite", class: "btn btn-primary")
+        (submit "Invite", class: "btn btn-primary invite-user")
       ]
     end
   end
