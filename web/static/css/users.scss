@@ -13,11 +13,14 @@
       border-top: 1px solid #ccc;
     }
 
-    .invite-user {
+    .invite-user, .friend-label {
       position: absolute;
       top: 5px;
       right: 0;
+    }
 
+    .friend-label {
+      top: 14px;
     }
   }
 }
