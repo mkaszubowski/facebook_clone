@@ -31,22 +31,12 @@ defmodule FacebookClone.UserView do
   end
 
 
-  defp invite_form_tag(conn, user, pending) when pending == false do
+  defp invite_form_tag(conn, user, pending) do
     form_for conn, friendship_invitation_path(conn, :create),
       [as: :friendship_invitation], fn f ->
       [
         (text_input f, :invited_id, type: :hidden, value: user.id),
-        (submit "Invite", class: "btn btn-primary invite-user")
-      ]
-    end
-  end
-
-  defp invite_form_tag(conn, user, pending) when pending == true do
-    form_for conn, friendship_invitation_path(conn, :create),
-      [as: :friendship_invitation], fn f ->
-      [
-        (text_input f, :invited_id, type: :hidden, value: user.id),
-        (submit "Invite", class: "btn btn-primary invite-user", disabled: true)
+        (submit "Invite", class: "btn btn-primary invite-user", disabled: pending)
       ]
     end
   end
