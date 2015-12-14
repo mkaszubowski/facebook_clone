@@ -18,7 +18,11 @@ defmodule FacebookClone.PostController do
   def index(conn, _params) do
     current_user =
       current_user(conn)
-      |> Repo.preload([:friends, [friends: [posts: :user]], [posts: :user]])
+      |> Repo.preload(
+          [:friends,
+          [friends: [posts: [:user, :likes]]],
+          [posts: [:user, :likes
+         ]]])
 
     posts =
       current_user.friends

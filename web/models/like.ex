@@ -21,5 +21,4 @@ defmodule FacebookClone.Like do
     |> unique_constraint(:user_id_post_id,
                          message: "You've already liked this post")
   end
-
 end

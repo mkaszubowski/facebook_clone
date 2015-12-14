@@ -2,6 +2,7 @@ defmodule FacebookClone.Post do
   use FacebookClone.Web, :model
 
   alias FacebookClone.User
+  alias FacebookClone.Like
 
   schema "posts" do
     field :content, :string
@@ -9,6 +10,7 @@ defmodule FacebookClone.Post do
     timestamps
 
     belongs_to :user, User
+    has_many :likes, Like
   end
 
   @required_fields ~w(user_id content)
