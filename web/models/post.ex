@@ -10,7 +10,7 @@ defmodule FacebookClone.Post do
     timestamps
 
     belongs_to :user, User
-    has_many :likes, Like
+    has_many :likes, Like, on_delete: :fetch_and_delete
   end
 
   @required_fields ~w(user_id content)

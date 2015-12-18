@@ -3,12 +3,19 @@ defmodule FacebookClone.PostTest do
 
   alias FacebookClone.Repo
   alias FacebookClone.Post
+  alias FacebookClone.Like
   alias FacebookClone.TestHelper
 
   setup do
     {:ok, user} = TestHelper.create_user("foo@bar.com", "foobar")
 
-    {:ok, user: user}
+    changeset = Post.changeset(
+      %Post{}, %{content: "Post content", user_id: user.id})
+
+    {:ok, _} = Repo.insert(changeset)
+    post = Repo.all(Post) |> Enum.at(0)
+
+    {:ok, user: user, post: post}
   end
 
   test "changeset with valid attributes", %{user: user} do
@@ -36,12 +43,26 @@ defmodule FacebookClone.PostTest do
   end
 
   test "leading blank characters of content should be removed", %{user: user} do
+    Repo.delete_all(Post)
+
     changeset = Post.changeset(
-      %Post{}, %{content: "   Content", user_id: user.id})
+      %Post{}, %{content: "    Content", user_id: user.id})
 
     {:ok, _} = Repo.insert(changeset)
     post = Repo.all(Post) |> Enum.at(0)
 
     assert post.content == "Content"
+  end
+
+  test "deletes associated likes", %{user: user, post: post} do
+    like_changeset = Like.changeset(
+      %Like{}, %{post_id: post.id, user_id: user.id})
+    Repo.insert!(like_changeset)
+
+    assert Repo.all(Like) |> Enum.count == 1
+
+    Repo.delete(post)
+
+    assert Repo.all(Like) |> Enum.count == 0
   end
 end
