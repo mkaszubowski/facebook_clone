@@ -20,7 +20,7 @@ defmodule FacebookClone.UserController do
       from(u in User, where: u.id != ^current_user.id)
       |> Repo.all
 
-    render(conn, "index.html", users: users, current_user: current_user)
+    render(conn, "index.html", users: users)
   end
 
   def show(conn, %{"id" => id}) do
