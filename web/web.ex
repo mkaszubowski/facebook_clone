@@ -18,8 +18,9 @@ defmodule FacebookClone.Web do
 
   def model do
     quote do
-      use Ecto.Model
+      use Ecto.Schema
 
+      import Ecto
       import Ecto.Changeset
       import Ecto.Query, only: [from: 1, from: 2]
     end
@@ -30,6 +31,7 @@ defmodule FacebookClone.Web do
       use Phoenix.Controller
 
       alias FacebookClone.Repo
+      import Ecto
       import Ecto.Model
       import Ecto.Query, only: [from: 1, from: 2]
 
@@ -64,6 +66,7 @@ defmodule FacebookClone.Web do
       use Phoenix.Channel
 
       alias FacebookClone.Repo
+      import Ecto
       import Ecto.Model
       import Ecto.Query, only: [from: 1, from: 2]
     end
