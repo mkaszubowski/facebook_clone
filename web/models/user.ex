@@ -20,7 +20,6 @@ defmodule FacebookClone.User do
 
     has_many :friendships,
              Friendship,
-             foreign_key: :user_id,
              on_delete: :fetch_and_delete
     has_many :reversed_friendships,
              Friendship,
@@ -30,7 +29,6 @@ defmodule FacebookClone.User do
 
     has_many :friendship_invitations,
              FriendshipInvitation,
-             foreign_key: :user_id,
              on_delete: :fetch_and_delete
     has_many :received_friendship_invitations,
              FriendshipInvitation,
