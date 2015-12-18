@@ -16,14 +16,10 @@ defmodule FacebookClone.LikeController do
   plug :scrub_params, "like" when action in [:create]
 
   def create(conn, %{"like" => like}) do
-    current_user = current_user(conn)
+    post_id = String.to_integer(like["post_id"])
+    like = Ecto.build_assoc(current_user(conn), :likes, post_id: post_id)
 
-    changeset = Like.changeset(%Like{}, %{
-      user_id: current_user.id,
-      post_id: like["post_id"]
-    })
-
-    case Repo.insert(changeset) do
+    case Repo.insert(like) do
       {:ok, like} ->
         conn
         |> put_flash(:info, "You liked selected post")

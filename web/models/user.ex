@@ -5,6 +5,7 @@ defmodule FacebookClone.User do
   alias FacebookClone.Friendship
   alias FacebookClone.FriendshipInvitation
   alias FacebookClone.Post
+  alias FacebookClone.Like
 
   schema "users" do
     field :email, :string
@@ -36,6 +37,7 @@ defmodule FacebookClone.User do
              on_delete: :fetch_and_delete
 
     has_many :posts, Post, on_delete: :fetch_and_delete
+    has_many :likes, Like, on_delete: :delete_all
 
   end
 
