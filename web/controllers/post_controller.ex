@@ -21,12 +21,11 @@ defmodule FacebookClone.PostController do
       |> current_user_with_posts
       |> get_visible_posts
 
-    render(conn, "index.html", posts: posts)
+    render(conn, "index.html", posts: posts, changeset: Post.changeset(%Post{}))
   end
 
   def new(conn, _params) do
-    changeset = User.changeset(%User{})
-    render conn, "new.html", changeset: changeset
+    render conn, "new.html", changeset: Post.changeset(%Post{})
   end
 
   def create(conn, %{"post" => post}) do

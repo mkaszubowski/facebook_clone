@@ -1,6 +1,6 @@
 <h1>All posts</h1>
 <div class="new-post">
-  <%= render "_form.html", changeset: @conn, conn: @conn %>
+  <%= render "_form.html", changeset: @changeset, conn: @conn %>
 </div>
 
 <hr />
