@@ -75,14 +75,9 @@ defmodule FacebookClone.PostController do
   end
 
   defp current_user_with_posts(conn) do
-    current_user =
-      current_user(conn)
-      |> Repo.preload(
-          [
-            :friends,
-            [friends: [posts: [:user, :likes]]],
-            [posts: [:user, :likes]]
-          ])
+    current_user(conn)
+    |> Repo.preload([friends: [posts: [:user, :likes]]])
+    |> Repo.preload([posts: [:user, :likes]])
   end
 
   defp get_visible_posts(conn, current_user) do
