@@ -16,10 +16,12 @@ defmodule FacebookClone.PostController do
   plug :scrub_params, "post" when action in [:create, :update]
 
   def index(conn, _params) do
-    current_user = current_user_with_posts(conn)
-    posts = get_visible_posts(conn, current_user)
+    posts =
+      conn
+      |> current_user_with_posts
+      |> get_visible_posts
 
-    render(conn, "index.html", posts: posts, current_user_id: current_user.id)
+    render(conn, "index.html", posts: posts)
   end
 
   def new(conn, _params) do
@@ -80,12 +82,11 @@ defmodule FacebookClone.PostController do
     |> Repo.preload([posts: [:user, :likes]])
   end
 
-  defp get_visible_posts(conn, current_user) do
-    posts =
-      current_user.friends
-      |> Enum.concat([current_user])
-      |> Enum.map(&(&1.posts))
-      |> List.flatten
+  defp get_visible_posts(current_user) do
+    current_user.friends
+    |> Enum.concat([current_user])
+    |> Enum.map(&(&1.posts))
+    |> List.flatten
   end
 
   defp get_post(conn, id) do

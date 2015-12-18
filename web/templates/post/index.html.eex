@@ -13,9 +13,9 @@
       <%= post.content %>
     </p>
     <span class="post-links">
-      <%= post_links(@conn, post, @current_user_id) %>
+      <%= post_links(@conn, post, @current_user.id) %>
     </span>
-    <%= like_button(@conn, post, @current_user_id) %>
+    <%= like_button(@conn, post, @current_user.id) %>
   </article>
 <hr />
 <% end %>
