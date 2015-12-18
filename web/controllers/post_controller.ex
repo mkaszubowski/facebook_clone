@@ -16,19 +16,8 @@ defmodule FacebookClone.PostController do
   plug :scrub_params, "post" when action in [:create, :update]
 
   def index(conn, _params) do
-    current_user =
-      current_user(conn)
-      |> Repo.preload(
-          [:friends,
-          [friends: [posts: [:user, :likes]]],
-          [posts: [:user, :likes
-         ]]])
-
-    posts =
-      current_user.friends
-      |> Enum.concat([current_user])
-      |> Enum.map(&(&1.posts))
-      |> List.flatten
+    current_user = current_user_with_posts(conn)
+    posts = get_visible_posts(conn, current_user)
 
     render(conn, "index.html", posts: posts, current_user_id: current_user.id)
   end
@@ -83,6 +72,25 @@ defmodule FacebookClone.PostController do
       %Post{} -> delete_post(conn, post)
       _       -> access_denied(conn)
     end
+  end
+
+  defp current_user_with_posts(conn) do
+    current_user =
+      current_user(conn)
+      |> Repo.preload(
+          [
+            :friends,
+            [friends: [posts: [:user, :likes]]],
+            [posts: [:user, :likes]]
+          ])
+  end
+
+  defp get_visible_posts(conn, current_user) do
+    posts =
+      current_user.friends
+      |> Enum.concat([current_user])
+      |> Enum.map(&(&1.posts))
+      |> List.flatten
   end
 
   defp get_post(conn, id) do
