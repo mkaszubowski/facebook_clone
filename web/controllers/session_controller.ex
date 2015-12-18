@@ -17,7 +17,8 @@ defmodule FacebookClone.SessionController do
     case SessionHandler.login(session_params, Repo) do
       {:ok, user} ->
         conn
-        |> put_session(:current_user, user.id)
+        |> assign(:current_user, user)
+        |> put_session(:current_user_id, user.id)
         |> put_flash(:info, "Logged in")
         |> redirect to: "/"
       :error ->
@@ -29,7 +30,7 @@ defmodule FacebookClone.SessionController do
 
   def delete(conn, _params) do
     conn
-    |> put_session(:current_user, nil)
+    |> put_session(:current_user_id, nil)
     |> put_flash(:info, "User logged out")
     |> redirect to: "/"
   end

@@ -8,7 +8,7 @@ defmodule FacebookClone.UserController do
     access_denied: 1,
     authenticate_current_user: 2,
     authenticate_logged_in: 2]
-  import FacebookClone.SessionHandler, only: [current_user: 1, current_user: 2]
+  import FacebookClone.SessionHandler, only: [current_user: 1]
 
   plug :authenticate_logged_in
   plug :authenticate_current_user when action in [:edit, :update]
@@ -49,6 +49,13 @@ defmodule FacebookClone.UserController do
     case user do
       %User{} -> update_user(conn, user, params)
       _       -> access_denied(conn)
+    end
+  end
+
+  def get_by_id(user_id) do
+    case user_id do
+      nil -> nil
+      _   -> Repo.get(User, user_id)
     end
   end
 

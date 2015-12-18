@@ -7,6 +7,7 @@ defmodule FacebookClone.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :assign_current_user
   end
 
   pipeline :api do
@@ -35,6 +36,11 @@ defmodule FacebookClone.Router do
 
     resources "/posts", PostController, except: [:show]
     resources "/likes", LikeController, only: [:create, :delete]
+  end
+
+  defp assign_current_user(conn, _) do
+    user_id = get_session(conn, :current_user_id)
+    assign(conn, :current_user, FacebookClone.UserController.get_by_id(user_id))
   end
 
   # Other scopes may use custom stacks.

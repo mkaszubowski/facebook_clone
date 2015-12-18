@@ -6,7 +6,7 @@ defmodule FacebookClone.PostController do
   alias FacebookClone.Post
   alias FacebookClone.SessionPlug
 
-  import FacebookClone.SessionHandler, only: [current_user: 1, current_user: 2]
+  import FacebookClone.SessionHandler, only: [current_user: 1]
   import FacebookClone.SessionPlug, only: [
     access_denied: 1,
     authenticate_current_user: 2,
