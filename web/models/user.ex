@@ -19,24 +19,22 @@ defmodule FacebookClone.User do
 
     timestamps
 
-    has_many :friendships,
-             Friendship,
-             on_delete: :fetch_and_delete
+    has_many :friendships, Friendship, on_delete: :delete_all
     has_many :reversed_friendships,
              Friendship,
              foreign_key: :friend_id,
-             on_delete: :fetch_and_delete
+             on_delete: :delete_all
     has_many :friends, through: [:friendships, :friend]
 
     has_many :friendship_invitations,
              FriendshipInvitation,
-             on_delete: :fetch_and_delete
+             on_delete: :delete_all
     has_many :received_friendship_invitations,
              FriendshipInvitation,
              foreign_key: :invited_id,
-             on_delete: :fetch_and_delete
+             on_delete: :delete_all
 
-    has_many :posts, Post, on_delete: :fetch_and_delete
+    has_many :posts, Post, on_delete: :delete_all
     has_many :likes, Like, on_delete: :delete_all
 
   end
