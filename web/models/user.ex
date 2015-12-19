@@ -36,7 +36,6 @@ defmodule FacebookClone.User do
 
     has_many :posts, Post, on_delete: :delete_all
     has_many :likes, Like, on_delete: :delete_all
-
   end
 
   @required_fields ~w(email password first_name last_name)

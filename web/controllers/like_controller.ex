@@ -2,8 +2,6 @@ defmodule FacebookClone.LikeController do
   use FacebookClone.Web, :controller
 
   alias FacebookClone.Repo
-  alias FacebookClone.User
-  alias FacebookClone.Post
   alias FacebookClone.Like
 
   import FacebookClone.SessionHandler, only: [current_user: 1]
@@ -16,11 +14,13 @@ defmodule FacebookClone.LikeController do
   plug :scrub_params, "like" when action in [:create]
 
   def create(conn, %{"like" => like}) do
-    post_id = String.to_integer(like["post_id"])
-    like = Ecto.build_assoc(current_user(conn), :likes, post_id: post_id)
+    changeset = Like.changeset(%Like{}, %{
+      user_id: current_user(conn).id,
+      post_id: like["post_id"]
+    })
 
-    case Repo.insert(like) do
-      {:ok, like} ->
+    case Repo.insert(changeset) do
+      {:ok, _like} ->
         conn
         |> put_flash(:info, "You liked selected post")
         |> redirect(to: post_path(conn, :index))
@@ -36,7 +36,7 @@ defmodule FacebookClone.LikeController do
     like = Repo.get(Like, id)
 
     case like do
-      %Like{user_id: current_user_id} ->
+      %Like{user_id: ^current_user_id} ->
         {:ok, _} = Repo.delete(like)
         conn |> redirect(to: post_path(conn, :index))
       _ ->
