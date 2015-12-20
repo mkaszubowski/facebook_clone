@@ -1,7 +1,6 @@
 defmodule FacebookClone.LikeTest do
   use FacebookClone.ModelCase
 
-  alias FacebookClone.User
   alias FacebookClone.Post
   alias FacebookClone.Like
   alias FacebookClone.Repo
