@@ -50,13 +50,6 @@ defmodule FacebookClone.FriendshipController do
 
   end
 
-  defp current_user_friendship_params(conn, params) do
-    %{
-      user_id: current_user(conn).id,
-      friend_id: String.to_integer(params["friend_id"])
-    }
-  end
-
   defp delete_with_reversed(friendship) do
     reversed_friendship = Repo.get_by(
       Friendship, reversed_friendship_params(friendship)
