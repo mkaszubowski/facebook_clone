@@ -33,7 +33,7 @@ defmodule FacebookClone.Web do
       alias FacebookClone.Repo
       import Ecto
       import Ecto.Model
-      import Ecto.Query, only: [from: 1, from: 2]
+      import Ecto.Query
 
       import FacebookClone.Router.Helpers
     end

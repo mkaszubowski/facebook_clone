@@ -4,7 +4,6 @@ defmodule FacebookClone.FriendshipController do
   alias FacebookClone.Repo
   alias FacebookClone.Friendship
   alias FacebookClone.SessionPlug
-  alias FacebookClone.User
 
   import FacebookClone.SessionHandler, only: [current_user: 1]
   import SessionPlug, only: [access_denied: 1, authenticate_logged_in: 2]
@@ -47,26 +46,23 @@ defmodule FacebookClone.FriendshipController do
         |> put_flash(:info, "This user is not your friend")
         |> redirect to: friendship_path(conn, :index)
     end
-
   end
 
   defp delete_with_reversed(friendship) do
-    reversed_friendship = Repo.get_by(
-      Friendship, reversed_friendship_params(friendship)
-    )
+    reversed = reversed_friendship(friendship)
 
     Repo.transaction(fn ->
       {:ok, _} = Repo.delete(friendship)
 
-      unless is_nil(reversed_friendship),
-      do: {:ok, _} = Repo.delete(reversed_friendship)
+      unless is_nil(reversed),
+      do: {:ok, _} = Repo.delete(reversed)
     end)
   end
 
-  defp reversed_friendship_params(friendship) do
-    %{
-      user_id: friendship.friend_id,
-      friend_id: friendship.user_id
-    }
+  defp reversed_friendship(friendship) do
+    Friendship
+    |> where(user_id: ^friendship.friend_id)
+    |> where(friend_id: ^friendship.user_id)
+    |> Repo.one
   end
 end

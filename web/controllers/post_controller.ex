@@ -108,14 +108,12 @@ defmodule FacebookClone.PostController do
 
   defp delete_post(conn, post) do
     case Repo.delete(post) do
-      {:ok, _} ->
-        conn
-        |> put_flash(:info, "Post deleted")
-        |> redirect to: post_path(conn, :index)
-      _        ->
-        conn
-        |> put_flash(:info, "Could not delete post")
-        |> redirect to: post_path(conn, :index)
+      {:ok, _} -> message = "Post deleted"
+      _        -> message = "Could not delete post"
     end
+
+    conn
+    |> put_flash(:info, "Post deleted")
+    |> redirect to: post_path(conn, :index)
   end
 end
