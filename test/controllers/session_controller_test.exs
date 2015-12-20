@@ -24,7 +24,7 @@ defmodule FacebookClone.SessionControllerTest do
     conn = TestHelper.log_in_user
     user_id = FacebookClone.Repo.get_by(User, email: "foo@bar.com").id
 
-    assert get_session(conn, "current_user") == user_id
+    assert get_session(conn, "current_user_id") == user_id
   end
 
   test "POST /login with invalid data display correct flash message" do
