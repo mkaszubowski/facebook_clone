@@ -36,7 +36,7 @@ defmodule FacebookClone.FriendshipController do
   end
 
   defp process_delete(conn, friendship) do
-    case delete_with_reversed(friendship) do
+    case Friendship.delete_with_reversed(friendship) do
       {:ok, _} ->
         conn
         |> put_flash(:info, "User deleted from friends")
@@ -46,23 +46,5 @@ defmodule FacebookClone.FriendshipController do
         |> put_flash(:info, "This user is not your friend")
         |> redirect to: friendship_path(conn, :index)
     end
-  end
-
-  defp delete_with_reversed(friendship) do
-    reversed = reversed_friendship(friendship)
-
-    Repo.transaction(fn ->
-      {:ok, _} = Repo.delete(friendship)
-
-      unless is_nil(reversed),
-      do: {:ok, _} = Repo.delete(reversed)
-    end)
-  end
-
-  defp reversed_friendship(friendship) do
-    Friendship
-    |> where(user_id: ^friendship.friend_id)
-    |> where(friend_id: ^friendship.user_id)
-    |> Repo.one
   end
 end
