@@ -41,7 +41,6 @@ defmodule FacebookClone.PostController do
         conn
         |> put_flash(:info, "Could not save the post")
         |> render("new.html", changeset: changeset)
-
     end
   end
 

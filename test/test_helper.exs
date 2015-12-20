@@ -12,7 +12,7 @@ defmodule FacebookClone.TestHelper do
 
   use FacebookClone.ConnCase
 
-  def create_user(email, password, first_name \\ "Foo", last_name \\ "Bar") do
+  def create_user(email, password \\ "password", first_name \\ "Foo", last_name \\ "Bar") do
     user_params = %{
       email: email,
       password: password,

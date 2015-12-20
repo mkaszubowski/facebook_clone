@@ -53,7 +53,6 @@ defmodule FacebookClone.FriendshipInvitationController do
     }
   end
 
-
   defp error_messages(changeset) do
     changeset.errors
     |> Dict.values
