@@ -2,9 +2,7 @@ defmodule FacebookClone.PostController do
   use FacebookClone.Web, :controller
 
   alias FacebookClone.Repo
-  alias FacebookClone.User
   alias FacebookClone.Post
-  alias FacebookClone.SessionPlug
 
   import FacebookClone.SessionHandler, only: [current_user: 1]
   import FacebookClone.SessionPlug, only: [
