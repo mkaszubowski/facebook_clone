@@ -10,7 +10,9 @@ defmodule FacebookClone.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases,
-     deps: deps]
+     deps: deps,
+     test_coverage: [tool: ExCoveralls],
+     preferred_cli_env: [coveralls: :test]]
   end
 
   # Configuration for the OTP application.
@@ -38,7 +40,8 @@ defmodule FacebookClone.Mixfile do
      {:cowboy, "~> 1.0"},
      {:comeonin, "~> 1.0"},
      {:mock, "~> 0.1.1", only: :test},
-     {:credo, "~>0.1.0"}
+     {:credo, "~>0.1.0"},
+     {:excoveralls, "~> 0.4", only: :test}
   ]
   end
 
