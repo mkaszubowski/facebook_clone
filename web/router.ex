@@ -30,8 +30,7 @@ defmodule FacebookClone.Router do
 
     resources "/friendship_invitations", FriendshipInvitationController,
       only: [:create, :update]
-    resources "/friendships/", FriendshipController,
-      only: [:create, :update, :delete]
+    resources "/friendships/", FriendshipController, only: [:delete]
     get "/friends", FriendshipController, :index
 
     resources "/posts", PostController, except: [:show]

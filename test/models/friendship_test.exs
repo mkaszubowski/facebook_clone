@@ -84,22 +84,4 @@ defmodule FacebookClone.FriendshipTest do
     assert friendship.user.id == user1.id
     assert friendship.friend.id == user2.id
   end
-
-  test "deletes reveresed friendship", %{user1: user1, user2: user2} do
-    changeset = Friendship.changeset(%Friendship{}, %{
-      user_id: user1.id,
-      friend_id: user2.id})
-    friendship = Repo.insert!(changeset)
-
-    reversed_changeset = Friendship.changeset(%Friendship{}, %{
-      user_id: user2.id,
-      friend_id: user1.id})
-    reversed_friendship = Repo.insert!(reversed_changeset)
-
-    assert Repo.all(Friendship) |> Enum.count == 2
-
-    Repo.delete(friendship)
-
-    assert Repo.all(Friendship) |> Enum.count == 0
-  end
 end

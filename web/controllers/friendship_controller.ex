@@ -7,10 +7,9 @@ defmodule FacebookClone.FriendshipController do
   alias FacebookClone.User
 
   import FacebookClone.SessionHandler, only: [current_user: 1]
-  import SessionPlug, only: [authenticate_logged_in: 2]
+  import SessionPlug, only: [access_denied: 1, authenticate_logged_in: 2]
 
   plug :authenticate_logged_in
-  plug :scrub_params, "friendship" when action in [:create, :update]
 
   def index(conn, _params) do
     current_user =
@@ -25,10 +24,19 @@ defmodule FacebookClone.FriendshipController do
     render(conn, "index.html", friends: friends, invited_by: invited_by)
   end
 
-  def delete(conn, %{"friendship" => params}) do
-    friendship = Repo.get_by(
-      Friendship, current_user_friendship_params(conn, params))
+  def delete(conn, %{"id" => id}) do
+    current_user_id = current_user(conn).id
+    friendship = Repo.get(Friendship, id)
 
+    case friendship do
+      %Friendship{user_id: ^current_user_id} ->
+        process_delete(conn, friendship)
+      _ ->
+        access_denied(conn)
+    end
+  end
+
+  defp process_delete(conn, friendship) do
     case delete_with_reversed(friendship) do
       {:ok, _} ->
         conn
@@ -39,6 +47,7 @@ defmodule FacebookClone.FriendshipController do
         |> put_flash(:info, "This user is not your friend")
         |> redirect to: friendship_path(conn, :index)
     end
+
   end
 
   defp current_user_friendship_params(conn, params) do
