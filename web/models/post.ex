@@ -39,8 +39,10 @@ defmodule FacebookClone.Post do
 
     Post
     |> join(:inner, [p], u in User, p.user_id == u.id)
-    |> where([p, u], u.id in ^visible)
+    |> where([_, u], u.id in ^visible)
     |> preload([:user, :likes])
+    |> order_by(desc: :inserted_at)
+    |> select([p, _], p)
   end
 
 end
