@@ -3,6 +3,9 @@ defmodule FacebookClone.Post do
 
   alias FacebookClone.User
   alias FacebookClone.Like
+  alias FacebookClone.Post
+
+  import Ecto.Query
 
   schema "posts" do
     field :content, :string
@@ -27,4 +30,17 @@ defmodule FacebookClone.Post do
     from p in query,
     where: p.user_id == ^id
   end
+
+  def visible_for_user(user) do
+    visible =
+      user.friends
+      |> Enum.map(&(&1.id))
+      |> Enum.concat([user.id])
+
+    Post
+    |> join(:inner, [p], u in User, p.user_id == u.id)
+    |> where([p, u], u.id in ^visible)
+    |> preload([:user, :likes])
+  end
+
 end
