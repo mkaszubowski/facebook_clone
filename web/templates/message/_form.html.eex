@@ -1,0 +1,8 @@
+<div class="message-form">
+  <%= form_for @changeset, message_path(@conn, :create), [as: :post], fn f -> %>
+    <div class="form-group">
+      <label>To</label>
+      <%= select f, :recipient_id, friends_select_options(@conn), prompt: "Choose recipient..." %>
+    </div>
+  <% end %>
+</div>
