@@ -1,0 +1,10 @@
+<h1><%= full_name(other_user(@conversation, @current_user)) %></h1>
+
+<ul>
+  <%= for message <- @messages do %>
+    <li>
+      <span><%= full_name(message.user) %>: </span>
+      <%= message.content %>
+    </li>
+  <% end %>
+</ul>

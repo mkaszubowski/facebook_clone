@@ -1,0 +1,9 @@
+<h1>All conversations</h1>
+
+<ul>
+  <%= for conversation <- @conversations do %>
+    <li>
+      <%= full_name(other_user(conversation, @current_user)) %>
+    </li>
+  <% end %>
+</ul>

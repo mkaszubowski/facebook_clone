@@ -38,6 +38,9 @@
         <section class="sidebar">
           <ul>
             <li>
+              <%= link "Messages", to: conversation_path(@conn, :index) %>
+            </li>
+            <li>
               <%= link "Friends", to: friendship_path(@conn, :index) %>
             </li>
             <li>
