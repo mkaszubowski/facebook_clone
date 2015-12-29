@@ -3,6 +3,10 @@ defmodule FacebookClone.Message do
 
   alias FacebookClone.User
   alias FacebookClone.Conversation
+  alias FacebookClone.Message
+
+  import Ecto.Query
+
 
   schema "messages" do
     field :content, :string
@@ -20,5 +24,14 @@ defmodule FacebookClone.Message do
     |> cast(params, @required_fields, [])
     |> foreign_key_constraint(:user_id)
     |> foreign_key_constraint(:conversation_id)
+  end
+
+  def for_conversation(conversation) do
+    conversation_id = conversation.id
+
+    Message
+    |> where(conversation_id: ^conversation.id)
+    |> preload(:user)
+    |> order_by(desc: :inserted_at)
   end
 end
