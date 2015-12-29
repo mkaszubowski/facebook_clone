@@ -3,7 +3,7 @@
 <ul>
   <%= for conversation <- @conversations do %>
     <li>
-      <%= full_name(other_user(conversation, @current_user)) %>
+      <%= conversation_link(@conn, conversation, @current_user) %>
     </li>
   <% end %>
 </ul>
