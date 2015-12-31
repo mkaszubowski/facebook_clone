@@ -18,4 +18,14 @@ defmodule FacebookClone.MessageController do
     render conn, "new.html", changeset: Message.changeset(%Message{})
   end
 
+  def delete(conn, %{"id" => id}) do
+    message = Repo.get(Message, id)
+
+    case message do
+      %Message{user_id: ^current_user} ->
+        Repo.delete(message)
+      _ ->
+        access_denied()
+    end
+  end
 end
