@@ -7,7 +7,6 @@ defmodule FacebookClone.Message do
 
   import Ecto.Query
 
-
   schema "messages" do
     field :content, :string
 
@@ -33,5 +32,15 @@ defmodule FacebookClone.Message do
     |> where(conversation_id: ^conversation.id)
     |> preload(:user)
     |> order_by(desc: :inserted_at)
+  end
+
+  def newer_for_conversation_count(message, conversation) do
+    conversation_id = conversation.id
+    time = message.inserted_at
+
+    from m in Message,
+      where: m.inserted_at > ^time,
+      where: m.conversation_id == ^conversation_id,
+      select: count(m.id)
   end
 end
