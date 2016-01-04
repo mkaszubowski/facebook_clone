@@ -1,10 +1,13 @@
 <h1><%= full_name(other_user(@conversation, @current_user)) %></h1>
 
-<ul>
+<%= render FacebookClone.MessageView, "_form.html", conversation: @conversation, conn: @conn, changeset: @changeset %>
+
+<ul class="messages">
   <%= for message <- @messages do %>
     <li>
       <span><%= full_name(message.user) %>: </span>
       <%= message.content %>
+      <span class="delete_link"><%= delete_link(@conn, @conversation, message) %></span>
     </li>
   <% end %>
 </ul>

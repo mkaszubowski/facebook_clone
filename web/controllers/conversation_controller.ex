@@ -35,6 +35,15 @@ defmodule FacebookClone.ConversationController do
       |> Message.for_conversation
       |> Repo.all
 
-    render conn, "show.html", conversation: conversation, messages: messages
+    render conn, "show.html",
+      conversation: conversation,
+      messages: messages,
+      changeset: message_changeset(conversation)
+  end
+
+  defp message_changeset(conversation) do
+    Message.changeset(%Message{}, %{
+      conversation_id: conversation.id
+      })
   end
 end

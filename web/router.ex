@@ -35,8 +35,10 @@ defmodule FacebookClone.Router do
 
     resources "/posts", PostController, except: [:show]
     resources "/likes", LikeController, only: [:create, :delete]
-    resources "/messages", MessageController, only: [:new, :create]
-    resources "/conversations", ConversationController, only: [:index, :show]
+
+    resources "/conversations", ConversationController, only: [:index, :show] do
+      resources "/messages", MessageController, only: [:new, :create, :delete]
+    end
   end
 
   defp assign_current_user(conn, _) do
