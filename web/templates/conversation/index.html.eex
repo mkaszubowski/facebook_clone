@@ -1,4 +1,6 @@
-<h1>All conversations</h1>
+<h1>Conversations</h1>
+
+<%= render "_form.html", conn: @conn, changeset: @changeset %>
 
 <ul>
   <%= for conversation <- @conversations do %>

@@ -23,6 +23,13 @@ defmodule FacebookClone.ConversationView do
     end
   end
 
+  def friends_select_options(conn) do
+    current_user = current_user(conn) |> Repo.preload(:friends)
+    friends = current_user.friends
+
+    Enum.map(friends, fn f -> {full_name(f), f.id} end)
+  end
+
   defp can_delete_message?(conn, conversation, message) do
     current_user = current_user(conn)
 

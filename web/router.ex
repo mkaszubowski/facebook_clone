@@ -36,7 +36,7 @@ defmodule FacebookClone.Router do
     resources "/posts", PostController, except: [:show]
     resources "/likes", LikeController, only: [:create, :delete]
 
-    resources "/conversations", ConversationController, only: [:index, :show] do
+    resources "/conversations", ConversationController, only: [:index, :show, :create] do
       resources "/messages", MessageController, only: [:new, :create, :delete]
     end
   end
