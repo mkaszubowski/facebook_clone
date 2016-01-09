@@ -1,3 +1,7 @@
+<div class="back">
+  <%= link "All conversations", to: conversation_path(@conn, :index) %>
+</div>
+
 <h1><%= full_name(other_user(@conversation, @current_user)) %></h1>
 
 <%= render FacebookClone.MessageView, "_form.html", conversation: @conversation, conn: @conn, changeset: @changeset %>
