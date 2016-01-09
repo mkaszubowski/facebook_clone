@@ -1,6 +1,7 @@
-<h1>Conversations</h1>
-
+<%= link "New message", to: "#", class: "show-message-form" %>
 <%= render "_form.html", conn: @conn, changeset: @changeset %>
+
+<h1>Conversations</h1>
 
 <ul>
   <%= for conversation <- @conversations do %>

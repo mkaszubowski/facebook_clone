@@ -1,9 +1,10 @@
 <div class="conversation-form">
   <%= form_for @changeset, conversation_path(@conn, :create), fn f -> %>
     <div class="form-group">
+      To:
       <%= select f, :friend_id, friends_select_options(@conn) %>
 
-      <%= text_input f, :message %>
+      <%= text_input f, :message, placeholder: "Message" %>
 
       <div class="form-group">
         <%= submit "Send", class: "btn btn-primary" %>

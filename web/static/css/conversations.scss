@@ -11,3 +11,20 @@ ul.messages {
     float: right;
   }
 }
+
+.conversation-form {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  padding: 20px 0;
+  display: none;
+
+  &.visible {
+    display: block;
+  }
+
+  input[type="text"] {
+    width: 250px;
+    display: block;
+    margin: 10px 0;
+  }
+}
