@@ -2,6 +2,8 @@ defmodule FacebookClone.PostView do
   use FacebookClone.Web, :view
 
   alias FacebookClone.Like
+  alias FacebookClone.Repo
+
 
   def post_links(conn, post, current_user_id) do
     if post.user_id == current_user_id do
@@ -23,6 +25,10 @@ defmodule FacebookClone.PostView do
       _    ->
         _like_button(conn, post, current_user_id)
     end
+  end
+
+  def likes_count(post) do
+    Like.count_for(post) |> Repo.one
   end
 
   defp _like_button(conn, post, current_user_id) do
