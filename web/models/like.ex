@@ -3,6 +3,9 @@ defmodule FacebookClone.Like do
 
   alias FacebookClone.User
   alias FacebookClone.Post
+  alias FacebookClone.Like
+
+  import Ecto.Query
 
   schema "likes" do
     timestamps
@@ -20,5 +23,11 @@ defmodule FacebookClone.Like do
     |> foreign_key_constraint(:post_id, message: "Post does not exists")
     |> unique_constraint(:user_id_post_id,
                          message: "You've already liked this post")
+  end
+
+  def count_for(post) do
+    Like
+    |> where(post_id: ^post.id)
+    |> select([p], count(p.id))
   end
 end
