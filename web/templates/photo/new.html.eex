@@ -1,0 +1,12 @@
+<h1>Add new photo</h1>
+
+<%= form_for @conn, user_photo_path(@conn, :create, @current_user), [as: :photo, multipart: true], fn f -> %>
+  <div class="form-group">
+    <label>Photo</label>
+    <%= file_input f, :photo_file, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>

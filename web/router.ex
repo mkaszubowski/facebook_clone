@@ -26,7 +26,9 @@ defmodule FacebookClone.Router do
     post "/login", SessionController, :create
     delete "/logout", SessionController, :delete
 
-    resources "/users", UserController, only: [:index, :show, :edit, :update]
+    resources "/users", UserController, only: [:index, :show, :edit, :update] do
+      resources "/photos", PhotoController, only: [:new, :create, :index]
+    end
 
     resources "/friendship_invitations", FriendshipInvitationController,
       only: [:create, :update]
@@ -39,6 +41,7 @@ defmodule FacebookClone.Router do
     resources "/conversations", ConversationController, only: [:index, :show, :create] do
       resources "/messages", MessageController, only: [:new, :create, :delete]
     end
+
   end
 
   defp assign_current_user(conn, _) do

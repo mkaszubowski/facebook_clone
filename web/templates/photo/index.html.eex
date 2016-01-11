@@ -1,0 +1,5 @@
+<h1>Photos</h1>
+
+<%= for photo <- @photos do %>
+  <img src="<%= photo_path(photo) %>" />
+<% end %>
