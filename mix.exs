@@ -41,7 +41,9 @@ defmodule FacebookClone.Mixfile do
      {:comeonin, "~> 1.0"},
      {:mock, "~> 0.1.1", only: :test},
      {:credo, "~>0.1.0"},
-     {:excoveralls, "~> 0.4", only: :test}
+     {:excoveralls, "~> 0.4", only: :test},
+     {:arc, "~> 0.2.2"},
+     {:arc_ecto, "~> 0.3.1"}
   ]
   end
 
