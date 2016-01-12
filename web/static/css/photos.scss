@@ -1,0 +1,35 @@
+.new-photo-link {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.photos {
+  display: flex;
+  flex-wrap: wrap;
+  flex-flow: center;
+
+  .photo-container {
+    width: 31.5%;
+    margin: 10px 0.75%;
+    height: 250px;
+    border: 1px solid #ddd;
+    overflow: hidden;
+    position: relative;
+
+    img {
+      height: 100%;
+      min-width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: auto;
+
+    }
+
+    .description {
+      text-align: center;
+      display: block;
+    }
+  }
+
+}

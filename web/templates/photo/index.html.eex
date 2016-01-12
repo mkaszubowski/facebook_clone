@@ -1,5 +1,11 @@
-<h1>Photos</h1>
+<h1><%= full_name(@user) %>'s photos</h1>
 
-<%= for photo <- @photos do %>
-  <img src="<%= photo_path(photo) %>" />
-<% end %>
+<%= if @user.id == @current_user.id, do: new_photo_link(@conn, @user) %>
+
+<div class="photos">
+  <%= for photo <- @photos do %>
+    <div class="photo-container">
+      <img src="<%= photo_path(photo) %>" />
+    </div>
+  <% end %>
+</div>

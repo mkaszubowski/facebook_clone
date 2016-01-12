@@ -50,6 +50,9 @@
             <li>
               <%= link "Posts", to: post_path(@conn, :index) %>
             </li>
+            <li>
+              <%= if @current_user, do: link("Photos", to: user_photo_path(@conn, :index, @current_user)) %>
+            </li>
           </ul>
         </section>
 

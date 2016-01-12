@@ -3,6 +3,7 @@ defmodule FacebookClone.PhotoController do
 
   alias FacebookClone.Repo
   alias FacebookClone.Photo
+  alias FacebookClone.User
   alias FacebookClone.SessionPlug
   alias FacebookClone.SessionHandler
 
@@ -41,11 +42,9 @@ defmodule FacebookClone.PhotoController do
   end
 
   def index(conn, %{"user_id" => user_id}) do
-    photos =
-      Photo
-      |> Photo.for_user(user_id)
-      |> Repo.all
+    user = Repo.get(User, String.to_integer(user_id)) |> Repo.preload(:photos)
+    photos = user.photos
 
-    render conn, "index.html", photos: photos
+    render conn, "index.html", user: user, photos: photos
   end
 end
