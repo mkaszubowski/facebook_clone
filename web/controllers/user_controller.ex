@@ -15,14 +15,16 @@ defmodule FacebookClone.UserController do
   plug :scrub_params, "user" when action in [:update]
 
   def index(conn, params) do
+    search_expression = params["search"]["expression"]
     current_user = current_user(conn)
+
     users =
       User
       |> where([u], u.id != ^current_user.id)
-      |> User.search(params["search"])
+      |> User.search(search_expression)
       |> Repo.all
 
-    render(conn, "index.html", users: users, search: params["search"])
+    render(conn, "index.html", users: users, search: search_expression)
   end
 
   def show(conn, %{"id" => id}) do
