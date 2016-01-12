@@ -3,7 +3,7 @@
 <ul class="user-list">
   <%= for user <- @users do %>
     <div class="user">
-      <li><%= full_name(user) %></li>
+      <li><%= link full_name(user), to: user_path(@conn, :show, user) %></li>
       <%= invite_button(@conn, user, @current_user) %>
     </div>
   <% end %>
