@@ -76,7 +76,7 @@ defmodule FacebookClone.User do
 
   def search(query, expression) do
     case expression do
-      "" -> query
+      x when x == "" or is_nil(x) -> query
       _ ->
         from u in query,
           where: fragment("? % ?", u.first_name, ^expression) or
