@@ -25,11 +25,27 @@
   }
 }
 
-.user-info {
-  list-style: none;
-  padding-left: 0;
+.user-profile {
+  .user-info {
+    list-style: none;
+    padding-left: 0;
 
-  span {
-    font-weight: bold;
+    span {
+      font-weight: bold;
+    }
+  }
+
+  .user-photo {
+    width: 150px;
+    height: 150px;
+    float: left;
+    overflow: hidden;
+    margin-right: 20px;
+    margin-bottom: 20px;
+
+    img {
+      height: 100%;
+      min-width: 100%;
+    }
   }
 }

@@ -1,8 +1,13 @@
-<h1><%= "#{@user.first_name} #{@user.last_name}" %></h1>
+<div class="user-profile">
+  <div class="user-photo">
+    <img src="<%= random_photo_path(@user) %>" alt="<%= full_name(@user) %>">
+  </div>
+  <h1><%= full_name(@user) %></h1>
 
-<ul class="user-info">
-  <li><span>City:</span> <%= @user.city %></li>
-  <li><span>Gender:</span> <%= gender(@user) %></li>
-  <li><span>Birthday:</span> <%= @user.birthday %></li>
-</ul>
-<%= link "Photos", to: user_photo_path(@conn, :index, @user) %>
+  <ul class="user-info">
+    <li><span>City:</span> <%= @user.city %></li>
+    <li><span>Gender:</span> <%= gender(@user) %></li>
+    <li><span>Birthday:</span> <%= @user.birthday %></li>
+  </ul>
+  <%= link "Photos", to: user_photo_path(@conn, :index, @user) %>
+</div>

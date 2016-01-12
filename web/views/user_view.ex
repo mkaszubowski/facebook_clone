@@ -11,6 +11,21 @@ defmodule FacebookClone.UserView do
     if user.gender == 1, do: "Male", else: "Female"
   end
 
+  def random_photo_path(user) do
+    user = user |> Repo.preload(:photos)
+
+    case photos = user.photos do
+      [] ->
+        ""
+      _ ->
+        :random.seed(:os.timestamp)
+        photos
+        |> Enum.shuffle
+        |> hd
+        |> FacebookClone.PhotoView.photo_path
+    end
+  end
+
   def invite_button(conn, user, current_user) do
     current_user = Repo.preload(
       current_user,
