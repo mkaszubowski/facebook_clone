@@ -8,6 +8,8 @@ defmodule FacebookClone.User do
   alias FacebookClone.Like
   alias FacebookClone.Photo
 
+  import Ecto.Query
+
   schema "users" do
     field :email, :string
     field :crypted_password, :string
@@ -70,5 +72,12 @@ defmodule FacebookClone.User do
     |> validate_length(:password, min: 6)
     |> validate_inclusion(:gender, 0..1)
     |> unique_constraint(:email)
+  end
+
+  def search(query, expression) do
+    from u in query,
+      where: fragment("? % ?", u.first_name, ^expression) or
+             fragment("? % ?", u.last_name, ^expression) or
+             fragment("? % ?", u.email, ^expression)
   end
 end
