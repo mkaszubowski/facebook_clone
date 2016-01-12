@@ -7,10 +7,10 @@ defmodule FacebookClone.PhotoController do
   alias FacebookClone.SessionPlug
   alias FacebookClone.SessionHandler
 
-  import SessionPlug, only: [access_denied: 1, authenticate_logged_in: 2]
   import SessionHandler, only: [current_user: 1]
 
   plug :authenticate_logged_in
+  plug :authorize_user, "user_id" when action in [:new, :create]
   plug :scrub_params, "photo" when action in [:create]
 
   def new(conn, _) do

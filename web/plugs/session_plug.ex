@@ -57,4 +57,15 @@ defmodule FacebookClone.SessionPlug do
       false -> access_denied(conn)
     end
   end
+
+  def authorize_user(conn, user_id_param_key) do
+    user_id = conn.params[user_id_param_key] |> String.to_integer
+
+    authenticate_logged_in(conn, [])
+
+    case SessionHandler.current_user(conn).id == user_id do
+      true -> conn
+      false -> access_denied(conn)
+    end
+  end
 end

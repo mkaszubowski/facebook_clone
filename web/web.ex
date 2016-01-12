@@ -36,6 +36,12 @@ defmodule FacebookClone.Web do
       import Ecto.Query
 
       import FacebookClone.Router.Helpers
+
+      import FacebookClone.SessionPlug, only: [
+        access_denied: 1,
+        authenticate_logged_in: 2,
+        authorize_user: 2
+      ]
     end
   end
 
