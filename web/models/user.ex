@@ -75,9 +75,13 @@ defmodule FacebookClone.User do
   end
 
   def search(query, expression) do
-    from u in query,
-      where: fragment("? % ?", u.first_name, ^expression) or
-             fragment("? % ?", u.last_name, ^expression) or
-             fragment("? % ?", u.email, ^expression)
+    case expression do
+      "" -> query
+      _ ->
+        from u in query,
+          where: fragment("? % ?", u.first_name, ^expression) or
+                 fragment("? % ?", u.last_name, ^expression) or
+                 fragment("? % ?", u.email, ^expression)
+    end
   end
 end
