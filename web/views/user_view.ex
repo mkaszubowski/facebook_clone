@@ -7,6 +7,10 @@ defmodule FacebookClone.UserView do
     "#{user.first_name} #{user.last_name}"
   end
 
+  def gender(user) do
+    if user.gender == 1, do: "Male", else: "Female"
+  end
+
   def invite_button(conn, user, current_user) do
     current_user = Repo.preload(
       current_user,

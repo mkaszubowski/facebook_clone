@@ -1,3 +1,8 @@
 <h1><%= "#{@user.first_name} #{@user.last_name}" %></h1>
 
+<ul class="user-info">
+  <li><span>City:</span> <%= @user.city %></li>
+  <li><span>Gender:</span> <%= gender(@user) %></li>
+  <li><span>Birthday:</span> <%= @user.birthday %></li>
+</ul>
 <%= link "Photos", to: user_photo_path(@conn, :index, @user) %>
