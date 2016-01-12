@@ -14,13 +14,15 @@ defmodule FacebookClone.UserController do
   plug :authenticate_current_user when action in [:edit, :update]
   plug :scrub_params, "user" when action in [:update]
 
-  def index(conn, _params) do
+  def index(conn, params) do
     current_user = current_user(conn)
     users =
-      from(u in User, where: u.id != ^current_user.id)
+      User
+      |> where([u], u.id != ^current_user.id)
+      |> User.search(params["search"])
       |> Repo.all
 
-    render(conn, "index.html", users: users)
+    render(conn, "index.html", users: users, search: params["search"])
   end
 
   def show(conn, %{"id" => id}) do
