@@ -32,7 +32,6 @@ defmodule FacebookClone.Router do
   end
 
   scope "/", FacebookClone do
-    # pipe_through :browser # Use the default browser stack
     pipe_through [:browser, :require_authenticated]
 
     resources "/users", UserController, only: [:index, :show, :edit, :update] do
