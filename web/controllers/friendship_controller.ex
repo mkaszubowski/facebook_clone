@@ -6,9 +6,6 @@ defmodule FacebookClone.FriendshipController do
   alias FacebookClone.SessionPlug
 
   import FacebookClone.SessionHandler, only: [current_user: 1]
-  import SessionPlug, only: [access_denied: 1, authenticate_logged_in: 2]
-
-  plug :authenticate_logged_in
 
   def index(conn, _params) do
     current_user =

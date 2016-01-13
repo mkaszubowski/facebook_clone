@@ -5,12 +5,7 @@ defmodule FacebookClone.PostController do
   alias FacebookClone.Post
 
   import FacebookClone.SessionHandler, only: [current_user: 1]
-  import FacebookClone.SessionPlug, only: [
-    access_denied: 1,
-    authenticate_current_user: 2,
-    authenticate_logged_in: 2]
 
-  plug :authenticate_logged_in
   plug :scrub_params, "post" when action in [:create, :update]
 
   def index(conn, _params) do

@@ -5,12 +5,7 @@ defmodule FacebookClone.LikeController do
   alias FacebookClone.Like
 
   import FacebookClone.SessionHandler, only: [current_user: 1]
-  import FacebookClone.SessionPlug, only: [
-    access_denied: 1,
-    authenticate_logged_in: 2
-  ]
 
-  plug :authenticate_logged_in
   plug :scrub_params, "like" when action in [:create]
 
   def create(conn, %{"like" => like}) do

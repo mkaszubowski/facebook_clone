@@ -10,6 +10,10 @@ defmodule FacebookClone.Router do
     plug :assign_current_user
   end
 
+  pipeline :require_authenticated do
+    plug :authenticate_logged_in
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -25,6 +29,11 @@ defmodule FacebookClone.Router do
     get "/login", SessionController, :new
     post "/login", SessionController, :create
     delete "/logout", SessionController, :delete
+  end
+
+  scope "/", FacebookClone do
+    # pipe_through :browser # Use the default browser stack
+    pipe_through [:browser, :require_authenticated]
 
     resources "/users", UserController, only: [:index, :show, :edit, :update] do
       resources "/photos", PhotoController, only: [:new, :create, :index]
@@ -41,7 +50,18 @@ defmodule FacebookClone.Router do
     resources "/conversations", ConversationController, only: [:index, :show, :create] do
       resources "/messages", MessageController, only: [:new, :create, :delete]
     end
+  end
 
+  defp authenticate_logged_in(conn, _) do
+    case get_session(conn, :current_user_id) do
+      nil ->
+        conn
+        |> put_flash(:info, "You have to sign in first")
+        |> redirect(to: FacebookClone.Router.Helpers.session_path(conn, :new))
+        |> halt
+      _ ->
+        conn
+    end
   end
 
   defp assign_current_user(conn, _) do
