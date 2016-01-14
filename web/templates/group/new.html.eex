@@ -1,0 +1,3 @@
+<h1>New group</h1>
+
+<%= render "_form.html", conn: @conn, changeset: @changeset, action: :create %>

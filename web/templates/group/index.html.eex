@@ -1,0 +1,10 @@
+<h1>All groups</h1>
+
+<ul class="group-list">
+  <%= for group <- @groups do %>
+    <li>
+      <span class="name"><%= group.name %></span>
+      <p class="description"><%= group.description %></p>
+    </li>
+  <% end %>
+</ul>

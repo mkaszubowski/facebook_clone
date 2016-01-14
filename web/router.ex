@@ -49,6 +49,8 @@ defmodule FacebookClone.Router do
     resources "/conversations", ConversationController, only: [:index, :show, :create] do
       resources "/messages", MessageController, only: [:new, :create, :delete]
     end
+
+    resources "/groups", GroupController, only: [:index, :new, :create]
   end
 
   defp authenticate_logged_in(conn, _) do

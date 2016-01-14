@@ -9,7 +9,6 @@ defmodule FacebookClone.MessageController do
 
   import SessionHandler, only: [current_user: 1]
 
-  plug :authenticate_logged_in
   plug :scrub_params, "message" when action in [:create]
 
   def create(conn, %{"message" => message, "conversation_id" => conversation_id}) do
