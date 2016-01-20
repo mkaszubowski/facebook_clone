@@ -6,9 +6,10 @@ defmodule FacebookClone.GroupController do
   alias FacebookClone.SessionHandler
 
   import SessionHandler, only: [current_user: 1]
+  import Ecto.Query
 
   plug :scrub_params, "group" when action in [:create, :update]
-  plug :find_group when action in [:show, :edit, :update, :delete]
+  plug :find_group when action in [:edit, :update, :delete]
 
   def index(conn, _params) do
     groups = Repo.all(Group)
@@ -20,6 +21,12 @@ defmodule FacebookClone.GroupController do
     changeset = Group.changeset(%Group{})
 
     render conn, "new.html", changeset: changeset
+  end
+
+  def show(conn, %{"id" => id}) do
+    group = from(g in Group, preload: :posts) |> Repo.get(id)
+
+    render conn, "show.html", group: group
   end
 
   def create(conn, %{"group" => group}) do

@@ -1,0 +1,7 @@
+<div class="group">
+  <h1><%= @group.name %></h1>
+
+  <div class="description">
+    <%= @group.description %>
+  </div>
+</div>

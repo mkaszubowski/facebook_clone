@@ -3,7 +3,7 @@
 <ul class="group-list">
   <%= for group <- @groups do %>
     <li>
-      <span class="name"><%= group.name %></span>
+      <span class="name"><%= link group.name, to: group_path(@conn, :show, group) %></span>
       <p class="description"><%= group.description %></p>
       <div class="links">
         <%= edit_link(@conn, group) %>
