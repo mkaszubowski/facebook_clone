@@ -8,6 +8,7 @@ defmodule FacebookClone.GroupController do
   import SessionHandler, only: [current_user: 1]
 
   plug :scrub_params, "group" when action in [:create, :update]
+  plug :find_group when action in [:show, :edit, :update, :delete]
 
   def index(conn, _params) do
     groups = Repo.all(Group)
@@ -38,7 +39,7 @@ defmodule FacebookClone.GroupController do
   end
 
   def edit(conn, %{"id" => id}) do
-    group = conn.assigns.current_user |> assoc(:created_groups) |> Repo.get(id)
+    group = conn.assigns.group
 
     case group do
       %Group{} ->
@@ -51,7 +52,7 @@ defmodule FacebookClone.GroupController do
   end
 
   def update(conn, %{"id" => id, "group" => params}) do
-    group = conn.assigns.current_user |> assoc(:created_groups) |> Repo.get(id)
+    group = conn.assigns.group
     changeset = Group.changeset(group, params)
 
     case Repo.update(changeset) do
@@ -67,9 +68,7 @@ defmodule FacebookClone.GroupController do
   end
 
   def delete(conn, %{"id" => id}) do
-    group = conn.assigns.current_user |> assoc(:created_groups) |> Repo.get(id)
-
-    IO.puts(inspect group)
+    group = conn.assigns.group
 
     case group do
       %Group{} -> handle_delete(conn, group)
@@ -91,5 +90,12 @@ defmodule FacebookClone.GroupController do
         |> put_flash(:info, "Could not delete group")
         |> redirect(to: group_path(conn, :index))
     end
+  end
+
+  defp find_group(conn, _) do
+    id = conn.params["id"]
+    group = conn.assigns.current_user |> assoc(:created_groups) |> Repo.get(id)
+
+    assign(conn, :group, group)
   end
 end
