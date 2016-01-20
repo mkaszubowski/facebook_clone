@@ -1,3 +1,5 @@
+<%= link "All groups", to: group_path(@conn, :index) %>
+
 <div class="group">
   <h1><%= @group.name %></h1>
 

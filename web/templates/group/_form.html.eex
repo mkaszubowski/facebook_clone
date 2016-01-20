@@ -10,6 +10,6 @@
   </div>
 
   <div class="form-group">
-    <%= submit "Create", class: "btn btn-primary" %>
+    <%= submit submit_label(@conn), class: "btn btn-primary" %>
   </div>
 <% end %>

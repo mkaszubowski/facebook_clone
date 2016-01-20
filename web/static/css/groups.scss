@@ -1,0 +1,25 @@
+.group-list {
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    border-bottom: 1px solid #ddd;
+    padding-top: 10px;
+    position: relative;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .links {
+      position: absolute;
+      top: 10px;
+      right: 0;
+
+      a {
+        margin-left: 5px;
+      }
+    }
+  }
+
+}

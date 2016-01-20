@@ -1,3 +1,5 @@
+<%= link "New group", to: group_path(@conn, :new) %>
+
 <h1>All groups</h1>
 
 <ul class="group-list">
