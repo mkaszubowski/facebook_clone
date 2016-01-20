@@ -4,6 +4,7 @@ defmodule FacebookClone.Post do
   alias FacebookClone.User
   alias FacebookClone.Like
   alias FacebookClone.Post
+  alias FacebookClone.Group
 
   import Ecto.Query
 
@@ -13,6 +14,7 @@ defmodule FacebookClone.Post do
     timestamps
 
     belongs_to :user, User
+    belongs_to :group, Group
     has_many :likes, Like, on_delete: :delete_all
   end
 

@@ -1,6 +1,8 @@
 defmodule FacebookClone.Group do
   use FacebookClone.Web, :model
 
+  alias FacebookClone.Post
+
   schema "groups" do
     field :name, :string
     field :description, :string
