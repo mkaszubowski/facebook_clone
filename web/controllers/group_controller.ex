@@ -7,7 +7,7 @@ defmodule FacebookClone.GroupController do
 
   import SessionHandler, only: [current_user: 1]
 
-  plug :scrub_params, "group" when action in [:create]
+  plug :scrub_params, "group" when action in [:create, :update]
 
   def index(conn, _params) do
     groups = Repo.all(Group)
@@ -22,6 +22,7 @@ defmodule FacebookClone.GroupController do
   end
 
   def create(conn, %{"group" => group}) do
+    group = Map.merge(group, %{"user_id" => conn.assigns.current_user_id})
     changeset = Group.changeset(%Group{}, group)
 
     case Repo.insert(changeset) do
@@ -33,6 +34,62 @@ defmodule FacebookClone.GroupController do
         conn
         |> put_flash(:info, "Could not create group")
         |> render("new.html", changeset: changeset)
+    end
+  end
+
+  def edit(conn, %{"id" => id}) do
+    group = conn.assigns.current_user |> assoc(:created_groups) |> Repo.get(id)
+
+    case group do
+      %Group{} ->
+        changeset = Group.changeset(group)
+
+        render conn, "edit.html", group: group, changeset: changeset
+      nil ->
+        access_denied(conn)
+    end
+  end
+
+  def update(conn, %{"id" => id, "group" => params}) do
+    group = conn.assigns.current_user |> assoc(:created_groups) |> Repo.get(id)
+    changeset = Group.changeset(group, params)
+
+    case Repo.update(changeset) do
+      {:ok, _group} ->
+        conn
+        |> put_flash(:info, "Group updated")
+        |> redirect(to: group_path(conn, :index))
+      {:error, changeset} ->
+        conn
+        |> put_flash(:info, "Could not save group")
+        |> render("edit.html", group: group, changeset: changeset)
+    end
+  end
+
+  def delete(conn, %{"id" => id}) do
+    group = conn.assigns.current_user |> assoc(:created_groups) |> Repo.get(id)
+
+    IO.puts(inspect group)
+
+    case group do
+      %Group{} -> handle_delete(conn, group)
+      _ ->
+        conn
+        |> put_flash(:info, "Could not delete group")
+        |> redirect(to: group_path(conn, :index))
+    end
+  end
+
+  def handle_delete(conn, group) do
+    case Repo.delete(group) do
+      {:ok, _} ->
+        conn
+        |> put_flash(:info, "Group deleted")
+        |> redirect(to: group_path(conn, :index))
+      {:error, _} ->
+        conn
+        |> put_flash(:info, "Could not delete group")
+        |> redirect(to: group_path(conn, :index))
     end
   end
 end

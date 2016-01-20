@@ -8,9 +8,10 @@ defmodule FacebookClone.Group do
     timestamps
 
     has_many :posts, Post
+    belongs_to :user, User
   end
 
-  @required_fields ~w(name)
+  @required_fields ~w(name user_id)
   @optional_fields ~w(description)
 
   def changeset(model, params \\ :empty) do

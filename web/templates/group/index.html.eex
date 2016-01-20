@@ -5,6 +5,11 @@
     <li>
       <span class="name"><%= group.name %></span>
       <p class="description"><%= group.description %></p>
+      <div class="links">
+        <%= edit_link(@conn, group) %>
+        <%= delete_link(@conn, group) %>
+      </div>
+
     </li>
   <% end %>
 </ul>

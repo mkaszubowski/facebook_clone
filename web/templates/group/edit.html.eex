@@ -1,0 +1,3 @@
+<h1>Edit <%= @group.name %></h1>
+
+<%= render "_form.html", conn: @conn, changeset: @changeset, path: group_path(@conn, :update, @group) %>

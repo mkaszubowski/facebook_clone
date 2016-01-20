@@ -50,7 +50,7 @@ defmodule FacebookClone.Router do
       resources "/messages", MessageController, only: [:new, :create, :delete]
     end
 
-    resources "/groups", GroupController, only: [:index, :new, :create]
+    resources "/groups", GroupController, except: [:show]
   end
 
   defp authenticate_logged_in(conn, _) do
@@ -67,7 +67,10 @@ defmodule FacebookClone.Router do
 
   defp assign_current_user(conn, _) do
     user_id = get_session(conn, :current_user_id)
-    assign(conn, :current_user, FacebookClone.UserController.get_by_id(user_id))
+
+    conn
+    |> assign(:current_user_id, user_id)
+    |> assign(:current_user, FacebookClone.UserController.get_by_id(user_id))
   end
 
   # Other scopes may use custom stacks.
