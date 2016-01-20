@@ -6,7 +6,6 @@ defmodule FacebookClone.GroupController do
   alias FacebookClone.SessionHandler
 
   import SessionHandler, only: [current_user: 1]
-  import Ecto.Query
 
   plug :scrub_params, "group" when action in [:create, :update]
   plug :find_group when action in [:edit, :update, :delete]
