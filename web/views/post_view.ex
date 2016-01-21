@@ -28,7 +28,7 @@ defmodule FacebookClone.PostView do
   end
 
   def likes_count(post) do
-    Like.count_for(post) |> Repo.one
+    Enum.count(post.likes)
   end
 
   defp _like_button(conn, post, current_user_id) do

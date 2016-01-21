@@ -1,23 +1,32 @@
-.post-form {
-  label {
-    display: block;
+.post-index {
+  .post-form {
+    display: none;
+
+    &.visible {
+      display: block;
+    }
+
+    label {
+      display: block;
+    }
+
+    textarea {
+      width: 500px;
+      height: 10em;
+    }
   }
 
-  textarea {
-    width: 500px;
-    height: 10em;
-  }
-}
-.post {
-  position: relative;
+  .post {
+    position: relative;
 
-  .post-links {
-    position: absolute;
-    right: 0;
-    top: 0;
+    .post-links {
+      position: absolute;
+      right: 0;
+      top: 0;
 
-    a {
-      margin-left: 0.5em;
+      a {
+        margin-left: 0.5em;
+      }
     }
   }
 }

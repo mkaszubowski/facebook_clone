@@ -75,3 +75,20 @@ form.link, form.button {
     border-bottom: 0;
   }
 }
+
+
+.search-form {
+  form {
+    float: right;
+
+    input[type="text"] {
+      width: 250px;
+    }
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}

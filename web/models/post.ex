@@ -47,4 +47,12 @@ defmodule FacebookClone.Post do
     |> select([p, _], p)
   end
 
+  def search(query, expression) do
+    case expression do
+      x when x == "" or is_nil(x) -> query
+      _ ->
+        from p in query,
+          where: fragment("? % ?", p.content, ^expression)
+    end
+  end
 end

@@ -1,24 +1,31 @@
-<h1>All posts</h1>
-<div class="new-post">
-  <%= render "_form.html", changeset: @changeset, conn: @conn %>
+<div class="post-index">
+  <h1>All posts</h1>
+
+  <%= render FacebookClone.SharedView, "_search_form.html",
+    search: @search, conn: @conn, path: post_path(@conn, :index) %>
+
+  <div class="new-post">
+    <%= link "New post", to: "#", class: "show-post-form" %>
+    <%= render "_form.html", changeset: @changeset, conn: @conn %>
+  </div>
+
+  <hr />
+
+  <%= for post <- @posts do %>
+    <article class="post">
+      <%= post.user.first_name %>
+      <br />
+      <p>
+        <%= post.content %>
+      </p>
+      <span class="likes-count">
+        <%= likes_count(post) %> people like this post.
+      </span>
+      <span class="post-links">
+        <%= post_links(@conn, post, @current_user.id) %>
+      </span>
+      <%= like_button(@conn, post, @current_user.id) %>
+    </article>
+  <hr />
+  <% end %>
 </div>
-
-<hr />
-
-<%= for post <- @posts do %>
-  <article class="post">
-    <%= post.user.first_name %>
-    <br />
-    <p>
-      <%= post.content %>
-    </p>
-    <span class="likes-count">
-      <%= likes_count(post) %> people like this post.
-    </span>
-    <span class="post-links">
-      <%= post_links(@conn, post, @current_user.id) %>
-    </span>
-    <%= like_button(@conn, post, @current_user.id) %>
-  </article>
-<hr />
-<% end %>

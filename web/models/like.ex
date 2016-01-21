@@ -24,10 +24,4 @@ defmodule FacebookClone.Like do
     |> unique_constraint(:user_id_post_id,
                          message: "You've already liked this post")
   end
-
-  def count_for(post) do
-    Like
-    |> where(post_id: ^post.id)
-    |> select([p], count(p.id))
-  end
 end

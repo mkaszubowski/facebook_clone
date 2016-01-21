@@ -8,10 +8,15 @@ defmodule FacebookClone.PostController do
 
   plug :scrub_params, "post" when action in [:create, :update]
 
-  def index(conn, _params) do
+  def index(conn, params) do
+    search = params["search"]["expression"]
     posts = get_visible_posts(conn)
 
-    render(conn, "index.html", posts: posts, changeset: Post.changeset(%Post{}))
+    render(conn, "index.html",
+      posts: posts,
+      changeset: Post.changeset(%Post{}),
+      search: search
+    )
   end
 
   def new(conn, _params) do
@@ -65,11 +70,14 @@ defmodule FacebookClone.PostController do
   end
 
   defp get_visible_posts(conn) do
-      conn
-      |> current_user
-      |> Repo.preload(:friends)
-      |> Post.visible_for_user
-      |> Repo.all
+    search = conn.params["search"]["expression"]
+
+    conn
+    |> current_user
+    |> Repo.preload([:friends, :likes])
+    |> Post.visible_for_user
+    |> Post.search(search)
+    |> Repo.all
   end
 
   defp get_post(conn, id) do
