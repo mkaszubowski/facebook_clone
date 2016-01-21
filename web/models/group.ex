@@ -3,6 +3,8 @@ defmodule FacebookClone.Group do
 
   alias FacebookClone.Post
 
+  import Ecto.Query
+
   schema "groups" do
     field :name, :string
     field :description, :string
@@ -19,5 +21,14 @@ defmodule FacebookClone.Group do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+  end
+
+  def search(query, expression) do
+    case expression do
+      x when x == "" or is_nil(x) -> query
+      _ ->
+        from g in query,
+          where: fragment("? % ?", g.name, ^expression)
+    end
   end
 end

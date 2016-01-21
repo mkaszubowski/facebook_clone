@@ -1,4 +1,4 @@
-<%= form_for @conn, user_path(@conn, :index), [as: :search, method: :get], fn f -> %>
+<%= form_for @conn, @path, [as: :search, method: :get], fn f -> %>
   <%= text_input f, :expression %>
   <%= submit "Search", class: "btn btn-primary" %>
 <% end %>
@@ -6,6 +6,6 @@
 <div class="current-search">
   <%= if @search do %>
     Searching for: <%= @search %>
-    <%= link "x", to: user_path(@conn, :index) %>
+    <%= link "x", to: @path %>
   <% end %>
 </div>

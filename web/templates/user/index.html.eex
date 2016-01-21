@@ -1,6 +1,6 @@
 <h1>All users</h1>
 
-<%= render "_search_form.html", search: @search, conn: @conn %>
+<%= render FacebookClone.SharedView, "_search_form.html", search: @search, conn: @conn, path: user_path(@conn, :index) %>
 
 <ul class="user-list">
   <%= for user <- @users do %>

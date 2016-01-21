@@ -2,6 +2,9 @@
 
 <h1>All groups</h1>
 
+<%= render FacebookClone.SharedView, "_search_form.html", search: @search, conn: @conn, path: group_path(@conn, :index) %>
+
+
 <ul class="group-list">
   <%= for group <- @groups do %>
     <li>

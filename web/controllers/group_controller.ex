@@ -10,10 +10,11 @@ defmodule FacebookClone.GroupController do
   plug :scrub_params, "group" when action in [:create, :update]
   plug :find_group when action in [:edit, :update, :delete]
 
-  def index(conn, _params) do
-    groups = Repo.all(Group)
+  def index(conn, params) do
+    search = params["search"]["expression"]
+    groups = Group |> Group.search(search) |> Repo.all
 
-    render conn, "index.html", groups: groups
+    render conn, "index.html", groups: groups, search: search
   end
 
   def new(conn, _params) do
