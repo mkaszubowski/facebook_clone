@@ -12,8 +12,7 @@
       <span class="name"><%= link group.name, to: group_path(@conn, :show, group) %></span>
       <p class="description"><%= group.description %></p>
       <div class="links">
-        <%= join_link(@conn, group) %>
-        <%= leave_link(@conn, group) %>
+        <%= join_or_leave_link(@conn, group, @current_user) %>
         <%= edit_link(@conn, group) %>
         <%= delete_link(@conn, group) %>
       </div>

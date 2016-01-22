@@ -11,6 +11,14 @@ defmodule FacebookClone.GroupView do
       link("Delete", to: group_path(conn, :delete, group), method: :delete)
   end
 
+  def join_or_leave_link(conn, group, current_user) do
+    if Enum.member?(current_user.groups, group) do
+      leave_link(conn, group)
+    else
+      join_link(conn, group)
+    end
+  end
+
   def join_link(conn, group) do
     form_for conn, group_user_path(conn, :create), [as: :group_user], fn f ->
       [

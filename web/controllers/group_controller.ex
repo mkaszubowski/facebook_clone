@@ -12,9 +12,13 @@ defmodule FacebookClone.GroupController do
 
   def index(conn, params) do
     search = params["search"]["expression"]
+    current_user = conn.assigns.current_user |> Repo.preload(:groups)
     groups = Group |> Group.search(search) |> Repo.all
 
-    render conn, "index.html", groups: groups, search: search
+    render conn, "index.html",
+      groups: groups,
+      search: search,
+      current_user: current_user
   end
 
   def new(conn, _params) do
