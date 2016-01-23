@@ -3,6 +3,7 @@ defmodule FacebookClone.PostView do
 
   alias FacebookClone.Like
   alias FacebookClone.Repo
+  alias FacebookClone.Group
 
 
   def post_links(conn, post, current_user_id) do
@@ -29,6 +30,15 @@ defmodule FacebookClone.PostView do
 
   def likes_count(post) do
     Enum.count(post.likes)
+  end
+
+  def group_input_field(form, conn) do
+    case conn.assigns do
+      %{group: group} ->
+        text_input(form, :group_id, value: group.id, hidden: true)
+      _ ->
+        ""
+    end
   end
 
   defp _like_button(conn, post, current_user_id) do

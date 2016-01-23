@@ -9,6 +9,10 @@
     <% end %>
 
     <div class="form-group">
+      <%= group_input_field(f, @conn) %>
+    </div>
+
+    <div class="form-group">
       <%= textarea f, :content, [class: "form-controll", placeholder: "New post..."] %>
     </div>
 

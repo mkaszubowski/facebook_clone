@@ -3,6 +3,7 @@ defmodule FacebookClone.GroupController do
 
   alias FacebookClone.Repo
   alias FacebookClone.Group
+  alias FacebookClone.Post
   alias FacebookClone.SessionHandler
 
   import SessionHandler, only: [current_user: 1]
@@ -29,8 +30,13 @@ defmodule FacebookClone.GroupController do
 
   def show(conn, %{"id" => id}) do
     group = from(g in Group, preload: :posts) |> Repo.get(id)
+    current_user = conn.assigns.current_user |> Repo.preload(:groups)
+    post_changeset = Post.changeset(%Post{})
 
-    render conn, "show.html", group: group
+    render conn, "show.html",
+      group: group,
+      current_user: current_user,
+      post_changeset: post_changeset
   end
 
   def create(conn, %{"group" => group}) do

@@ -3,6 +3,8 @@
 <div class="group">
   <h1><%= @group.name %></h1>
 
+  <%= render FacebookClone.PostView, "_form.html", conn: @conn, changeset: @post_changeset %>
+
   <div class="description">
     <%= @group.description %>
   </div>
