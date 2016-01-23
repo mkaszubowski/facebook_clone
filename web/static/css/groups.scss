@@ -5,6 +5,7 @@
   li {
     border-bottom: 1px solid #ddd;
     padding-top: 10px;
+    height: 60px;
     position: relative;
 
     &:last-child {
@@ -13,11 +14,15 @@
 
     .links {
       position: absolute;
-      top: 10px;
+      top: 20px;
       right: 0;
 
       a {
         margin-left: 5px;
+      }
+
+      form {
+        display: inline;
       }
     }
   }
