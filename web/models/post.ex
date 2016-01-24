@@ -19,10 +19,11 @@ defmodule FacebookClone.Post do
   end
 
   @required_fields ~w(user_id content)
+  @optional_fields ~w(group_id)
 
   def changeset(model, params \\ :empty) do
     model
-    |> cast(params, @required_fields, [])
+    |> cast(params, @required_fields, @optional_fields)
     |> update_change(:content, &String.lstrip/1)
     |> validate_length(:content, min: 1, message: "Can't be blank")
     |> foreign_key_constraint(:user_id, message: "User does not exist")
@@ -54,5 +55,10 @@ defmodule FacebookClone.Post do
         from p in query,
           where: fragment("? % ?", p.content, ^expression)
     end
+  end
+
+  def for_group(query, group) do
+    from p in query,
+      where: p.group_id == ^group.id
   end
 end

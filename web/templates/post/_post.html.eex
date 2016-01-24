@@ -1,0 +1,16 @@
+<article class="post">
+  <%= @post.user.first_name %>
+  <br />
+  <p>
+    <%= @post.content %>
+  </p>
+  <span class="likes-count">
+    <%= likes_count(@post) %> people like this post.
+  </span>
+  <span class="post-links">
+    <%= post_links(@conn, @post, @current_user.id) %>
+  </span>
+  <%= like_button(@conn, @post, @current_user.id) %>
+</article>
+
+<hr/>

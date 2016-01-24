@@ -3,6 +3,7 @@ defmodule FacebookClone.LikeController do
 
   alias FacebookClone.Repo
   alias FacebookClone.Like
+  alias FacebookClone.Post
 
   import FacebookClone.SessionHandler, only: [current_user: 1]
 
@@ -15,10 +16,10 @@ defmodule FacebookClone.LikeController do
     })
 
     case Repo.insert(changeset) do
-      {:ok, _like} ->
+      {:ok, like} ->
         conn
         |> put_flash(:info, "You liked selected post")
-        |> redirect(to: post_path(conn, :index))
+        |> redirect(to: redirect_path(conn, like))
       {:error, _} ->
         conn
         |> put_flash(:info, "Could not like selected post")
@@ -33,9 +34,18 @@ defmodule FacebookClone.LikeController do
     case like do
       %Like{user_id: ^current_user_id} ->
         {:ok, _} = Repo.delete(like)
-        conn |> redirect(to: post_path(conn, :index))
+        conn |> redirect(to: redirect_path(conn, like))
       _ ->
         access_denied(conn)
+    end
+  end
+
+  defp redirect_path(conn, like) do
+    post = Repo.get(Post, like.post_id)
+
+    case post.group_id do
+      nil -> post_path(conn, :index)
+      id -> group_path(conn, :show, id)
     end
   end
 end

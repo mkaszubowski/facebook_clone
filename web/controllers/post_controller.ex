@@ -28,10 +28,10 @@ defmodule FacebookClone.PostController do
     changeset = Post.changeset(%Post{}, post)
 
     case Repo.insert(changeset) do
-      {:ok, _} ->
+      {:ok, post} ->
         conn
         |> put_flash(:info, "Post added")
-        |> redirect to: post_path(conn, :index)
+        |> redirect to: after_create_path(conn, post)
       {:error, changeset} ->
         conn
         |> put_flash(:info, "Could not save the post")
@@ -110,5 +110,12 @@ defmodule FacebookClone.PostController do
     conn
     |> put_flash(:info, "Post deleted")
     |> redirect to: post_path(conn, :index)
+  end
+
+  defp after_create_path(conn, post) do
+    case post.group_id do
+      nil -> post_path(conn, :index)
+      id -> group_path(conn, :show, id)
+    end
   end
 end

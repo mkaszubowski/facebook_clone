@@ -3,9 +3,31 @@
 <div class="group">
   <h1><%= @group.name %></h1>
 
-  <%= render FacebookClone.PostView, "_form.html", conn: @conn, changeset: @post_changeset %>
-
   <div class="description">
     <%= @group.description %>
   </div>
+
+  <%= join_or_leave_link(@conn, @group, @current_user) %>
+
+  <hr>
+
+  <%= if is_member?(@current_user, @group) do %>
+
+    <h2>Posts</h2>
+
+    <%= render FacebookClone.PostView, "_form.html", conn: @conn, changeset: @post_changeset %>
+
+    <div class="posts">
+      <ul>
+        <%= for post <- @posts  do %>
+          <li>
+            <%= render FacebookClone.PostView, "_post.html", conn: @conn, post: post, current_user: @current_user %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+  <%= else %>
+    <h2>Join the group to see the posts</h2>
+  <% end %>
 </div>

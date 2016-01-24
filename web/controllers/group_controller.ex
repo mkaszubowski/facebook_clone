@@ -30,13 +30,15 @@ defmodule FacebookClone.GroupController do
 
   def show(conn, %{"id" => id}) do
     group = from(g in Group, preload: :posts) |> Repo.get(id)
+    posts = get_visible_posts(conn, group)
     current_user = conn.assigns.current_user |> Repo.preload(:groups)
     post_changeset = Post.changeset(%Post{})
 
     render conn, "show.html",
       group: group,
       current_user: current_user,
-      post_changeset: post_changeset
+      post_changeset: post_changeset,
+      posts: posts
   end
 
   def create(conn, %{"group" => group}) do
@@ -96,7 +98,7 @@ defmodule FacebookClone.GroupController do
     end
   end
 
-  def handle_delete(conn, group) do
+  defp handle_delete(conn, group) do
     case Repo.delete(group) do
       {:ok, _} ->
         conn
@@ -107,6 +109,15 @@ defmodule FacebookClone.GroupController do
         |> put_flash(:info, "Could not delete group")
         |> redirect(to: group_path(conn, :index))
     end
+  end
+
+  defp get_visible_posts(conn, group) do
+    conn
+    |> current_user
+    |> Repo.preload([:friends, :likes])
+    |> Post.visible_for_user
+    |> Post.for_group(group)
+    |> Repo.all
   end
 
   defp find_group(conn, _) do
