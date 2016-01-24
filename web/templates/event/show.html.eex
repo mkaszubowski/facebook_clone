@@ -1,0 +1,15 @@
+<div class="event">
+  <h1><%= @event.name %></h1>
+  <div class="description"><%= @event.description %></div>
+  <div class="date"><%= @event.date %></div>
+
+  <h2>Participants</h2>
+
+  <ul class="users">
+    <%= for user <- @event.users do %>
+      <li>
+        <%= FacebookClone.UserView.full_name(user) %>
+      </li>
+    <% end %>
+  </ul>
+</div>

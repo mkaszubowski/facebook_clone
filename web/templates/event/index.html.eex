@@ -1,0 +1,12 @@
+<h1>Your events</h1>
+
+<div class="events">
+  <ul>
+    <%= for event <- @events do %>
+      <li>
+        <%= link event.name, to: event_path(@conn, :show, event) %>
+      </li>
+      <hr>
+    <% end %>
+  </ul>
+</div>

@@ -39,6 +39,9 @@
         <section class="sidebar">
           <ul>
             <li>
+              <%= link "Posts", to: post_path(@conn, :index) %>
+            </li>
+            <li>
               <%= link "Messages", to: conversation_path(@conn, :index) %>
             </li>
             <li>
@@ -48,13 +51,13 @@
               <%= link "Users", to: user_path(@conn, :index) %>
             </li>
             <li>
-              <%= link "Posts", to: post_path(@conn, :index) %>
-            </li>
-            <li>
-              <%= if @current_user, do: link("Photos", to: user_photo_path(@conn, :index, @current_user)) %>
+              <%= link("Photos", to: user_photo_path(@conn, :index, @current_user)) %>
             </li>
             <li>
               <%= link "Groups", to: group_path(@conn, :index) %>
+            </li>
+            <li>
+              <%= link "Events", to: event_path(@conn, :index) %>
             </li>
           </ul>
         </section>

@@ -52,6 +52,8 @@ defmodule FacebookClone.Router do
 
     resources "/groups", GroupController
     resources "/group_users", GroupUserController, only: [:create, :delete]
+
+    resources "/events", EventController, only: [:show, :index, :new, :create]
   end
 
   defp authenticate_logged_in(conn, _) do

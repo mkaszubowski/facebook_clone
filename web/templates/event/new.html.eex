@@ -1,0 +1,13 @@
+<h1>New event</h1>
+
+<%= form_for @changeset, event_path(@conn, :create), fn f -> %>
+  <div class="form-group">
+    <%= text_input f, :name, placeholder: "Name" %>
+  </div>
+
+  <div class="form-group">
+    <%= datetime_select f, :date, placeholder: "Name" %>
+  </div>
+
+  <%= submit "Create", class: "btn btn-primary" %>
+<% end %>
