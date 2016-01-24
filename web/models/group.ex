@@ -1,7 +1,7 @@
 defmodule FacebookClone.Group do
   use FacebookClone.Web, :model
 
-  alias FacebookClone.Post
+  alias FacebookClone.{ Post, GroupUser, User }
 
   import Ecto.Query
 
@@ -13,6 +13,9 @@ defmodule FacebookClone.Group do
 
     has_many :posts, Post
     belongs_to :user, User
+
+    has_many :group_users, GroupUser, on_delete: :delete_all
+    has_many :users, through: [:group_users, :user]
   end
 
   @required_fields ~w(name user_id)

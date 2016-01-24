@@ -35,7 +35,13 @@
 }
 
 .group {
+  .description {
+    margin-bottom: 20px;
+  }
+
   .posts {
+    width: 70%;
+    float: left;
     ul {
       list-style: none;
       padding-left: 0;
@@ -53,6 +59,23 @@
           }
         }
       }
+    }
+
+    .post-form {
+      textarea {
+        width: 450px;
+        height: 100px;
+      }
+    }
+  }
+
+  .members {
+    width: 25%;
+    float: right;
+
+    ul {
+      list-style: none;
+      padding-left: 0;
     }
   }
 }

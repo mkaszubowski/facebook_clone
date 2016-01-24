@@ -13,11 +13,10 @@
 
   <%= if is_member?(@current_user, @group) do %>
 
-    <h2>Posts</h2>
-
-    <%= render FacebookClone.PostView, "_form.html", conn: @conn, changeset: @post_changeset %>
-
     <div class="posts">
+      <h2>Posts</h2>
+      <%= render FacebookClone.PostView, "_form.html", conn: @conn, changeset: @post_changeset %>
+
       <ul>
         <%= for post <- @posts  do %>
           <li>
@@ -27,7 +26,18 @@
       </ul>
     </div>
 
-  <%= else %>
-    <h2>Join the group to see the posts</h2>
+    <div class="members">
+      <h2>Members</h2>
+      <ul>
+        <%= for user <- @group.users do %>
+          <li>
+            <%= link FacebookClone.UserView.full_name(user), to: user_path(@conn, :show, user) %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+  <% else %>
+    <h2>Join the group to see the posts and members</h2>
   <% end %>
 </div>

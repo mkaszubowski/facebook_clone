@@ -29,7 +29,7 @@ defmodule FacebookClone.GroupController do
   end
 
   def show(conn, %{"id" => id}) do
-    group = from(g in Group, preload: :posts) |> Repo.get(id)
+    group = from(g in Group, preload: [:posts, :users]) |> Repo.get(id)
     posts = get_visible_posts(conn, group)
     current_user = conn.assigns.current_user |> Repo.preload(:groups)
     post_changeset = Post.changeset(%Post{})
