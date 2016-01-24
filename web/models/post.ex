@@ -57,6 +57,10 @@ defmodule FacebookClone.Post do
     end
   end
 
+  def not_in_groups(query) do
+    from p in query, where: is_nil(p.group_id)
+  end
+
   def for_group(query, group) do
     from p in query,
       where: p.group_id == ^group.id

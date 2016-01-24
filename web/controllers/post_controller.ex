@@ -76,6 +76,7 @@ defmodule FacebookClone.PostController do
     |> current_user
     |> Repo.preload([:friends, :likes])
     |> Post.visible_for_user
+    |> Post.not_in_groups
     |> Post.search(search)
     |> Repo.all
   end
