@@ -15,7 +15,13 @@ defmodule FacebookClone.UserController do
 
   def index(conn, params) do
     search_expression = params["search"]["expression"]
-    current_user = current_user(conn)
+    current_user =
+      conn.assigns.current_user
+      |> Repo.preload(
+        [:friends, :friendship_invitations, :received_friendship_invitations])
+    possible_friends_ids = User.possible_friends_ids(current_user)
+    possible_friends =
+      from(u in User, where: u.id in ^possible_friends_ids) |> Repo.all
 
     users =
       User
@@ -23,7 +29,11 @@ defmodule FacebookClone.UserController do
       |> User.search(search_expression)
       |> Repo.all
 
-    render(conn, "index.html", users: users, search: search_expression)
+    render(conn, "index.html",
+      users: users,
+      search: search_expression,
+      possible_friends: possible_friends,
+      current_user: current_user)
   end
 
   def show(conn, %{"id" => id}) do

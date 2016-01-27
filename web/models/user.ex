@@ -95,4 +95,16 @@ defmodule FacebookClone.User do
                  fragment("? % ?", u.email, ^expression)
     end
   end
+
+  def possible_friends_ids(user) do
+    id = user.id
+
+    {:ok, result} = Ecto.Adapters.SQL.query(
+      Repo, "select possible_friends_ids($1)", [id])
+
+    result.rows
+    |> Enum.map(&(to_string(&1)))
+    |> Enum.join("")
+    |> to_char_list
+  end
 end

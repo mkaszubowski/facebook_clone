@@ -10,3 +10,14 @@
     </div>
   <% end %>
 </ul>
+
+<hr>
+
+<h2>Possible friends:</h2>
+<ul class="possible-friends">
+  <%= for possible_friend <- @possible_friends do %>
+   <li>
+     <%= link FacebookClone.UserView.full_name(possible_friend), to: user_path(@conn, :show, possible_friend) %>
+   </li>
+  <% end %>
+</ul>
