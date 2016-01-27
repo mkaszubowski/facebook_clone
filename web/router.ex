@@ -35,7 +35,7 @@ defmodule FacebookClone.Router do
     pipe_through [:browser, :require_authenticated]
 
     resources "/users", UserController, only: [:index, :show, :edit, :update] do
-      resources "/photos", PhotoController, only: [:new, :create, :index]
+      resources "/photos", PhotoController, except: [:show]
     end
 
     resources "/friendship_invitations", FriendshipInvitationController,
@@ -52,6 +52,7 @@ defmodule FacebookClone.Router do
 
     resources "/groups", GroupController
     resources "/group_users", GroupUserController, only: [:create, :delete]
+    delete "/groups/:id/delete_posts", GroupController, :delete_posts
 
     resources "/events", EventController, only: [:show, :index, :new, :create]
   end

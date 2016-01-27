@@ -1,4 +1,4 @@
-<%= form_for @conn, user_photo_path(@conn, @action, @current_user), [as: :photo, multipart: true], fn f -> %>
+<%= form_for @conn, @path, [as: :photo, multipart: true, method: @method], fn f -> %>
   <div class="form-group">
     <label>Photo</label>
     <%= file_input f, :photo_file, class: "form-control" %>

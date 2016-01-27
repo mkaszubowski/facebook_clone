@@ -1,0 +1,4 @@
+<h1>Edit photo</h1>
+
+<%= render_form(@conn, @current_user, @photo) %>
+

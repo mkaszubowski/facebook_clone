@@ -1,3 +1,3 @@
 <h1>Add new photo</h1>
 
-<%= render "_form.html", conn: @conn, action: :create, current_user: @current_user %>
+<%= render_form(@conn, @current_user) %>
