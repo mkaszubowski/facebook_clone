@@ -27,10 +27,6 @@ defmodule FacebookClone.UserView do
   end
 
   def invite_button(conn, user, current_user) do
-    current_user = Repo.preload(
-      current_user,
-      [:friends, :friendship_invitations, :received_friendship_invitations])
-
     pending_ids =
       current_user.friendship_invitations
       |> Enum.map(&(&1.invited_id))

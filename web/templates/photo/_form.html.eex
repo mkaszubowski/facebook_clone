@@ -1,0 +1,15 @@
+<%= form_for @conn, user_photo_path(@conn, @action, @current_user), [as: :photo, multipart: true], fn f -> %>
+  <div class="form-group">
+    <label>Photo</label>
+    <%= file_input f, :photo_file, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label>Description</label>
+    <%= text_input f, :description, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>
