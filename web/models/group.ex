@@ -1,7 +1,7 @@
 defmodule FacebookClone.Group do
   use FacebookClone.Web, :model
 
-  alias FacebookClone.{ Post, GroupUser, User }
+  alias FacebookClone.{ Repo, Post, GroupUser, User }
 
   import Ecto.Query
 
@@ -33,5 +33,10 @@ defmodule FacebookClone.Group do
         from g in query,
           where: fragment("? % ?", g.name, ^expression)
     end
+  end
+
+  def delete_all_posts(group) do
+    id = group.id
+    Ecto.Adapters.SQL.query(Repo, "select delete_group_posts($1)", [id])
   end
 end

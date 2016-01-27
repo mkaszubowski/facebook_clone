@@ -9,6 +9,8 @@
 
   <%= join_or_leave_link(@conn, @group, @current_user) %>
 
+  <%= delete_posts_link(@conn, @group) %>
+
   <hr>
 
   <%= if is_member?(@current_user, @group) do %>

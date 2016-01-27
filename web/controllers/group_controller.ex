@@ -98,6 +98,24 @@ defmodule FacebookClone.GroupController do
     end
   end
 
+  def delete_posts(conn, %{"id" => id}) do
+    group = Repo.get(Group, id)
+    current_user_id = conn.assigns.current_user_id
+
+    case group do
+      nil ->
+        conn
+        |> put_flash(:info, "Group not found")
+        |> redirect(to: group_path(conn, :index))
+      %Group{user_id: ^current_user_id} ->
+        Group.delete_all_posts(group)
+
+        conn
+        |> put_flash(:info, "Deleted posts for this group")
+        |> redirect(to: group_path(conn, :show, group))
+    end
+  end
+
   defp handle_delete(conn, group) do
     case Repo.delete(group) do
       {:ok, _} ->

@@ -11,6 +11,11 @@ defmodule FacebookClone.GroupView do
       link("Delete", to: group_path(conn, :delete, group), method: :delete)
   end
 
+  def delete_posts_link(conn, group) do
+    if conn.assigns.current_user_id == group.user_id, do:
+      link "Delete all posts", to: group_path(conn, :delete_posts, group), method: :delete
+  end
+
   def is_member?(user, group) do
     group_ids = Enum.map(user.groups, &(&1.id))
     Enum.member?(group_ids, group.id)
@@ -28,7 +33,7 @@ defmodule FacebookClone.GroupView do
     form_for conn, group_user_path(conn, :create), [as: :group_user], fn f ->
       [
         (text_input f, :group_id, type: :hidden, value: group.id),
-        (submit "Join")
+        (submit "Join", class: "btn btn-primary")
       ]
     end
   end
@@ -38,7 +43,7 @@ defmodule FacebookClone.GroupView do
       [as: :group_user, method: :delete], fn f ->
       [
         (text_input f, :group_id, type: :hidden, value: group.id),
-        (submit "Leave")
+        (submit "Leave", class: "btn btn-primary")
       ]
     end
   end
