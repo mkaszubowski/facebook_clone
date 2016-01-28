@@ -5,6 +5,10 @@
     <%= for event <- @events do %>
       <li>
         <%= link event.name, to: event_path(@conn, :show, event) %>
+        <div class="links">
+          <%= edit_link(@conn, event) %>
+          <%= delete_link(@conn, event) %>
+        </div>
       </li>
       <hr>
     <% end %>

@@ -1,0 +1,15 @@
+<%= form_for @changeset, @path, [method: @method], fn f -> %>
+  <div class="form-group">
+    <%= text_input f, :name, placeholder: "Name" %>
+  </div>
+
+  <div class="form-group">
+    <%= text_input f, :description, placeholder: "Description" %>
+  </div>
+
+  <div class="form-group">
+    <%= datetime_select f, :date %>
+  </div>
+
+  <%= submit "Create", class: "btn btn-primary" %>
+<% end %>

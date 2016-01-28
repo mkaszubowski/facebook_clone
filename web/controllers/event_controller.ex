@@ -3,6 +3,8 @@ defmodule FacebookClone.EventController do
 
   alias FacebookClone.{Repo, Event, EventUser}
 
+  plug :scrub_params, "event" when action in [:create, :update]
+
   def index(conn, _params) do
     current_user =
       conn.assigns.current_user
@@ -37,6 +39,42 @@ defmodule FacebookClone.EventController do
         conn
         |> put_flash(:info, "Event created")
         |> redirect(to: event_path(conn, :show, event))
+    end
+  end
+
+  def edit(conn, %{"id" => id}) do
+    current_user_id = conn.assigns.current_user_id
+    event = Repo.get(Event, id)
+    changeset = Event.changeset(event)
+
+    case event do
+      %Event{user_id: ^current_user_id} ->
+        render conn, "edit.html", changeset: changeset, event: event
+      _ ->
+        access_denied(conn)
+    end
+  end
+
+  def update(conn, %{"id" => id, "event" => params}) do
+    current_user_id = conn.assigns.current_user_id
+    event = Repo.get(Event, id)
+    changeset = Event.changeset(event, params)
+
+    case event do
+      %Event{user_id: ^current_user_id} ->
+
+        case Repo.update(changeset) do
+          {:ok, _event} ->
+            conn
+            |> put_flash(:info, "Event updated")
+            |> redirect(to: event_path(conn, :show, event))
+          {:error, changeset} ->
+            conn
+            |> put_flash(:info, "Could not save the event")
+            |> render("edit.html", changeset: changeset, event: event)
+        end
+      _ ->
+        access_denied(conn)
     end
   end
 
