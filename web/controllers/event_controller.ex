@@ -4,10 +4,15 @@ defmodule FacebookClone.EventController do
   alias FacebookClone.{Repo, Event, EventUser}
 
   def index(conn, _params) do
-    current_user = conn.assigns.current_user |> Repo.preload(:events)
-    events = current_user.events
+    current_user =
+      conn.assigns.current_user
+      |> Repo.preload([:events, [event_invitations: [:event, :invited_by]]])
 
-    render conn, "index.html", events: events
+    events = current_user.events
+    invitations = current_user.event_invitations
+
+
+    render conn, "index.html", events: events, invitations: invitations
   end
 
   def show(conn, %{"id" => id}) do

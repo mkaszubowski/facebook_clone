@@ -12,4 +12,10 @@
       </li>
     <% end %>
   </ul>
+
+  <%= form_for @conn, event_invitation_path(@conn, :create, @event), [as: :invitation], fn f -> %>
+    <%= text_input f, :user_id %>
+
+    <%= submit "Invite" %>
+  <% end %>
 </div>

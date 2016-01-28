@@ -1,16 +1,10 @@
 defmodule FacebookClone.User do
   use FacebookClone.Web, :model
 
-  alias FacebookClone.Repo
-  alias FacebookClone.Friendship
-  alias FacebookClone.FriendshipInvitation
-  alias FacebookClone.Post
-  alias FacebookClone.Like
-  alias FacebookClone.Photo
-  alias FacebookClone.Group
-  alias FacebookClone.GroupUser
-  alias FacebookClone.Event
-  alias FacebookClone.EventUser
+  alias FacebookClone.{
+    Repo, Friendship, FriendshipInvitation, Post,
+    Like, Photo, Group, GroupUser, Event, EventUser, EventInvitation
+  }
 
   import Ecto.Query
 
@@ -51,6 +45,8 @@ defmodule FacebookClone.User do
 
     has_many :event_users, EventUser, on_delete: :delete_all
     has_many :events, through: [:event_users, :event]
+
+    has_many :event_invitations, EventInvitation, on_delete: :delete_all
   end
 
   @required_fields ~w(email password first_name last_name)

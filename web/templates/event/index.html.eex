@@ -9,4 +9,17 @@
       <hr>
     <% end %>
   </ul>
+
+  <ul class="invitations">
+    <%= for invitation <- @invitations do %>
+      <li>
+        <%= invitation.event.name %>
+        invited by
+        <%= FacebookClone.UserView.full_name(invitation.invited_by) %>
+
+        <%= accept_link(@conn, invitation) %>
+      </li>
+    <% end %>
+  </ul>
 </div>
+

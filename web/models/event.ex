@@ -1,7 +1,7 @@
 defmodule FacebookClone.Event do
   use FacebookClone.Web, :model
 
-  alias FacebookClone.{User, EventUser}
+  alias FacebookClone.{User, EventUser, EventInvitation}
 
   schema "events" do
     field :name, :string
@@ -14,6 +14,8 @@ defmodule FacebookClone.Event do
 
     has_many :event_users, EventUser, on_delete: :delete_all
     has_many :users, through: [:event_users, :user]
+
+    has_many :invitations, EventInvitation, on_delete: :delete_all
   end
 
   @required_fields ~w(name user_id date)

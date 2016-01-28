@@ -34,6 +34,8 @@ defmodule FacebookClone.Web do
       import Ecto
       import Ecto.Query
 
+      import FacebookClone.Controller.Helpers
+
       import FacebookClone.Router.Helpers
 
       import FacebookClone.SessionPlug, only: [

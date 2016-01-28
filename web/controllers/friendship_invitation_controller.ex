@@ -62,10 +62,4 @@ defmodule FacebookClone.FriendshipInvitationController do
       invited_id: String.to_integer(invitation["invited_id"])
     }
   end
-
-  defp error_messages(changeset) do
-    changeset.errors
-    |> Dict.values
-    |> Enum.join(". ")
-  end
 end
