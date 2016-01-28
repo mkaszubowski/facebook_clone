@@ -41,6 +41,22 @@ defmodule FacebookClone.PostView do
     end
   end
 
+  def render_form(conn, changeset) do
+    render "_form.html",
+      conn: conn,
+      changeset: changeset,
+      path: post_path(conn, :create),
+      method: :post
+  end
+
+  def render_form(conn, changeset, post) do
+    render "_form.html",
+      conn: conn,
+      changeset: changeset,
+      path: post_path(conn, :update, post),
+      method: :put
+  end
+
   defp _like_button(conn, post, current_user_id) do
     form_for conn, like_path(conn, :create), [as: :like], fn f ->
       [

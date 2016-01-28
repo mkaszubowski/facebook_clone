@@ -17,7 +17,7 @@
 
     <div class="posts">
       <h2>Posts</h2>
-      <%= render FacebookClone.PostView, "_form.html", conn: @conn, changeset: @post_changeset %>
+      <%= FacebookClone.PostView.render_form(@conn, @post_changeset) %>
 
       <ul>
         <%= for post <- @posts  do %>

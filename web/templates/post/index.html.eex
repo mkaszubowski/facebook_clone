@@ -6,7 +6,8 @@
 
   <div class="new-post">
     <%= link "New post", to: "#", class: "show-post-form" %>
-    <%= render "_form.html", changeset: @changeset, conn: @conn %>
+    <%= render_form(@conn, @changeset) %>
+
   </div>
 
   <hr />

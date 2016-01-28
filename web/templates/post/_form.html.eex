@@ -1,8 +1,8 @@
 <div class="post-form">
-  <%= form_for @changeset, post_path(@conn, :create), [as: :post], fn f -> %>
-    <%= if f.errors != [] do %>
+  <%= form_for @changeset, @path, [method: @method], fn f -> %>
+    <%= if @changeset.errors != [] do %>
       <div class="alert alert-danger">
-        <%= for {attr, message} <- f.errors do %>
+        <%= for {attr, message} <- @changeset.errors do %>
           <span><%= "#{humanize(attr)} #{message}" %></span>
         <% end %>
       </div>
