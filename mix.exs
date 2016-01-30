@@ -43,7 +43,8 @@ defmodule FacebookClone.Mixfile do
      {:credo, "~>0.1.0"},
      {:excoveralls, "~> 0.4", only: :test},
      {:arc, "~> 0.2.2"},
-     {:arc_ecto, "~> 0.3.1"}
+     {:arc_ecto, "~> 0.3.1"},
+     {:faker, "~> 0.5"}
   ]
   end
 
