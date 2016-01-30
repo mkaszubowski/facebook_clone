@@ -55,6 +55,7 @@ defmodule FacebookClone.Router do
     delete "/groups/:id/delete_posts", GroupController, :delete_posts
 
     put "/invitations/:id/accept", EventInvitationController, :update
+
     resources "/events", EventController do
       resources "/invitations", EventInvitationController,
         only: [:create], as: :invitation

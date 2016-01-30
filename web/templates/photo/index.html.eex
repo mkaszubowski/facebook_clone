@@ -4,15 +4,6 @@
 
 <div class="photos">
   <%= for photo <- @photos do %>
-    <div class="photo-container">
-      <img src="<%= photo_path(photo) %>" />
-      <div class="description">
-        <%= photo.description %>
-        <div class="links">
-          <%= edit_link(@conn, photo, @current_user) %>
-          <%= delete_link(@conn, photo, @current_user) %>
-        </div>
-      </div>
-    </div>
+    <%= render "_photo.html", photo: photo, conn: @conn, current_user: @current_user %>
   <% end %>
 </div>

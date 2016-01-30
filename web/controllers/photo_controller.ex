@@ -50,8 +50,9 @@ defmodule FacebookClone.PhotoController do
 
   def edit(conn, %{"id" => id}) do
     photo = Repo.get(Photo, id)
+    changeset = Photo.changeset(photo)
 
-    render conn, "edit.html", photo: photo
+    render conn, "edit.html", photo: photo, changeset: changeset
   end
 
   def update(conn, %{"id" => id, "photo" => params}) do

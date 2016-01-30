@@ -3,6 +3,8 @@ defmodule FacebookClone.Conversation do
 
   alias FacebookClone.User
   alias FacebookClone.Conversation
+  alias FacebookClone.Message
+
 
   import Ecto.Query
 
@@ -13,6 +15,8 @@ defmodule FacebookClone.Conversation do
 
     belongs_to :user_one, User
     belongs_to :user_two, User
+
+    has_many :messages, Message, foreign_key: :conversation_id, on_delete: :delete_all
   end
 
   @required_fields ~w(user_one_id user_two_id)

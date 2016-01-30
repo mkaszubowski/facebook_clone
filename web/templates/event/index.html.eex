@@ -1,6 +1,7 @@
 <h1>Your events</h1>
 
 <div class="events">
+  <%= link "Add new", to: event_path(@conn, :new) %>
   <ul>
     <%= for event <- @events do %>
       <li>

@@ -37,7 +37,9 @@ defmodule FacebookClone.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    case Repo.get(User, id) do
+    query = from(u in User, preload: :photos)
+
+    case Repo.get(query, id)  do
       nil ->
         conn
         |> put_flash(:info, "User not found")

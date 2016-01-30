@@ -1,7 +1,4 @@
 <div class="user-profile">
-  <div class="user-photo">
-    <img src="<%= random_photo_path(@user) %>" alt="<%= full_name(@user) %>">
-  </div>
   <h1><%= full_name(@user) %></h1>
 
   <ul class="user-info">
@@ -9,5 +6,11 @@
     <li><span>Gender:</span> <%= gender(@user) %></li>
     <li><span>Birthday:</span> <%= @user.birthday %></li>
   </ul>
-  <%= link "Photos", to: user_photo_path(@conn, :index, @user) %>
+
+  <div class="photos">
+    <%= for photo <- @user.photos do %>
+      <%= render FacebookClone.PhotoView, "_photo.html",
+          photo: photo, conn: @conn, current_user: @current_user %>
+    <% end %>
+  </div>
 </div>

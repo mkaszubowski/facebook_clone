@@ -30,13 +30,15 @@ defmodule FacebookClone.PhotoView do
   def render_form(conn, current_user) do
     render "_form.html",
       conn: conn,
+      changeset: conn,
       path: user_photo_path(conn, :create, current_user),
       method: :post
   end
 
-  def render_form(conn, current_user, photo) do
+  def render_form(conn, changeset, current_user, photo) do
     render "_form.html",
       conn: conn,
+      changeset: changeset,
       path: user_photo_path(conn, :update, current_user, photo),
       method: :put
   end

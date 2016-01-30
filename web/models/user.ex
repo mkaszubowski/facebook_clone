@@ -2,7 +2,7 @@ defmodule FacebookClone.User do
   use FacebookClone.Web, :model
 
   alias FacebookClone.{
-    Repo, Friendship, FriendshipInvitation, Post,
+    Repo, Friendship, FriendshipInvitation, Post, Conversation,
     Like, Photo, Group, GroupUser, Event, EventUser, EventInvitation
   }
 
@@ -27,12 +27,21 @@ defmodule FacebookClone.User do
              on_delete: :delete_all
     has_many :friends, through: [:friendships, :friend]
 
-    has_many :friendship_invitations,
-             FriendshipInvitation,
-             on_delete: :delete_all
     has_many :received_friendship_invitations,
              FriendshipInvitation,
              foreign_key: :invited_id,
+             on_delete: :delete_all
+    has_many :friendship_invitations,
+             FriendshipInvitation,
+             on_delete: :delete_all
+
+    has_many :conversations,
+             Conversation,
+             foreign_key: :user_one_id,
+             on_delete: :delete_all
+    has_many :reversed_conversations,
+             Conversation,
+             foreign_key: :user_two_id,
              on_delete: :delete_all
 
     has_many :posts, Post, on_delete: :delete_all
