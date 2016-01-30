@@ -18,7 +18,9 @@ defmodule FacebookClone.EventController do
   end
 
   def show(conn, %{"id" => id}) do
-    event = Repo.get(Event, id) |> Repo.preload(:users)
+    event =
+      Repo.get(Event, id)
+      |> Repo.preload([:users, [invitations: :user]])
 
     render conn, "show.html", event: event
   end

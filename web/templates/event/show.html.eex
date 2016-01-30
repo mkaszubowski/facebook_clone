@@ -13,8 +13,17 @@
     <% end %>
   </ul>
 
+  <h2>Invited users:</h2>
+  <ul class="invited-users">
+    <%= for invitation <- @event.invitations do %>
+      <li>
+        <%= FacebookClone.UserView.full_name(invitation.user) %>
+      </li>
+    <% end %>
+  </ul>
+
   <%= form_for @conn, event_invitation_path(@conn, :create, @event), [as: :invitation], fn f -> %>
-    <%= text_input f, :user_id %>
+    <%= select f, :user_id, FacebookClone.ConversationView.friends_select_options(@conn) %>
 
     <%= submit "Invite" %>
   <% end %>

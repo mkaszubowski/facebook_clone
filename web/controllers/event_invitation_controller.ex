@@ -15,11 +15,12 @@ defmodule FacebookClone.EventInvitationController do
     case Repo.insert(changeset) do
       {:ok, _invitation} ->
         conn
-        |> put_flash(:conn, "User invited")
+        |> put_flash(:info, "User invited")
         |> redirect(to: event_path(conn, :show, event))
       {:error, changeset} ->
         conn
-        |> put_flash(:conn, error_messages(changeset))
+
+        |> put_flash(:info, "User already invited")
         |> redirect(to: event_path(conn, :show, event))
     end
   end
