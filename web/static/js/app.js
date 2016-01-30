@@ -22,3 +22,58 @@ import "deps/phoenix_html/web/static/js/phoenix_html"
 
 import "./conversation"
 import "./post"
+
+
+import { Socket } from "deps/phoenix/web/static/js/phoenix"
+
+class App {
+  static init() {
+    var message = $("#message_content")
+
+
+    let token = $("meta[name=channel_token]").attr("content")
+    let conversationToken = $("meta[name=conversation_token]").attr("content")
+
+    console.log(token)
+
+    let socket = new Socket("/socket", {params: {
+      token: token,
+      conversation: conversationToken
+    }})
+
+    socket.connect()
+    socket.onClose( e => console.log("Closed connection") )
+
+    var channel = socket.channel("conversations:general", {})
+    channel.join()
+      .receive( "error", () => console.log("Connection error") )
+      .receive( "ok", () => console.log("Connected") )
+
+     message.off("keypress")
+      .on("keypress", e => {
+        if (e.keyCode == 13) {
+          e.preventDefault()
+          console.log(`${message.val()}`)
+
+          channel.push("new:message", {
+            content: message.val()
+          })
+
+          message.val("")
+        }
+      })
+    console.log("init")
+
+    channel.on( "new:message", msg => this.renderMessage(msg) )
+  }
+
+  static renderMessage(msg) {
+    $(".messages")
+      .prepend(`<li><span>${msg.user}: </span>${msg.content}</li>`)
+  }
+}
+
+
+$( () => App.init() )
+
+export default App

@@ -1,26 +1,45 @@
 defmodule FacebookClone.UserSocket do
   use Phoenix.Socket
 
+  alias Phoenix.Token
+  alias FacebookClone.{Repo, User, Conversation}
+
   ## Channels
-  # channel "rooms:*", FacebookClone.RoomChannel
+  channel "conversations:*", FacebookClone.ConversationChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
   # transport :longpoll, Phoenix.Transports.LongPoll
 
-  # Socket params are passed from the client and can
-  # be used to verify and authenticate a user. After
-  # verification, you can put default assigns into
-  # the socket that will be set for all channels, ie
-  #
-  #     {:ok, assign(socket, :user_id, verified_user_id)}
-  #
-  # To deny connection, return `:error`.
-  #
-  # See `Phoenix.Token` documentation for examples in
-  # performing token verification on connect.
-  def connect(_params, socket) do
-    {:ok, socket}
+  def connect(params, socket) do
+    case Token.verify(socket, "user", params["token"], max_age: 1209600) do
+      {:ok, user_id} ->
+        socket = assign_user(socket, user_id)
+
+        case Token.verify(socket, "conversation", params["conversation"]) do
+          {:ok, conversation_id} ->
+            socket = assign_conversation(socket, conversation_id)
+          {:error, _} ->
+        end
+
+        {:ok, socket}
+      {:error, _} ->
+        :error
+    end
+  end
+
+  defp assign_user(socket, user_id) do
+    assign(socket, :user, Repo.get!(User, user_id))
+  end
+
+  defp assign_conversation(socket, conversation_id) do
+
+    conversation =
+      Repo.get!(Conversation, conversation_id)
+      |> Repo.preload([:user_one, :user_two])
+
+    IO.puts(inspect conversation)
+    socket = assign(socket, :conversation, conversation)
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:

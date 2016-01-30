@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <%= tag :meta, name: "channel_token", content:
+        Phoenix.Token.sign(@conn, "user", @conn.assigns.current_user_id) %>
 
     <title>Facebook Clone</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">

@@ -1,3 +1,7 @@
+<%= tag :meta, name: "conversation_token", content:
+    Phoenix.Token.sign(@conn, "conversation", @conversation.id) %>
+
+
 <div class="back">
   <%= link "All conversations", to: conversation_path(@conn, :index) %>
 </div>
